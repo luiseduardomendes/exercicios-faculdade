@@ -1,3 +1,17 @@
+/*
+1. Você deve desenvolver um programa para processar vendas em um mercado. O
+mercado possui os seguintes itens, com os respectivos valores:
+
+1 Pão.......................R$ 1,50
+2 Leite (1 L)...............R$ 4,65
+3 Biscoito (pct 300g).......R$ 6,93
+
+O mercado oferece 2% de desconto para compras acima de R$ 50,00.
+O programa deve exibir as informações da tabela acima para o usuário e pedir para
+ele informar o código do produto que deseja e a quantidade. Ao final, o programa
+deve informar o valor que o usuário deve pagar (já aplicando o desconto, se for o
+caso). O programa só deve lidar com a compra de um único produto por execução.
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,24 +40,24 @@ int main (){
         if (resposta == 0)
             break; // Encerra o programa caso seja solicitado pelo usuario
 
-        printf("Insira a quantidade desejada do produto: ");
-        scanf("%d", &quantidade);
+            printf("Insira a quantidade desejada do produto: ");
+            scanf("%d", &quantidade);
 
-        switch(resposta){
-            case 1: printf("%d paes foram adicionados ao seu carrinho!\n", quantidade);
-            valor_pgto += (quantidade * 1.50);
-            break;
+            switch(resposta){
+                case 1: printf("%d paes foram adicionados ao seu carrinho!\n", quantidade);
+                valor_pgto += (quantidade * 1.50);
+                break;
 
-            case 2: printf("%d leites foram adicionados ao seu carrinho!\n", quantidade);
-            valor_pgto += (quantidade * 4.65);
-            break;
+                case 2: printf("%d leites foram adicionados ao seu carrinho!\n", quantidade);
+                valor_pgto += (quantidade * 4.65);
+                break;
 
-            case 3: printf("%d biscoitos foram adicionados ao seu carrinho!\n", quantidade);
-            valor_pgto += (quantidade * 16.93);
-            break;
-        }
+                case 3: printf("%d biscoitos foram adicionados ao seu carrinho!\n", quantidade);
+                valor_pgto += (quantidade * 16.93);
+                break;
+            }
 
-        printf("\nContinuando pedido...\n");
+            printf("\nContinuando pedido...\n");
 
     } while (resposta != 0); // Repete enquanto o usuario nao concluir o pedido
 
@@ -55,7 +69,7 @@ int main (){
         printf("Valor com desconto.....R$%.2f\n", valor_pgto);
     }
     printf("\nVolte sempre!\n\n");
-
+    system("pause");
     return 0;
 }
 
