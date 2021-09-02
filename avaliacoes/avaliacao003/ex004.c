@@ -21,7 +21,7 @@ int main () {
             soma = soma - (1.0 / i);
     }
     soma = soma * 4;
-    printf("O valor de pi, a partir da formula de Leibniz eh %lf", soma);
+    printf("O valor de pi, a partir da formula de Leibniz eh %lf\n", soma);
 
     return 0;
 }
