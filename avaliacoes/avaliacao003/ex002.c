@@ -38,7 +38,6 @@ int main() {
                    "        [R] Rural\n"
                    "    Sua opcao ...... : ");
             fflush(stdin);
-            __fpurge(stdin);
             scanf("%c", &localidade);
             localidade = toupper(localidade);
 
@@ -84,3 +83,5 @@ int main() {
     printf("Media da renda nas areas rurais ................. : R$%.2f\n", media_renda_rural);
     return 0;
 }
+
+
