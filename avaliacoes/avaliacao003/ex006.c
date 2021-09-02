@@ -13,7 +13,7 @@ int main() {
     printf("Digite o progresso atual:\n");
     scanf("%f", &progresso);
 
-    for (i = -1; i < tamanho + 1; i ++){
+    for (i = -1; i < tamanho + 1; i ++) {
         if (i == -1) {
             printf("<");
         }
