@@ -28,6 +28,7 @@ int main()
     do { // reinicia o programa a cada compra
         printf("Pedido iniciado: \n");
         do { // continua a compra enquanto o pedido nao é finalizado
+            valor_pedido = 0;
             do {
                 opcao = menu_opcoes();
                 if (opcao < 0) {
