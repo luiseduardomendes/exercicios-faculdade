@@ -1,6 +1,16 @@
+/* Dizemos que um número inteiro n2 está contido literalmente em outro número inteiro n1,
+ * quando a sequência de dígitos que forma o número n2 é uma subsequência da sequência de
+ * dígitos que forma o número n1. Por exemplo: 123 está contido literalmente em 1234, 234
+ * está contido literalmente em 1234, 23 está contido literalmente em 1234, 456 está contido
+ * literalmente em 321456987, etc. Faça um programa que lê os números inteiros n1 e n2, tal
+ * que n1 deve ser maior ou igual a n2 e que informe se n2 está contido literalmente em n1
+ * ou não. */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+
+// Função utilizada para determinar o número de algarismos de um valor.
 int tamanho_numero(int num);
 
 int main() {
