@@ -1,3 +1,15 @@
+// Programa multiplataforma (não utiliza chamadas de sistema
+
+/* A conjectura de Collatz diz que se escolhermos qualquer número X, se ele for par,
+ * dividimos X por 2; se X for ímpar multiplicamos X por 3 e adicionamos 1, realizando o
+ * processo repetidamente, em algum momento obtemos o número 1. Note que se trata de
+ * uma conjectura, e que portanto ainda não foi provada, apesar dos esforços dos
+ * matemáticos. Faça um programa que lê um número x e um número r que indica o
+ * máximo de repetições que devem ser feitas. O programa deve informar quantas
+ * repetições foram realizadas para chegar a 1, realizando o processo acima, caso o número
+ * de repetições seja menor que r. Caso contrário, o programa deve informar que não foi
+ * possível chegar a 1 com r repetições. */
+
 #include <stdio.h>
 
 int main()
