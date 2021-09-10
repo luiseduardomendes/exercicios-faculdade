@@ -7,7 +7,7 @@ int main() {
     float vet[N], soma = 0, media, proximo;
     printf("Insira os valores para o vetor: \n\n");
     for (i = 0; i < N; i ++) {
-        printf("Elemento %d", i + 1);
+        printf("Elemento %d: ", i + 1);
         scanf("%f", &vet[i]);
     }
 
@@ -17,9 +17,10 @@ int main() {
     }
 
     // movendo o vetor 1 posição para a direita
-    for(i = 0; i < N - 1; i ++) {
+    for(i = N-1; i >= 0 - 1; i --) {
         vet[i + 1] = vet[i];
     }
+    printf("\n");
 
     printf("\nInsira um novo valor: ");
     scanf("%f", &vet[0]);
@@ -39,12 +40,12 @@ int main() {
     }
 
     for (i = 0; i < N;i ++) {
-        soma = vet[i];
+        soma += vet[i];
     }
     
     media = (float)soma / N;
 
-    printf("A media dos elementos do vetor é: %.2f", media);
+    printf("\n\nA media dos elementos do vetor é: %.2f\n\n", media);
 
     proximo = vet[0];
     for(i = 1; i < N; i ++) {
@@ -54,7 +55,7 @@ int main() {
     }
 
 
-    printf("O valor mais próximo da média é: %.2f", proximo);
+    printf("O valor mais próximo da média é: %.2f\n\n", proximo);
 
 
     return 0;
