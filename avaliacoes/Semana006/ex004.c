@@ -10,41 +10,55 @@ segundo passo realizar o teste
 #include <stdbool.h>
 #include <math.h>
 
-void separar_numero(int num, int tamanho, int vetor[38]);
 int tamanho_numero(int num);
 
 
 int main(){
-    int numero, i, tamanho_num;
-    int algarismos[38];
+    int numero, i, j = 0, tamanho_num;
+    int algarismos[38], anterior = 0;
     bool visitado[38] = {false};
-    
-    
+
     printf("Insira um valor: ");
     scanf("%d", &numero);
 
     tamanho_num = tamanho_numero(numero);
-    
-    separar_numero(numero, tamanho_num, algarismos);
+
+    for(i = 0; i <= tamanho_num; i ++) {
+       algarismos[i] = (numero / pow(10, tamanho_num - i- 1 )) - (pow(10, 1) * anterior);
+       anterior *= 10;
+       anterior += algarismos[i];
+    }
 
     for (i = 0; i < tamanho_num; i ++) {
-        printf("%d", algarismos[i]);
+        printf("%d ", algarismos[i]);
     }
 
-    i = 0;
+    j=0;
+    i=0;
 
-    while (true) {
+
+    do {
         i += algarismos[i];
-        visitado[i] = true;
-        while (i > tamanho_num) {            
-            if (i > tamanho_num){
-                i -= tamanho_num;
-            } 
+
+        while (i > tamanho_num) {
+            i -= tamanho_num;
         }
+
+        visitado[i] = true;
+
+        j++;
+    } while (j <= tamanho_num + 2 );
+    printf("\n");
+
+    for (i = 0; i< tamanho_num; i ++) {
+        if (visitado[i])
+            printf("verdadeiro\n");
+        else
+            printf("Falso\n");
     }
 
 
-    
+
 
     return 0;
 }
@@ -59,13 +73,6 @@ int tamanho_numero(int num){
     return tamanho_num;
 }
 
-void separar_numero(int num, int tamanho, int vetor[38]) {
-    int i;    
-
-    for(i = 1; i <= tamanho; i ++) {
-        vetor[i] = num / pow(10, tamanho - i);
-    }
-}
 
 
 
