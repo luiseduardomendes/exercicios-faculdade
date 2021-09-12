@@ -1,11 +1,3 @@
-/*NUMERO RUNAROUND
-
-primeiro passo: usar uma função para descobrir o tamanho do numero e separar o numero numero em um vetor de algarismos
-
-segundo passo realizar o teste
-
-*/
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
@@ -14,9 +6,9 @@ int tamanho_numero(int num);
 
 
 int main(){
-    int numero, i, j = 0, tamanho_num;
+    int numero, i, j, tamanho_num;
     int algarismos[38], anterior = 0;
-    bool visitado[38] = {false};
+    bool visitado[38] = {false}, runaround = true;
 
     printf("Insira um valor: ");
     scanf("%d", &numero);
@@ -40,25 +32,29 @@ int main(){
     do {
         i += algarismos[i];
 
-        while (i > tamanho_num) {
+        while (i >= tamanho_num) {
             i -= tamanho_num;
         }
 
         visitado[i] = true;
 
         j++;
+
     } while (j <= tamanho_num + 2 );
+
     printf("\n");
 
     for (i = 0; i< tamanho_num; i ++) {
-        if (visitado[i])
-            printf("verdadeiro\n");
-        else
-            printf("Falso\n");
+        if (!(visitado[i]))
+            runaround = false;
     }
 
-
-
+    if (runaround) {
+        printf("O número %d é Runaround!\n", numero);
+    }
+    else {
+        printf("O número %d não é Runaround!\n", numero);
+    }
 
     return 0;
 }
@@ -72,15 +68,3 @@ int tamanho_numero(int num){
     }
     return tamanho_num;
 }
-
-
-
-
-
-
-
-
-
-
-
-
