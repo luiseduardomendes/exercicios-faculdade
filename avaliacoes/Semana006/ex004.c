@@ -19,15 +19,15 @@ visitados uma vez.*/
 #include <stdbool.h>
 #include <math.h>
 #include <locale.h>
+#define LIMIT_INT_RANGE 38
 
 int tamanho_numero(int num);
-
 
 int main(){
     setlocale(LC_CTYPE, "");
     int numero, i, j, tamanho_num;
-    int algarismos[38], anterior = 0;
-    bool visitado[38] = {false}, runaround = true;
+    int algarismos[LIMIT_INT_RANGE], anterior = 0;
+    bool visitado[LIMIT_INT_RANGE] = {false}, runaround = true;
 
     printf("Insira um valor: ");
     scanf("%d", &numero);
@@ -47,7 +47,6 @@ int main(){
     j=0;
     i=0;
 
-
     do {
         i += algarismos[i];
 
@@ -63,7 +62,7 @@ int main(){
 
     printf("\n");
 
-    for (i = 0; i< tamanho_num; i ++) {
+    for (i = 0; i < tamanho_num; i ++) {
         if (!(visitado[i]))
             runaround = false;
     }
@@ -78,7 +77,7 @@ int main(){
     return 0;
 }
 
-int tamanho_numero(int num){
+int tamanho_numero(int num) {
     int tamanho_num;
     tamanho_num = 1;
     while (num >= 10) {
