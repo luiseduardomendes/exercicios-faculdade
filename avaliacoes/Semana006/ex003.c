@@ -58,7 +58,7 @@ int main() {
             }
 
             system("sleep 0.25");
-            fflush(stdout);
+            __fpurge(stdout);
             
             i++;
         } 
