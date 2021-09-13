@@ -1,8 +1,4 @@
-/* Algoritmo para o crivo de Eratóstenes 
-
-
-
-*/
+/* Algoritmo para o crivo de Eratóstenes */
 
 #include <stdio.h>
 #include <stdbool.h>
