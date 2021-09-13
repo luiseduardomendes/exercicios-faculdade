@@ -62,7 +62,7 @@ int main() {
         if (prime_numbers[i] != -1){
             printf("%d\t", prime_numbers[i]);
             j++;  
-            if (j % 5 == 0)
+            if (j % 10 == 0)
                 printf("\n"); 
         }
     }
