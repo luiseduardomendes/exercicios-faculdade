@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+#include <locale.h>
 
 int tamanho_numero(int num);
 
 
 int main(){
+    setlocale(LC_CTYPE, "");
     int numero, i, j, tamanho_num;
     int algarismos[38], anterior = 0;
     bool visitado[38] = {false}, runaround = true;

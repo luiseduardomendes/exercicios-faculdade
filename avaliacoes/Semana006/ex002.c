@@ -1,5 +1,14 @@
-// COLOCAR CONSISTENCIA DE VALORES, TO LOUCO DE SONO, AMANHA EU VEJO ISSO
-
+/* Você deve desenvolver um sistema para gerenciar contas bancárias. Suponha que o 
+banco tenha QTD contas. Assuma que QTD seja 3 por conveniência. Os saldos das contas 
+são representados por vetores de números reais. O código de cada conta é a posição do 
+vetor. O programa deve inicialmente ler os saldos iniciais das contas bancárias. 
+A seguir, ele deve continuamente ler uma das opções e efetuar a
+operação correspondente:
+* [0] Sair do sistema
+* [1] Saldo 
+* [2] Depósito
+* [3] Saque
+* [4] Transferência */
 
 #include <stdio.h>
 #include <stdlib.h>

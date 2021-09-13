@@ -8,10 +8,11 @@
 #define N 5
 
 int main() {
+    setlocale(LC_CTYPE, "");
     int i, j, k, dist = 50, distMax = 6;
     int horse_dist[N] = {0};
     bool end_of_race = false;
-    int aposta, vencedor;
+    int bet, winner;
 
     srand(time(NULL));
 
@@ -28,7 +29,7 @@ int main() {
     }
 
     printf("Faça sua aposta: Qual cavalo você acha que vencerá? [1 até %d]\n", N);
-    scanf("%d", &aposta);
+    scanf("%d", &bet);
     getchar();
     while (!(end_of_race)) {
         i = 0;
@@ -52,7 +53,7 @@ int main() {
             
             
             if (horse_dist[i] >= dist) {
-                vencedor = i + 1;
+                winner = i + 1;
                 end_of_race = true;
             }
 
@@ -63,7 +64,7 @@ int main() {
         } 
     }
 
-    if (vencedor == aposta){
+    if (winner == bet){
         printf("Você acertou o cavalo vencedor! Parabéns!!!\n\n");
     }
     else {
