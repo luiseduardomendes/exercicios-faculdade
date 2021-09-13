@@ -1,28 +1,15 @@
-/*Algoritmo para o crivo de Eratóstenes */
+/* Algoritmo para o crivo de Eratóstenes 
 
-/*
-    definir o maior elemento
 
-    definir o primeiro elemento
-
-    criar um vetor de tamanho igual ao maior elemento menos 1
-
-    preencher esse vetor com o valor de i + 1
-
-    pegar o menor valor e testar a divisibilidade por 2 de cada um desses valores 
-        se for divisivel por 2, recebe o valor de -1 e flag recebe verdadeiro
-        senão, não sofre alteração
-
-    flag recebe valor falso
-
-    repete o laço
 
 */
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <locale.h>
 
 int main() {
+    setlocale(LC_CTYPE, "");
     int max_number, divisor, i, j = 0, prime_numbers[255] = {0};
     bool stop;
 
