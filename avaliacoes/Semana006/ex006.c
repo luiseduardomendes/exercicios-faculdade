@@ -1,11 +1,18 @@
+/*Faça um programa que lê 11 dígitos (cada dígito é um número entre 0 e 9)
+e os armazena em um vetor de 11 posições. A seguir, o programa deve verificar 
+se este conjunto de dígitos é um CPF válido.*/
+
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <locale.h>
+
 #define MAX_NUM 11
 #define FIRST_VALIDATION_NUM 9
 #define SECND_VALIDATION_NUM 10
 
 int main() {
+    setlocale(LC_CTYPE, "");
     int i, cpf[MAX_NUM], aux;
     int first_digit_sum = 0;
     int secnd_digit_sum = 0;
