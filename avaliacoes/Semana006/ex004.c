@@ -1,3 +1,20 @@
+/* Faça um programa que lê um número de N dígitos, armazenando cada dígito em uma posição 
+do vetor. O programa deve descobrir se o número informado é “runaround”. Um número é 
+runaround se ele satisfizer as seguintes condições:
+
+* Cada dígito informa em que posição o próximo dígito ocorre. Por exemplo, no
+caso do número 38241, o primeiro dígito é 3, o que quer dizer que o próximo
+dígito a ser visitado está a 3 dígitos à direita dele. Ou seja, o próximo dígito é o
+dígito 4, na posição 4.
+
+* Quando a contagem chega ao último dígito da direita, ela continua no primeiro
+dígito da esquerda. Por exemplo, continuando a sequência anterior, do dígito 4, o
+próximo dígito seria o dígito 2, na posição 3. Porque a seguinte sequência de
+visitas deveria ser feita: 1-3-8-2.
+
+* A sequência deve retornar ao dígito inicial, depois de todos os dígitos terem sido
+visitados uma vez.*/
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
