@@ -9,9 +9,12 @@ errou a aposta. */
 #include <stdbool.h> 
 #include <locale.h>
 #include <time.h>
-#include <sys/wait.h>
 
 #define N 5
+
+void flush_in();
+
+void sleep_ms(int milliseconds)
 
 int main() {
     setlocale(LC_CTYPE, "");
@@ -62,8 +65,8 @@ int main() {
                 end_of_race = true;
             }
 
-            system("sleep 0.25");
-            __fpurge(stdout);
+            sleep_ms(250);
+            flush_in();
             
             i++;
         } 
@@ -78,4 +81,26 @@ int main() {
     
     
     return 0;
+}
+
+void sleep_ms(int milliseconds) {
+    #ifdef WIN32
+        Sleep(milliseconds);
+    #elif _POSIX_C_SOURCE >= 199309L
+        struct timespec ts;
+        ts.tv_sec = milliseconds / 1000;
+        ts.tv_nsec = (milliseconds % 1000) * 1000000;
+        nanosleep(&ts, NULL);
+    #else
+        usleep(milliseconds * 1000);
+    #endif
+}
+
+void flush_in()
+{
+    int ch;
+    do
+    {
+        ch = fgetc(stdin);
+    } while (ch != EOF && ch != '\n');
 }
