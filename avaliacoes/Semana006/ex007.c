@@ -2,25 +2,27 @@
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
-#define MAX_LETTERS 2
+#define MAX_LETTERS 27
+#define TAM_PHRASE 101
 
 int main() {
+    setlocale(LC_CTYPE, "");
     int i = 0, j = 0;
-    char phrase[101], encoded_phrase[101];
+    char phrase[TAM_PHRASE], encoded_phrase[TAM_PHRASE];
     char original[MAX_LETTERS], encoded[MAX_LETTERS];
 
     printf("Insira os valores para uma tabela de correspondência\n");
     
     printf("Insira todas as letras que deseja que sejam alteradas: \n");
-    fgets(original, 26, stdin);
+    fgets(original, MAX_LETTERS, stdin);
     
     __fpurge(stdin);
 
     printf("Insira por qual letra, respectivamente, cada uma delas deve ser trocada: \n");
-    fgets(encoded, 26, stdin);
+    fgets(encoded, MAX_LETTERS, stdin);
     
     printf("Insira uma frase de até 100 caracteres: \n");
-    fgets(phrase, 101, stdin);
+    fgets(phrase, TAM_PHRASE, stdin);
 
     while (phrase[i] != '\0'){
         if (phrase[i] > 'a' && phrase[i] < 'z'){
