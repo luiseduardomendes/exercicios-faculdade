@@ -1,3 +1,9 @@
+/* O programa a seguir é um simulador de corrida de cavalos!
+O usuário pode apostar em qual cavalo ele acha que vencerá. A cada repetição do programa, 
+cada cavalo recebe um acréscimo na distância percorrida igual a um valor pseudoaleatório 
+gerado pelo programa. Ao final da execução do programa o usuário descobrirá se acertou ou
+errou a aposta. */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h> 
@@ -16,7 +22,7 @@ int main() {
 
     srand(time(NULL));
 
-    for (k = 0; k < N; k ++) {
+    for (k = 0; k < N; k ++) { // mostra na tela a disposição inicial dos cavalos
         for (j = 0; j < dist; j ++) {
             if (horse_dist[k] == j){
                 printf("C%d", k + 1);
@@ -30,7 +36,7 @@ int main() {
 
     printf("Faça sua aposta: Qual cavalo você acha que vencerá? [1 até %d]\n", N);
     scanf("%d", &bet);
-    getchar();
+
     while (!(end_of_race)) {
         i = 0;
         while (!(end_of_race) && i < N) {
@@ -38,6 +44,7 @@ int main() {
 
             horse_dist[i] += (1 + ((float)rand() / RAND_MAX) * (distMax - 1));
 
+            // mostra na tela a disposição atual dos cavalos
             for (k = 0; k < N; k ++) {
                 for (j = 0; j < dist; j ++) {
                     if (horse_dist[k] == j){
@@ -49,8 +56,6 @@ int main() {
                 }
                 printf("\n");
             }
-
-            
             
             if (horse_dist[i] >= dist) {
                 winner = i + 1;
