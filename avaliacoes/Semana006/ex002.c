@@ -15,6 +15,8 @@ operação correspondente:
 #include <locale.h>
 #define QTD 3
 
+void flush_in();
+
 int menu();
 
 int main () {
@@ -23,8 +25,13 @@ int main () {
     setlocale(LC_CTYPE, "");
 
     for(i = 0; i < QTD; i ++) {
-        printf("Insira o saldo da conta %d: R$", i);
-        scanf("%f", &saldo[i]);
+        do {
+            printf("Insira o saldo da conta %d: R$", i);
+            scanf("%f", &saldo[i]);
+            if (saldo[i] < 0) {
+                printf("Valor inválido, insira outro: \n");
+            }
+        } while (saldo[i] < 0);
     }
 
     do {
@@ -51,14 +58,17 @@ int main () {
                     printf("Código inválido!\n");
                 }
             } while (conta > QTD || conta < 0);
-            printf("Insira o valor a ser depositado: R$");
-            scanf("%f", &valor);
-
+            do{
+                printf("Insira o valor a ser depositado: R$");
+                scanf("%f", &valor);
+                if(valor <= 0) {
+                    printf("Valor inválido, insira outro: \n");
+                }
+            } while (valor <= 0);
             saldo[conta - 1] += valor; 
 
             printf("Operação efetuada com sucesso!\n");
-            printf("O novo saldo da conta é: R$");
-            printf("%.2f", saldo[conta]);
+            printf("O novo saldo da conta é: R$%.2f", saldo[conta]);
             break;
 
         case 3: 
@@ -69,19 +79,25 @@ int main () {
                     printf("Código inválido!\n");
                 }
             } while (conta > QTD || conta < 0);
-            printf("Insira o valor a ser sacado: R$");
-            scanf("%f", &valor);
+
+            do{
+                printf("Insira o valor a ser sacado: R$");
+                scanf("%f", &valor);
+                if(valor <= 0) {
+                    printf("Valor inválido, insira outro: \n");
+                }
+            } while (valor <= 0);
             
             if (saldo[conta] > valor) {
                 saldo[conta] -= valor;
                 printf("Operação efetuada com sucesso!\n");
-                printf("O novo saldo da conta é: R$");
-                printf("%.2f", saldo[conta]);
+                printf("O novo saldo da conta é: R$%.2f", saldo[conta]);
             }
             else {
                 printf("Saldo insuficiente!\n");
             }            
             break;
+
         case 4: 
             do{
                 printf("Insira o código da conta de origem: ");
@@ -97,16 +113,19 @@ int main () {
                     printf("Código inválido!\n");
                 }
             } while (conta_dest > QTD || conta_dest < 0);
-            printf("Insira o valor a ser transferido: R$");
-            scanf("%f", &valor);
+            
+            do{
+                printf("Insira o valor a ser transferido: R$");
+                scanf("%f", &valor);
+                if(valor <= 0) {
+                    printf("Valor inválido, insira outro: \n");
+                }
+            } while (valor <= 0);
             
             if (saldo[conta] > valor) {
                 saldo[conta_dest] -= valor;
                 printf("Operação efetuada com sucesso!\n");
-                printf("O novo saldo da conta de origem é: R$");
-                printf("%.2f", saldo[conta]);
-                printf("O novo saldo da conta de destino é: R$");
-                printf("%.2f", saldo[conta_dest]);
+                printf("O novo saldo da conta de origem é: R$%.2f\n", saldo[conta]);
             }
             else {
                 printf("Saldo insuficiente!\n");
@@ -131,11 +150,20 @@ int menu() {
         printf ("    ___________________\n");
         printf("\nSua opção: ");
         scanf("%d", &option);
-        if (option < 0 && option > 4) {
+        if (option < 0 || option > 4) {
             printf("Valor inválido, insira outro [ENTER para continuar]\n");
-            __fpurge(stdin);
+            flush_in();
             getchar();
         }
-    } while (option < 0 && option > 4);
+    } while (option < 0 || option > 4);
     return (option);
+}
+
+void flush_in()
+{
+    int ch;
+    do
+    {
+        ch = fgetc(stdin);
+    } while (ch != EOF && ch != '\n');
 }
