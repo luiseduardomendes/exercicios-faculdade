@@ -14,7 +14,7 @@ errou a aposta. */
 
 void flush_in();
 
-void sleep_ms(int milliseconds)
+void sleep_ms(int milliseconds);
 
 int main() {
     setlocale(LC_CTYPE, "");
@@ -66,8 +66,6 @@ int main() {
             }
 
             sleep_ms(250);
-            flush_in();
-            
             i++;
         } 
     }
@@ -76,7 +74,8 @@ int main() {
         printf("Você acertou o cavalo vencedor! Parabéns!!!\n\n");
     }
     else {
-        printf("Você perdeu a aposta! Tente novamente na próxima!\n\n");
+        printf("Você perdeu a aposta! Tente novamente na próxima!\n"
+        "O cavalo vencedor foi o cavalo %d!\n\n", winner);
     }
     
     
@@ -96,11 +95,3 @@ void sleep_ms(int milliseconds) {
     #endif
 }
 
-void flush_in()
-{
-    int ch;
-    do
-    {
-        ch = fgetc(stdin);
-    } while (ch != EOF && ch != '\n');
-}
