@@ -169,11 +169,11 @@ int menu() {
         printf ("    ___________________\n");
         printf("\nSua opção: ");
         scanf("%d", &option);
-        if (option < 0 && option > 4) {
+        if (option < 0 || option > 4) {
             printf("Valor inválido, insira outro [ENTER para continuar]\n");
             __fpurge(stdin);
             getchar();
         }
-    } while (option < 0 && option > 4);
+    } while (option < 0 || option > 4);
     return (option);
 }
