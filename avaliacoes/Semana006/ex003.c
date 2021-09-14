@@ -12,8 +12,6 @@ errou a aposta. */
 
 #define N 5
 
-void flush_in();
-
 void sleep_ms(int milliseconds);
 
 int main() {

@@ -5,6 +5,8 @@
 #define MAX_LETTERS 27
 #define TAM_PHRASE 101
 
+void flush_in();
+
 int main() {
     setlocale(LC_CTYPE, "");
     int i = 0, j = 0;
@@ -16,7 +18,7 @@ int main() {
     printf("Insira todas as letras que deseja que sejam alteradas: \n");
     fgets(original, MAX_LETTERS, stdin);
     
-    __fpurge(stdin);
+    flush_in();
 
     printf("Insira por qual letra, respectivamente, cada uma delas deve ser trocada: \n");
     fgets(encoded, MAX_LETTERS, stdin);
@@ -43,10 +45,17 @@ int main() {
         }
         i ++;
     }
-    printf("%d", i);
     encoded_phrase[i] = '\0';
 
     printf("\nA frase digitada codificada: %s\n\n", encoded_phrase);
 
     return 0;
+}
+
+void flush_in(){
+    int ch;
+    do {
+        ch = fgetc(stdin);
+    } while (ch != EOF && ch != '\n');
+
 }
