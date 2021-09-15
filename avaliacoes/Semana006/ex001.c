@@ -13,18 +13,44 @@ sucessivamente. Exibir o vetor resultante novamente.
 média calculada anteriormente. */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <locale.h>
+#include <time.h>
 #define N 10
+#define NUM_MAX 20
+#define NUM_MIN -20
 
 int main() {
     setlocale(LC_CTYPE, "");
-    int i;
+    int i, resposta;
     float vet[N], soma = 0, media, proximo;
-    printf("Insira os valores para o vetor: \n\n");
-    for (i = 0; i < N; i ++) {
-        printf("Elemento %d: ", i + 1);
-        scanf("%f", &vet[i]);
+
+    srand(time(NULL));
+    
+    do{
+        printf("Você deseja inserir elementos em um vetor ou gerá-los aleatoriamente? \n");
+        printf("[0] Manualmente\n");
+        printf("[1] Aleatoriamente\n");
+        printf("Sua opção: ");
+        scanf("%d", &resposta);
+        if (resposta != 0 && resposta != 1) {
+            printf("Valor inválido, insira outro\n");
+        }
+    } while (resposta != 0 && resposta != 1);
+
+    if (resposta == 0){
+        printf("Insira os valores para o vetor: \n\n");
+        for (i = 0; i < N; i ++) {
+            printf("Elemento %d: ", i + 1);
+            scanf("%f", &vet[i]);
+        }
+    }
+
+    else{
+        for (i = 0; i < N; i ++) {
+            vet[i] = (NUM_MIN + ((float)rand() / RAND_MAX) * (NUM_MAX - NUM_MIN));
+        }
     }
 
     printf("\nOs itens digitados foram: \n\n");
