@@ -33,7 +33,7 @@ int main() {
     }
 
     // movendo o vetor 1 posição para a direita
-    for(i = N-1; i >= 0 - 1; i --) {
+    for(i = N-1; i >= 0; i --) {
         vet[i + 1] = vet[i];
     }
     printf("\n");
