@@ -2,15 +2,15 @@
 #include <locale.h>
 #include <time.h>
 #include <stdlib.h>
-#define N 10
-#define M 10
+#define N 2
+#define M 2
 #define BOMB -1
 
 int main(){
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
     int numx, numy, endOfGame = 0;
-    int total, i, j;
+    int total, i, j, score = 0;
 
     srand(time(NULL));   
 
@@ -56,10 +56,7 @@ int main(){
         for (i = 0; i < M; i ++) {
             for (j = 0; j < N; j ++) {
                 if (interface[i][j] == 1)
-                    if (matriz[i][j] == BOMB)
-                        printf (" #");
-                    else
-                        printf("%2d", matriz[i][j]);
+                    printf("%2d", matriz[i][j]);
                 else 
                     printf(" #");
             }
@@ -67,23 +64,34 @@ int main(){
         }
         scanf("%d %d", &numx, &numy);
         interface[numy][numx] = 1;
-        
-            if (matriz[numy][numx] == 0) {
-                if (matriz[numy - 1][numx] == 0){
-                    interface [numy - 1][numx] = 1;
-                }
-                if (matriz[numy + 1][numx] == 0){
-                    interface [numy + 1][numx] = 1;
-                }
-                if (matriz[numy][numx - 1] == 0){
-                    interface [numy][numx - 1] = 1;
-                }
-                if (matriz[numy][numx + 1] == 0){
-                    interface [numy][numx + 1] = 1;
-                }
+        if (matriz[numy][numx] != -1) {
+            
+            score ++;
+        }
+        else {
+            endOfGame = 1;
+        }
 
-            }
         
+        
+        if (matriz[numy][numx] == 0) {
+            if (matriz[numy - 1][numx] == 0){
+                interface [numy - 1][numx] = 1;
+            }
+            if (matriz[numy + 1][numx] == 0){
+                interface [numy + 1][numx] = 1;
+            }
+            if (matriz[numy][numx - 1] == 0){
+                interface [numy][numx - 1] = 1;
+            }
+            if (matriz[numy][numx + 1] == 0){
+                interface [numy][numx + 1] = 1;
+            }
+        }
+        if (score == (M) * (N) - total){
+            endOfGame = 1;
+            printf("Voce venceu!\n");
+        }
     } while (!(endOfGame));
     return 0;
 }
