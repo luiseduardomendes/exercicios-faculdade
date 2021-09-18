@@ -9,85 +9,128 @@
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y);
 void display_table(int matriz[M][N], int interface [M][N]);
 void clearscreen();
+int main_menu();
+void flush_in();
 int gScore;
+
 
 int main(){
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
     int numx, numy, endOfGame = 0;
-    int num_mines, i, j;
+    int i, j;
+    float mines_percentage = 0.1, num_mines;
+    int size_table = 8;
+    int main_opt;
+    char nome[32];
+    int players = 0; 
+    int highscores[32];
 
     srand(time(NULL));   
-
-    clearscreen();
-    printf("*-*-*-*-Campo Minado-*-*-*-*\n");
-    printf("Insira o número de minas: ");
-    scanf("%d",&num_mines);
-
-    for (i = 0; i < num_mines; i ++){
-        numx = ((float)rand()/RAND_MAX)*(N - 1);
-        numy = ((float)rand()/RAND_MAX)*(M - 1);
-        if(matriz[numy][numx] != MINE) {
-            matriz[numy][numx] = MINE;
-        }
-        else {
-            i --;
-        }
-    }
-    
-
-    for (i = 0; i < M; i ++) {
-        for (j = 0; j < N; j ++) {
-            if (matriz[i][j] != MINE){
-                if(matriz [i - 1][j] == MINE)
-                    matriz[i][j] ++;
-                if(matriz [i - 1][j - 1] == MINE)
-                    matriz[i][j] ++;
-                if(matriz [i - 1][j + 1] == MINE)
-                    matriz[i][j] ++;
-
-                if(matriz [i][j - 1] == MINE)
-                    matriz[i][j] ++;
-                if(matriz [i][j + 1] == MINE)
-                    matriz[i][j] ++;
-
-                if(matriz [i + 1][j] == MINE)
-                    matriz[i][j] ++;
-                if(matriz [i + 1][j - 1] == MINE)
-                    matriz[i][j] ++;
-                if(matriz [i + 1][j + 1] == MINE)
-                    matriz[i][j] ++;
-            }
-        }
-    }
-
     do {
-        display_table(matriz, interface);
-        scanf("%d %d", &numx, &numy);
-        interface[numy][numx] = 1;
-        if (matriz[numy][numx] != -1) {
-            
-            gScore ++;
-        }
-        else {
-            endOfGame = 1;
-            display_table(matriz, interface);
-            printf("Voce perdeu!\n");
-            printf("Sua pontuação foi: %d\n", gScore);
-        }
 
+        clearscreen();
+        main_opt = main_menu();
+
+        switch(main_opt){
+        case 1:
+            printf("Insira seu nome: ");
+            flush_in();
+            fgets(&nome, 32, stdin);
+            players ++;
+            gScore = 0;
+            num_mines = (float) M * N * mines_percentage;
+
+            for(i = 0; i < M; i ++){
+                for(j = 0; j < N; j ++) {
+                    interface[i][j] = 0;
+                }
+            }
+
+            for (i = 0; i < (int)num_mines; i ++){
+                numx = ((float)rand()/RAND_MAX)*(N - 1);
+                numy = ((float)rand()/RAND_MAX)*(M - 1);
+                if(matriz[numy][numx] != MINE) {
+                    matriz[numy][numx] = MINE;
+                }
+                else {
+                    i --;
+                }
+            }
+            
+
+            for (i = 0; i < M; i ++) {
+                for (j = 0; j < N; j ++) {
+                    if (matriz[i][j] != MINE){
+                        if(matriz [i - 1][j] == MINE)
+                            matriz[i][j] ++;
+                        if(matriz [i - 1][j - 1] == MINE)
+                            matriz[i][j] ++;
+                        if(matriz [i - 1][j + 1] == MINE)
+                            matriz[i][j] ++;
+
+                        if(matriz [i][j - 1] == MINE)
+                            matriz[i][j] ++;
+                        if(matriz [i][j + 1] == MINE)
+                            matriz[i][j] ++;
+
+                        if(matriz [i + 1][j] == MINE)
+                            matriz[i][j] ++;
+                        if(matriz [i + 1][j - 1] == MINE)
+                            matriz[i][j] ++;
+                        if(matriz [i + 1][j + 1] == MINE)
+                            matriz[i][j] ++;
+                    }
+                }
+            }
+
+            do {
+                display_table(matriz, interface);
+                scanf("%d %d", &numx, &numy);
+                interface[numy][numx] = 1;
+                if (matriz[numy][numx] != -1) {
+                    
+                    gScore ++;
+                }
+                else {
+                    endOfGame = 1;
+                    display_table(matriz, interface);
+                    printf("Voce perdeu!\n");
+                    printf("Sua pontuação foi: %d\n", gScore);
+                    highscores[players] = gScore;
+                    
+                    flush_in();
+                    printf("Enter para continuar\n");
+                    getchar();
+                }
+
+                
+                
+                if (matriz[numy][numx] == 0) {
+                    gScore += open_zeros(matriz, interface, numx, numy);
+                }
+                if (gScore == (M) * (N) - (int)num_mines+1){
+                    endOfGame = 1;
+                    display_table(matriz, interface);
+                    printf("Voce venceu!\n");
+                    printf("Sua pontuação foi: %d\n", gScore);
+
+                    flush_in();
+                    printf("Enter para continuar\n");
+                    getchar();
+
+                }
+            } while (!(endOfGame));
+            break;
         
-        
-        if (matriz[numy][numx] == 0) {
-            gScore += open_zeros(matriz, interface, numx, numy);
+
+        case 2 : mines_percentage = difficult_menu();
+        break;
+
+        case 0 : printf("Aplicativo encerrado!\n");
+        break;
         }
-        if (gScore == (M) * (N) - num_mines+1){
-            endOfGame = 1;
-            display_table(matriz, interface);
-            printf("Voce venceu!\n");
-            printf("Sua pontuação foi: %d\n", gScore);
-        }
-    } while (!(endOfGame));
+    } while (main_opt != 0);
     return 0;
 }
 
@@ -130,6 +173,7 @@ int open_zeros (int mat[M][N], int inter[M][N], int x, int y) {
 void display_table(int matriz[M][N], int interface [M][N]) {
     int i, j;
     clearscreen();
+    printf("Pontuação: %d\n\n", gScore);
 
     for (i = 0; i < M; i ++) {
         for (j = 0; j < N; j ++) {
@@ -149,4 +193,80 @@ void clearscreen(){
     #else
         system("cls");
     #endif
+}
+
+int main_menu() {
+    int option;
+    do{
+        clearscreen();
+        printf("*-*-*-*-Campo Minado-*-*-*-*\n");
+        printf("[1] Iniciar um novo jogo\n");
+        printf("[2] Alterar dificuldade\n");
+        printf("[3] Alterar tamanho do mapa [OPÇÃO INDISPONÍVEL NO MOMENTO]\n");
+        printf("[0] Encerrar o jogo\n");
+        printf("Sua opção: ");
+        scanf("%d", &option);
+    } while (option < 0 || option > 2); 
+    return option;
+}
+
+int difficult_menu(){
+    int option; 
+    float mines_percentage = 0.1;
+    clearscreen();
+    do {
+        printf("[1] Fácil\n"
+        "[2] Médio\n"
+        "[3] Difícil\n"
+        "[4] Mestre do campo minado\n"
+        "[0] Retornar ao menu principal\n");
+        
+        printf("Sua opção: ");
+        scanf("%d", &option);
+
+    }while (option < 0 || option > 4);
+    switch (option)
+    {
+    case 1 :
+        mines_percentage = 0.1;
+        break;
+    case 2 :
+        mines_percentage = 0.2;
+        break;
+    case 3 : 
+        mines_percentage = 0.3;
+        break;
+    case 4 :
+        mines_percentage = 0.5; 
+        break;
+    }
+    return(mines_percentage);
+}
+
+int dimensions(){
+    int option, size_table;
+    do {
+        printf("[1] 8 x 8\n"
+        "[2] 16 x 16\n"
+        "[3] 32 x 32\n"
+        "[0] Voltar ao menu principal\n"
+        "Sua opção: ");
+        scanf("%d", &option);
+    } while (option < 0 || option > 3);
+    switch (option) {
+        case 1: size_table = 8;
+        break;
+        case 2: size_table = 16;
+        break;
+        case 3: size_table = 32;
+        break;
+    }
+    return (size_table); 
+}
+void flush_in(){
+    int ch;
+    do {
+        ch = fgetc(stdin);
+    } while (ch != EOF && ch != '\n');
+
 }
