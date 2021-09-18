@@ -9,12 +9,13 @@
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y);
 void display_table(int matriz[M][N], int interface [M][N]);
 void clearscreen();
+int gScore;
 
 int main(){
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
     int numx, numy, endOfGame = 0;
-    int num_mines, i, j, score = 0;
+    int num_mines, i, j;
 
     srand(time(NULL));   
 
@@ -66,50 +67,59 @@ int main(){
         interface[numy][numx] = 1;
         if (matriz[numy][numx] != -1) {
             
-            score ++;
+            gScore ++;
         }
         else {
             endOfGame = 1;
             display_table(matriz, interface);
             printf("Voce perdeu!\n");
-            printf("Sua pontuação foi: %d\n", score);
+            printf("Sua pontuação foi: %d\n", gScore);
         }
 
         
         
         if (matriz[numy][numx] == 0) {
-            score += open_zeros(matriz, interface, numx, numy);
+            gScore += open_zeros(matriz, interface, numx, numy);
         }
-        if (score == (M) * (N) - num_mines){
+        if (gScore == (M) * (N) - num_mines+1){
             endOfGame = 1;
+            display_table(matriz, interface);
             printf("Voce venceu!\n");
+            printf("Sua pontuação foi: %d\n", gScore);
         }
     } while (!(endOfGame));
     return 0;
 }
 
-int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
+int open_zeros (int mat[M][N], int inter[M][N], int x, int y) {
+
     if (y-1 >= 0 && inter [y - 1][x] == 0) {
         inter [y - 1][x] = 1;
-
+        gScore ++;
         if(mat[y - 1][x] == 0) 
             y--;
         open_zeros(mat, inter, x, y);
     }
+
     if (y+1 < N && inter [y + 1][x] == 0) {
         inter[y + 1][x] = 1;
+        gScore ++;
         if (mat[y + 1][x] == 0)
             y++;
         open_zeros(mat, inter, x, y);
     }
+
     if (x-1 >= 0 && inter [y][x - 1] == 0) {
         inter [y][x - 1] = 1;
+        gScore ++;
         if (mat[y][x - 1] == 0)
             x--;
         open_zeros(mat, inter, x, y);
     }
+
     if (x+1 < M && inter [y][x + 1] == 0) {
         inter [y][x + 1] = 1;
+        gScore ++;
         if (mat[y][x + 1] == 0)
             x++;
         open_zeros(mat, inter, x, y);
