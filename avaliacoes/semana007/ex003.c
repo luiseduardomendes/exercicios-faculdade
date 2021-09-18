@@ -48,6 +48,12 @@ int main(){
                 }
             }
 
+            for(i = 0; i < M; i ++){
+                for(j = 0; j < N; j ++) {
+                    matriz[i][j] = 0;
+                }
+            }
+
             for (i = 0; i < (int)num_mines; i ++){
                 numx = ((float)rand()/RAND_MAX)*(N - 1);
                 numy = ((float)rand()/RAND_MAX)*(M - 1);
