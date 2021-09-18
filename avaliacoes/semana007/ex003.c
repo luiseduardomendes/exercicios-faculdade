@@ -8,24 +8,11 @@
 
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y);
 void display_table(int matriz[M][N], int interface [M][N]);
-void open_around (int mat[M][N], int inter[M][N],int x, int y);
 void clearscreen();
 
 int main(){
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
-    int mat_test[M][N] = 
-    {1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,
-     1,1,1,1,1,1,1,1,1,1,};
-    
     int numx, numy, endOfGame = 0;
     int num_mines, i, j, score = 0;
 
@@ -75,8 +62,6 @@ int main(){
 
     do {
         display_table(matriz, interface);
-        display_table(matriz, mat_test);
-
         scanf("%d %d", &numx, &numy);
         interface[numy][numx] = 1;
         if (matriz[numy][numx] != -1) {
@@ -86,7 +71,6 @@ int main(){
         else {
             endOfGame = 1;
             display_table(matriz, interface);
-            
             printf("Voce perdeu!\n");
             printf("Sua pontuação foi: %d\n", score);
         }
@@ -105,62 +89,37 @@ int main(){
 }
 
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
-    printf("x: %d\n"
-    "y: %d\n", x, y);
-
-    display_table(mat, inter);   
-    
-    if (mat[y - 1][x] == 0 && y-1 >= 0 && inter[y - 1][x] == 0) {   
-        open_around(mat, inter, x, y);
-        y--;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y + 1][x] == 0 && y+1 < N, inter[y + 1][x] == 0) {
-        open_around(mat, inter, x, y);
-        y++;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y][x - 1] == 0 && x-1 >= 0 && inter[y][x - 1] == 0) {
-        open_around(mat, inter, x, y);
-        x--;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y][x + 1] == 0 && x+1 < M && inter[y][x + 1] == 0) {
-        open_around(mat, inter, x, y);
-        x++;
-        open_zeros(mat, inter, x, y);
-    }
-    
-    return 0;
-}
-
-void open_around (int mat[M][N], int inter[M][N],int x, int y) {
-    if (y - 1 >= 0){
+    if (y-1 >= 0 && inter [y - 1][x] == 0) {
         inter [y - 1][x] = 1;
-        if (x - 1 >= 0)
-            inter [y - 1][x - 1] = 1;
-        if (x + 1 < N)
-            inter [y - 1][x + 1] = 1;
+
+        if(mat[y - 1][x] == 0) 
+            y--;
+        open_zeros(mat, inter, x, y);
     }
-    if (y + 1 < M) {
-        inter [y + 1][x] = 1;
-        if (x + 1 < N)
-            inter [y + 1][x + 1] = 1;
-        if (x - 1 >= 0)
-            inter [y + 1][x - 1] = 1;
+    if (y+1 < N && inter [y + 1][x] == 0) {
+        inter[y + 1][x] = 1;
+        if (mat[y + 1][x] == 0)
+            y++;
+        open_zeros(mat, inter, x, y);
     }
-    if (x + 1 < N)
-        inter [y][x + 1] = 1;
-    if (x - 1 >= 0)
+    if (x-1 >= 0 && inter [y][x - 1] == 0) {
         inter [y][x - 1] = 1;
+        if (mat[y][x - 1] == 0)
+            x--;
+        open_zeros(mat, inter, x, y);
+    }
+    if (x+1 < M && inter [y][x + 1] == 0) {
+        inter [y][x + 1] = 1;
+        if (mat[y][x + 1] == 0)
+            x++;
+        open_zeros(mat, inter, x, y);
+    }
+    return 0;
 }
 
 void display_table(int matriz[M][N], int interface [M][N]) {
     int i, j;
-    //clearscreen();
+    clearscreen();
 
     for (i = 0; i < M; i ++) {
         for (j = 0; j < N; j ++) {
@@ -171,9 +130,7 @@ void display_table(int matriz[M][N], int interface [M][N]) {
         }
         printf("\n");
     }
-    printf("\n");
 }
-
 void clearscreen(){
     #ifdef WIN32
         system("cls");
