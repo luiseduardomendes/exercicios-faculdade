@@ -39,6 +39,7 @@ int main(){
             fgets(&nome, 32, stdin);
             players ++;
             gScore = 0;
+            endOfGame = 0;
             num_mines = (float) M * N * mines_percentage;
 
             for(i = 0; i < M; i ++){
@@ -109,7 +110,7 @@ int main(){
                 if (matriz[numy][numx] == 0) {
                     gScore += open_zeros(matriz, interface, numx, numy);
                 }
-                if (gScore == (M) * (N) - (int)num_mines+1){
+                if (gScore == (M) * (N) - (int)num_mines){
                     endOfGame = 1;
                     display_table(matriz, interface);
                     printf("Voce venceu!\n");
