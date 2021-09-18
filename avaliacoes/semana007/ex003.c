@@ -133,7 +133,7 @@ int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
         x++;
         open_zeros(mat, inter, x, y);
     }
-    open_zeros(mat, inter, x, y);
+    
     return 0;
 }
 
