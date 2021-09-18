@@ -8,6 +8,7 @@
 
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y);
 void display_table(int matriz[M][N], int interface [M][N]);
+void open_around (int mat[M][N], int inter[M][N],int x, int y);
 void clearscreen();
 
 int main(){
@@ -104,9 +105,39 @@ int main(){
 }
 
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
+    printf("x: %d\n"
+    "y: %d\n", x, y);
 
+    display_table(mat, inter);   
+    
+    if (mat[y - 1][x] == 0 && y-1 >= 0 && inter[y - 1][x] == 0) {   
+        open_around(mat, inter, x, y);
+        y--;
+        open_zeros(mat, inter, x, y);
+    }
 
+    if (mat[y + 1][x] == 0 && y+1 < N, inter[y + 1][x] == 0) {
+        open_around(mat, inter, x, y);
+        y++;
+        open_zeros(mat, inter, x, y);
+    }
 
+    if (mat[y][x - 1] == 0 && x-1 >= 0 && inter[y][x - 1] == 0) {
+        open_around(mat, inter, x, y);
+        x--;
+        open_zeros(mat, inter, x, y);
+    }
+
+    if (mat[y][x + 1] == 0 && x+1 < M && inter[y][x + 1] == 0) {
+        open_around(mat, inter, x, y);
+        x++;
+        open_zeros(mat, inter, x, y);
+    }
+    open_zeros(mat, inter, x, y);
+    return 0;
+}
+
+void open_around (int mat[M][N], int inter[M][N],int x, int y) {
     if (y - 1 >= 0){
         inter [y - 1][x] = 1;
         if (x - 1 >= 0)
@@ -115,7 +146,6 @@ int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
             inter [y - 1][x + 1] = 1;
     }
     if (y + 1 < M) {
-        
         inter [y + 1][x] = 1;
         if (x + 1 < N)
             inter [y + 1][x + 1] = 1;
@@ -126,29 +156,6 @@ int open_zeros (int mat[M][N], int inter[M][N], int x, int y){
         inter [y][x + 1] = 1;
     if (x - 1 >= 0)
         inter [y][x - 1] = 1;
-
-    
-    
-    if (mat[y - 1][x] == 0 && y-1 >= 0) {   
-        y--;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y + 1][x] == 0 && y+1 < N) {
-        y++;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y][x - 1] == 0 && x-1 >= 0) {
-        x--;
-        open_zeros(mat, inter, x, y);
-    }
-
-    if (mat[y][x + 1] == 0 && x+1 < M) {
-        x++;
-        open_zeros(mat, inter, x, y);
-    }
-    return 0;
 }
 
 void display_table(int matriz[M][N], int interface [M][N]) {
@@ -166,6 +173,7 @@ void display_table(int matriz[M][N], int interface [M][N]) {
     }
     printf("\n");
 }
+
 void clearscreen(){
     #ifdef WIN32
         system("cls");
