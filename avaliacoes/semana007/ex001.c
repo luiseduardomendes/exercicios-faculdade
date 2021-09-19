@@ -60,8 +60,8 @@ int main() {
     printf("  Código                                                Nome     Preço\n");
     printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
     do{
-        found = 0;
         do {
+            found = 0;
             printf("Informe o nome de um produto[0 para encerrar]: ");
             fgets(&searchName, SIZENAME, stdin);
             i = 0;
