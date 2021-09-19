@@ -12,6 +12,10 @@ int main() {
     int i, j, k;
     int id[NUMPROD];
     char name[SIZENAME];
+    char month[NUMMONTH][11] = {"Janeiro", "Fevereiro", "Março", 
+                                "Abril", "Maio", "Junho", 
+                                "Julho", "Agosto", "Setembro", 
+                                "Outubro", "Novembro", "Dezembro"};
     float price[NUMPROD];
     int unitSold[NUMPROD][NUMBRANCH][NUMMONTH];
 
@@ -23,11 +27,11 @@ int main() {
         fgets(&name, SIZENAME, stdin);
         strcpy(productNames[i], name);
         printf("Insira o preço do produto %d: ", i + 1);
-        scanf("%f", price[i]);
+        scanf("%f", &price[i]);
         for (j = 0; j < NUMBRANCH; j ++) {
             for (k = 0; k < NUMMONTH; k ++) {
-                printf("Insira a quatidade vendida do produto %d na filial %d no mês %d: ", 
-                        i + 1, j + 1, k + 1);
+                printf("Insira a quatidade vendida do produto %d na filial %d no mês de %s: ", 
+                        i + 1, j + 1, month[k]);
                 scanf("%d", &unitSold[i][j][k]);
             }
         }
@@ -42,5 +46,5 @@ void flushIn() {
     int ch;
     do {
         ch = fgetc(stdin);
-    } while (ch != EOF || ch != '\0');
+    } while (ch != EOF && ch != '\n');
 }
