@@ -57,34 +57,43 @@ int main() {
         }
         flushIn();
     }
-    printf("  Código                                                Nome     Preço\n");
-    printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
-    do{
+
+    do {    
         do {
             found = 0;
             printf("Informe o nome de um produto[0 para encerrar]: ");
             fgets(&searchName, SIZENAME, stdin);
-            i = 0;
-            do {
-                comparison = strcmp(searchName, productNames[i]);
-                if (comparison != 0)
-                    i ++;
-                else {
-                    index = i;
-                    found = 1;
+            for ( k = 0; k < SIZENAME; k ++){
+                if (searchName[k] == '\n'){
+                    searchName[k] = '\0';
                 }
-            } while (comparison != 0);
-            if (!(found)) {
-                printf("Produto não encontrado!\n");
+            }
+            i = 0; 
+            if (strcmp("0", searchName) != 0){
+                do {
+                    comparison = strcmp(searchName, productNames[i]);
+                    if (comparison != 0)
+                        i ++;
+                    else {
+                        index = i;
+                        found = 1;
+                    }
+                } while (comparison != 0 && i < NUMPROD);
+        
+                if (!(found)) {
+                    printf("Produto não encontrado!\n");
+                }
+                else {
+                    printf("  Código                                                Nome     Preço\n");
+                    printf("%8d %51s %9.2f\n\n", id[index], productNames[index], price[index]);
+                }
             }
             else {
-                printf("  Código                                                Nome     Preço\n");
-                printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
+                comparison = 0;
             }
-        } while (comparison != 0);
-        
-
-    }while (strcmp("0", searchName) != 0);
+            
+        } while (comparison != 0);   
+    } while (strcmp("0", searchName));
 
     do {
         flushIn();
