@@ -8,6 +8,12 @@
 #define NUMBRANCH 2
 #define NUMMONTH 12
 
+void searchById(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD], 
+                int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]);
+void searchByName(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD]);
+
 
 int main() {
     char productNames[NUMPROD][SIZENAME];
@@ -23,7 +29,7 @@ int main() {
     int unitSold[NUMPROD][NUMBRANCH][NUMMONTH];
     int searchId, index;
     int found, sumSold;
-    int comparison;
+    int comparison, option;
 
     setlocale(LC_ALL, "");
     srand(time(NULL));
@@ -33,7 +39,7 @@ int main() {
         printf("Insira o código do produto %d: ", i + 1);
         scanf("%d", &id[i]);
         
-        flushIn();
+        __fpurge(stdin);
         printf("Insira o nome do produto %d: ", i + 1);
         fgets(&name, SIZENAME, stdin);
         for (k = 0; k < SIZENAME; k ++) {
@@ -55,9 +61,47 @@ int main() {
 
             }
         }
-        flushIn();
+        __fpurge(stdin);
     }
 
+    do{
+        option = mainMenu();
+        switch (option)
+        {
+        case 1:
+            searchByName(productNames, id, price);
+            break;
+        case 2:
+            searchById(productNames, id, price, unitSold);
+            break;
+        }
+    } while (option != 0);
+    
+
+    
+
+
+    return 0;
+}
+int mainMenu() {
+    int option;
+    do{
+        printf("[1] Realizar pesquisa por nome\n"
+        "[2] Realizar pesquisa por código\n"
+        "[0] Encerrar Programa \n"
+        "Sua opção: ");
+        scanf("%d", &option);
+    } while (option > 2 || option < 0);
+    return option;
+}
+
+void searchByName(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD]) {
+    int i, j, k;
+    char searchName[SIZENAME];
+    int index;
+    int found;
+    int comparison;
     do {    
         do {
             found = 0;
@@ -94,11 +138,22 @@ int main() {
             
         } while (comparison != 0);   
     } while (strcmp("0", searchName));
+}
 
+void searchById(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD], 
+                int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]) {
+    
+    int i, j, k;
+    
+    char name[SIZENAME];
+    char searchName[SIZENAME];
+    int searchId, index;
+    int found, sumSold;
     do {
-        flushIn();
+        __fpurge(stdin);
         printf("Informe um código de produto[0 para encerrar]: ");
-        flushIn();
+        __fpurge(stdin);
         scanf("%d", &searchId);
 
         if (searchId != 0) {
@@ -125,14 +180,4 @@ int main() {
             }
         }
     } while (searchId != 0);
-
-
-    return 0;
-}
-
-void flushIn() {
-    int ch;
-    do {
-        ch = fgetc(stdin);
-    } while (ch != EOF && ch != '\n');
 }
