@@ -55,6 +55,7 @@ int main() {
 
             }
         }
+        flushIn();
     }
     do{
         found = 0;
@@ -62,13 +63,14 @@ int main() {
             printf("Informe o nome de um produto[0 para encerrar]: ");
             fgets(&searchName, SIZENAME, stdin);
             i = 0;
-            while (strcmp(productNames[i], searchName)){
+            while (strcmp(productNames[i], searchName) != 0) {
                 comparison = strcmp(searchName, productNames[i]);
-                if (!(comparison))
+                if (comparison)
                     i ++;
-                else 
+                else {
                     index = i;
                     found = 1;
+                }
             } while(!(comparison));
         } while (comparison != 0);
         printf("  Código                                                Nome     Preço\n");
