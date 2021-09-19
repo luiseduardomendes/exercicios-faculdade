@@ -57,24 +57,32 @@ int main() {
         }
         flushIn();
     }
+    printf("  Código                                                Nome     Preço\n");
+    printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
     do{
         found = 0;
         do {
             printf("Informe o nome de um produto[0 para encerrar]: ");
             fgets(&searchName, SIZENAME, stdin);
             i = 0;
-            while (strcmp(productNames[i], searchName) != 0) {
+            do {
                 comparison = strcmp(searchName, productNames[i]);
-                if (comparison)
+                if (comparison != 0)
                     i ++;
                 else {
                     index = i;
                     found = 1;
                 }
-            } while(!(comparison));
+            } while (comparison != 0);
+            if (!(found)) {
+                printf("Produto não encontrado!\n");
+            }
+            else {
+                printf("  Código                                                Nome     Preço\n");
+                printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
+            }
         } while (comparison != 0);
-        printf("  Código                                                Nome     Preço\n");
-        printf("%8d %51s %9.2f %8d\n\n", id[index], productNames[index], price[index]);
+        
 
     }while (strcmp("0", searchName) != 0);
 
