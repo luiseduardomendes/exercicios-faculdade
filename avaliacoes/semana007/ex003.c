@@ -15,6 +15,7 @@ int gScore;
 
 
 int main(){
+    setlocale(LC_CTYPE, "");
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
     int numx, numy, endOfGame = 0;
