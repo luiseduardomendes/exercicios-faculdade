@@ -77,6 +77,7 @@ int main() {
     }while (strcmp("0", searchName) != 0);
 
     do {
+        flushIn();
         printf("Informe um código de produto[0 para encerrar]: ");
         flushIn();
         scanf("%d", &searchId);
