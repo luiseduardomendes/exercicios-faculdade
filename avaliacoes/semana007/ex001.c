@@ -277,17 +277,22 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
                 int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]){
     int i, j, k;
     float profit;
-    float prodProfit[NUMPROD] = {0};
-    float mostLucrative;
-    int units[NUMPROD] = {0};
+    float prodProfit[NUMPROD] = {0}; //lucro de cada produto
+    float mostLucrative; // maior valor por produto
+    int units[NUMPROD] = {0}; // unidades totais
     for (i = 0; i < NUMPROD; i ++) {
         profit = 0;
         for (j = 0; j < NUMBRANCH; j ++) {
             for (k = 0; k < NUMMONTH; k ++) {
-                profit = price[i] * unitSold[j][k][i];
+                profit += price[i] * unitSold[i][j][k];
+                units[i] += unitSold[i][j][k];
             }
         }
-        if (mostLucrative > profit) {
+        prodProfit[i] = profit;
+        if ( i == 0 ){
+            mostLucrative = profit;
+        }
+        if (mostLucrative < profit) {
             mostLucrative = profit;
         }
     }
@@ -295,7 +300,7 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
     printf("Nome do produto                                     Código  Unidades  Lucro\n");
     for (i = 0; i < NUMPROD; i ++) {
         if (mostLucrative == prodProfit[i]) {
-            printf("%51s%8d%8d%14.2f\n", productNames[i], id[i], unitSold[i], prodProfit[i]);
+            printf("%51s%8d%8d%14.2f\n", productNames[i], id[i], units[i], prodProfit[i]);
         }
     }
     flushIn();
