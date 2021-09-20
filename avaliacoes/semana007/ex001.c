@@ -80,6 +80,9 @@ int main() {
         case 4:
             profitByBranchAndId(productNames, id, price, unitSold);
             break;
+        case 5:
+            mostLucrativeProd(productNames, id, price, unitSold);
+            break;
         }
     } while (option != 0);
 
@@ -94,10 +97,11 @@ int mainMenu() {
         "[2] Realizar pesquisa por código\n"
         "[3] Ver lucro por filial no ano\n"
         "[4] Lucro por filial de um produto\n"
+        "[5] Produto mais lucrativo\n"
         "[0] Encerrar Programa \n"
         "Sua opção: ");
         scanf("%d", &option);
-    } while (option > 4 || option < 0);
+    } while (option > 5 || option < 0);
     return option;
 }
 
@@ -266,6 +270,37 @@ void profitByBranchAndId (char productNames[NUMPROD][SIZENAME],
             fgetc(stdin);
         }
     } while (searchId != 0);
+}
+
+void mostLucrativeProd(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD], 
+                int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]){
+    int i, j, k;
+    float profit;
+    float prodProfit[NUMPROD] = {0};
+    float mostLucrative;
+    int units[NUMPROD] = {0};
+    for (i = 0; i < NUMPROD; i ++) {
+        profit = 0;
+        for (j = 0; j < NUMBRANCH; j ++) {
+            for (k = 0; k < NUMMONTH; k ++) {
+                profit = price[i] * unitSold[j][k][i];
+            }
+        }
+        if (mostLucrative > profit) {
+            mostLucrative = profit;
+        }
+    }
+    printf("Produtos mais lucrativos: \n\n");
+    printf("Nome do produto                                     Código  Unidades  Lucro\n");
+    for (i = 0; i < NUMPROD; i ++) {
+        if (mostLucrative == prodProfit[i]) {
+            printf("%51s%8d%8d%14.2f\n", productNames[i], id[i], unitSold[i], prodProfit[i]);
+        }
+    }
+    flushIn();
+    printf("Enter para continuar...\n");
+    fgetc(stdin);
 }
 
 void flushIn() {
