@@ -70,7 +70,8 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
 char month[NUMMONTH][11] = {"Janeiro", "Fevereiro", "Marco", 
                                 "Abril", "Maio", "Junho", 
                                 "Julho", "Agosto", "Setembro", 
-                                "Outubro", "Novembro", "Dezembro"};  
+                                "Outubro", "Novembro", "Dezembro"};
+  
 int main() {
     // Armazenar dados
     char productNames[NUMPROD][SIZENAME];
@@ -84,7 +85,7 @@ int main() {
     int insertSold;
     int i, j, k;
     
-    setlocale(LC_ALL, "");
+    setlocale(LC_CTYPE, "");
     srand(time(NULL));
     
     printf("Deseja inserir manualmente o número de unidades vendidas por mês ou gerá-los aleatoriamente?\n");
@@ -107,7 +108,7 @@ int main() {
         
         flushIn();
         printf("Insira o nome do produto %d: ", i + 1);
-        fgets(&name, SIZENAME, stdin);
+        fgets(name, SIZENAME, stdin);
         for (k = 0; k < SIZENAME; k ++) {
             if (name[k] == '\n') {
                 name[k] = '\0';
@@ -118,6 +119,9 @@ int main() {
 
         printf("Insira o preço do produto %d: ", i + 1);
         scanf("%f", &price[i]);
+        printf("Preço: %.2f\n", price[i]);
+        __fpurge(stdin);
+        getchar();
         for (j = 0; j < NUMBRANCH; j ++) {
             for (k = 0; k < NUMMONTH; k ++) {
                 if (insertSold == 1) {
@@ -187,7 +191,7 @@ void searchByName(char productNames[NUMPROD][SIZENAME],
             clearscreen();
             found = 0;
             printf("Informe o nome de um produto [0 para encerrar]: ");
-            fgets(&searchName, SIZENAME, stdin);
+            fgets(searchName, SIZENAME, stdin);
             for ( k = 0; k < SIZENAME; k ++){
                 if (searchName[k] == '\n'){
                     searchName[k] = '\0';
