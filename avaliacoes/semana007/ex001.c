@@ -72,16 +72,18 @@ char month[NUMMONTH][11] = {"Janeiro", "Fevereiro", "Marco",
                                 "Julho", "Agosto", "Setembro", 
                                 "Outubro", "Novembro", "Dezembro"};  
 int main() {
+    // Armazenar dados
     char productNames[NUMPROD][SIZENAME];
-    int i, j, k;
     int id[NUMPROD];
-    char name[SIZENAME];
-    char searchName[SIZENAME];
     float price[NUMPROD];
     int unitSold[NUMPROD][NUMBRANCH][NUMMONTH];
+    
+    // Variaveis auxiliares
+    char name[SIZENAME];
     int option;
     int insertSold;
-
+    int i, j, k;
+    
     setlocale(LC_ALL, "");
     srand(time(NULL));
     

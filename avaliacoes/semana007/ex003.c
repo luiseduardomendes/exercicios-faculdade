@@ -11,6 +11,7 @@ void display_table(int matriz[M][N], int interface [M][N]);
 void clearscreen();
 int main_menu();
 void flush_in();
+int difficult_menu();
 int gScore;
 
 
@@ -41,7 +42,7 @@ int main(){
             players ++;
             gScore = 0;
             endOfGame = 0;
-            num_mines = (float) M * N * mines_percentage;
+            num_mines = M * N * mines_percentage;
 
             for(i = 0; i < M; i ++){
                 for(j = 0; j < N; j ++) {
