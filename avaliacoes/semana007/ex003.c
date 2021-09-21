@@ -1,9 +1,34 @@
+/* Você deve elaborar um jogo parecido com o jogo clássico “campo minado”. O seu campo
+tem dimensões N X M (definir como constantes). O programa deve inicialmente pedir para
+o usuário informar um valor m que define quantas minas ele deve distribuir no campo. [O 
+programa foi adaptado para facilitar a seleção do número de bombas pelo usuário: o usuário
+escolhe entre as dificuldades fácil, médio, difícil e mestre do campo minado, que possuem
+10%, 20%, 30% e 50% do mapa composto por minas, respectivamente] A seguir, o programa 
+deve distribuir aleatoriamente pelo campo essas m minas. Você pode assumir que seu campo 
+é uma matriz de inteiros de N X M (inicialmente inicializada com zero) e definir como -1 
+o valor das células que vão receber minas. A seguir, o programa deve calcular para cada 
+célula da matriz que representa o campo, quantas minas existem na vizinhança e atribuir 
+esse número como valor da célula. Em uma outra matriz de N X M (visitados), que inicial-
+mente é inicializada em 0, você deve representar quais células o usuário já visitou. 
+Quando o usuário visita uma célula, esta célula recebe 1. A seguir, o programa deve 
+continuamente pedir para o usuário qual célula ele deseja visitar (linha e coluna da 
+matriz). Caso o usuário indique uma célula com mina, o jogo termina e o usuário perde. 
+Caso o usuário visite uma posição sem mina, deve-se mostrar para o usuário a quantidade 
+de minas na vizinhança daquela célula. Se o usuário visitar todas as posições sem mina, 
+o jogo termina e ele ganha. Quando o jogo termina (com o jogador ganhando ou perdendo),
+exibir todas as posições que possuem minas. O programa deve informar quando o
+usuário informar uma célula já visitada também. Alternativamente, você pode exibir uma
+representação do estado atual do campo, cada vez que pedir para o usuário informar a
+célula a ser visitada. Por exemplo, uma representação poderia exibir o caractere "#" para
+células ainda não visitadas e, no caso de uma célula já visitada, exibir o dígito que
+representa quantas minas existem na vizinhança. */
+
 #include <stdio.h>
 #include <locale.h>
 #include <time.h>
 #include <stdlib.h>
-#define N 10
-#define M 10
+#define N 4
+#define M 4
 #define MINE -1
 
 int open_zeros (int mat[M][N], int inter[M][N], int x, int y);
@@ -19,8 +44,9 @@ int main(){
     setlocale(LC_CTYPE, "");
     int matriz[M][N] = {0};
     int interface[M][N] = {0};
+    int openmap[M][N];
     int numx, numy, endOfGame = 0;
-    int i, j;
+    int i, j, aux;
     float mines_percentage = 0.1, num_mines;
     int size_table = 8;
     int main_opt;
@@ -29,6 +55,12 @@ int main(){
     int highscores[32];
 
     srand(time(NULL));   
+
+    for (i = 0; i < M; i ++) {
+        for (j = 0; j < N; j ++) {
+            openmap[i][j] = 1;
+        }
+    }
     do {
 
         clearscreen();
@@ -57,7 +89,7 @@ int main(){
                 }
             }
 
-            for (i = 0; i < (int)num_mines; i ++){
+            for (i = 0; i < (int)(num_mines); i ++){
                 numx = ((float)rand()/RAND_MAX)*(N - 1);
                 numy = ((float)rand()/RAND_MAX)*(M - 1);
                 if(matriz[numy][numx] != MINE) {
@@ -97,14 +129,17 @@ int main(){
             do {
                 display_table(matriz, interface);
                 scanf("%d %d", &numx, &numy);
+                if (matriz[numy][numx] == 0 && interface[numy][numx] == 0) {
+                    gScore += open_zeros(matriz, interface, numx, numy);
+                }
                 interface[numy][numx] = 1;
-                if (matriz[numy][numx] != -1) {
+                if (matriz[numy][numx] != -1 && interface[numy][numx]) {
                     
                     gScore ++;
                 }
                 else {
                     endOfGame = 1;
-                    display_table(matriz, interface);
+                    display_table(matriz, openmap);
                     printf("Voce perdeu!\n");
                     printf("Sua pontuação foi: %d\n", gScore);
                     highscores[players] = gScore;
@@ -116,12 +151,17 @@ int main(){
 
                 
                 
-                if (matriz[numy][numx] == 0) {
-                    gScore += open_zeros(matriz, interface, numx, numy);
+                
+                aux = 0;
+                for (i = 0; i < M; i ++) {
+                    for (j = 0; j < N; j ++) {
+                        if (interface[i][j] != 0)
+                            aux ++;
+                    }
                 }
-                if (gScore == (M) * (N) - (int)num_mines){
+                if (aux >= (int)M * N - num_mines) {
                     endOfGame = 1;
-                    display_table(matriz, interface);
+                    display_table(matriz, openmap);
                     printf("Voce venceu!\n");
                     printf("Sua pontuação foi: %d\n", gScore);
 
