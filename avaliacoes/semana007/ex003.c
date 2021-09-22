@@ -77,18 +77,21 @@ int main(){
             
             num_mines = M * N * mines_percentage;
 
+            //inicializa com 0 a matriz interface
             for(i = 0; i < M; i ++){
                 for(j = 0; j < N; j ++) {
                     interface[i][j] = 0;
                 }
             }
 
+            //inicializa com 0 a matriz que contem as minas e números
             for(i = 0; i < M; i ++){
                 for(j = 0; j < N; j ++) {
                     matriz[i][j] = 0;
                 }
             }
 
+            //insere aleatoriamente o número de bombas estipulado
             for (i = 0; i < (int)(num_mines); i ++){
                 numx = ((float)rand()/RAND_MAX)*(N - 1);
                 numy = ((float)rand()/RAND_MAX)*(M - 1);
@@ -100,28 +103,32 @@ int main(){
                 }
             }
             
-
+            //realiza a contagem de bombas ao redor de cada célula
             for (i = 0; i < M; i ++) {
                 for (j = 0; j < N; j ++) {
                     if (matriz[i][j] != MINE){
-                        if(matriz [i - 1][j] == MINE)
+                        if ((i - 1) > 0){
+                            if(matriz [i - 1][j] == MINE)
+                                matriz[i][j] ++;
+                            if(matriz [i - 1][j - 1] == MINE && (j - 1) >= 0)
+                                matriz[i][j] ++;
+                            if(matriz [i - 1][j + 1] == MINE && (j + 1) < N)
+                                matriz[i][j] ++;
+                        }
+
+                        if(matriz [i][j - 1] == MINE && (j - 1) >= 0)
                             matriz[i][j] ++;
-                        if(matriz [i - 1][j - 1] == MINE)
-                            matriz[i][j] ++;
-                        if(matriz [i - 1][j + 1] == MINE)
+                        if(matriz [i][j + 1] == MINE && (j + 1) < N)
                             matriz[i][j] ++;
 
-                        if(matriz [i][j - 1] == MINE)
-                            matriz[i][j] ++;
-                        if(matriz [i][j + 1] == MINE)
-                            matriz[i][j] ++;
-
-                        if(matriz [i + 1][j] == MINE)
-                            matriz[i][j] ++;
-                        if(matriz [i + 1][j - 1] == MINE)
-                            matriz[i][j] ++;
-                        if(matriz [i + 1][j + 1] == MINE)
-                            matriz[i][j] ++;
+                        if(i + 1 < N){
+                            if(matriz [i + 1][j] == MINE)
+                                matriz[i][j] ++;
+                            if(matriz [i + 1][j - 1] == MINE && (j - 1) >= 0)
+                                matriz[i][j] ++;
+                            if(matriz [i + 1][j + 1] == MINE && (j + 1) < N)
+                                matriz[i][j] ++;
+                        }
                     }
                 }
             }
@@ -129,55 +136,49 @@ int main(){
             do {
                 display_table(matriz, interface);
                 scanf("%d %d", &numx, &numy);
+                //chama uma função recursiva que abre todos os espaços que contém 0
                 if (matriz[numy][numx] == 0 && interface[numy][numx] == 0) {
                     gScore += open_zeros(matriz, interface, numx, numy);
                 }
-                interface[numy][numx] = 1;
-                if (matriz[numy][numx] != -1 && interface[numy][numx]) {
-                    
-                    gScore ++;
-                }
-                else {
-                    endOfGame = 1;
-                    display_table(matriz, openmap);
-                    printf("Voce perdeu!\n");
-                    printf("Sua pontuação foi: %d\n", gScore);
-                    highscores[players] = gScore;
-                    
-                    flush_in();
-                    printf("Enter para continuar\n");
-                    getchar();
-                }
 
                 
-                
-                
-                aux = 0;
-                for (i = 0; i < M; i ++) {
-                    for (j = 0; j < N; j ++) {
-                        if (interface[i][j] != 0)
-                            aux ++;
+                if (interface[numy][numx] == 0) {
+                    if (matriz[numy][numx] != MINE) {
+                        
+                        gScore ++;
+                        interface[numy][numx] = 1;
+
+                        if (gScore >= (int)M * N - num_mines) {
+                            endOfGame = 1;
+                            display_table(matriz, openmap);
+                            printf("Voce venceu!\n");
+                            printf("Sua pontuação foi: %d\n", gScore);
+
+                            flush_in();
+                            printf("Enter para continuar\n");
+                            getchar();
+                        }
                     }
-                }
-                if (aux >= (int)M * N - num_mines) {
-                    endOfGame = 1;
-                    display_table(matriz, openmap);
-                    printf("Voce venceu!\n");
-                    printf("Sua pontuação foi: %d\n", gScore);
+                    else{ 
+                        endOfGame = 1;
+                        display_table(matriz, openmap);
+                        printf("Voce perdeu!\n");
+                        printf("Sua pontuação foi: %d\n", gScore);
+                        highscores[players] = gScore;
 
-                    flush_in();
-                    printf("Enter para continuar\n");
-                    getchar();
-
+                        flush_in();
+                        printf("Enter para continuar\n");
+                        getchar();
+                    }                    
                 }
             } while (!(endOfGame));
             break;
         
 
         case 2 : mines_percentage = difficult_menu();
-        break;
+            break;
 
-        case 0 : printf("Aplicativo encerrado!\n");
+            case 0 : printf("Aplicativo encerrado!\n");
         break;
         }
     } while (main_opt != 0);
@@ -223,7 +224,8 @@ int open_zeros (int mat[M][N], int inter[M][N], int x, int y) {
 void display_table(int matriz[M][N], int interface [M][N]) {
     int i, j;
     clearscreen();
-    printf("Pontuação: %d\n\n", gScore);
+    printf("Pontuação: %d\n", gScore);
+    printf("Células restantes: %d\n\n", M*N - gScore);
 
     for (i = 0; i < M; i ++) {
         for (j = 0; j < N; j ++) {
@@ -317,7 +319,7 @@ void flush_in(){
     #ifdef WIN32
         fflush(stdin);
     #elsif _POSIX_C_SOURCE >= 199309L
-        __fpurge(stdin)ç
+        __fpurge(stdin);
     #endif
 
 }
