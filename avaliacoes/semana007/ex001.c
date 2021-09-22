@@ -353,6 +353,7 @@ void profitByBranchAndId (char productNames[NUMPROD][SIZENAME],
 void mostLucrativeProd(char productNames[NUMPROD][SIZENAME], 
                 int id[NUMPROD], float price[NUMPROD], 
                 int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]){
+    clearscreen();
     int i, j, k;
     float profit;
     float prodProfit[NUMPROD] = {0}; //lucro de cada produto
@@ -389,6 +390,7 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
 void averageUnitsByBranch(char productNames[NUMPROD][SIZENAME], 
                 int id[NUMPROD], float price[NUMPROD], 
                 int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]) {
+    clearscreen();
     int i, j, k;
     int units;
     float average;
