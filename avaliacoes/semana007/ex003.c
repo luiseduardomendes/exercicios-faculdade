@@ -136,6 +136,7 @@ int main(){
             do {
                 display_table(matriz, interface);
                 scanf("%d %d", &numx, &numy);
+
                 //chama uma função recursiva que abre todos os espaços que contém 0
                 if (matriz[numy][numx] == 0 && interface[numy][numx] == 0) {
                     gScore += open_zeros(matriz, interface, numx, numy);
@@ -318,7 +319,7 @@ int dimensions(){
 void flush_in(){
     #ifdef WIN32
         fflush(stdin);
-    #elsif _POSIX_C_SOURCE >= 199309L
+    #elif _POSIX_C_SOURCE >= 199309L
         __fpurge(stdin);
     #endif
 
