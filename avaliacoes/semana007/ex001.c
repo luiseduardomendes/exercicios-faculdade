@@ -38,9 +38,9 @@ alterado.
 #include <stdlib.h>
 #include <locale.h>
 #define SIZENAME 51
-#define NUMPROD 2
-#define NUMBRANCH 2
-#define NUMMONTH 12
+#define NUMPROD 3
+#define NUMBRANCH 3
+#define NUMMONTH 1
 
 void flushIn();
 
@@ -62,12 +62,15 @@ void profitByBranchAndId (char productNames[NUMPROD][SIZENAME],
                 int id[NUMPROD], float price[NUMPROD], 
                 int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]);
 
-
 void mostLucrativeProd(char productNames[NUMPROD][SIZENAME], 
                 int id[NUMPROD], float price[NUMPROD], 
                 int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]);
 
-char month[NUMMONTH][11] = {"Janeiro", "Fevereiro", "Marco", 
+void averageUnitsByBranch(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD], 
+                int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]);
+
+char month[12][11] = {"Janeiro", "Fevereiro", "Marco", 
                                 "Abril", "Maio", "Junho", 
                                 "Julho", "Agosto", "Setembro", 
                                 "Outubro", "Novembro", "Dezembro"};
@@ -153,6 +156,9 @@ int main() {
         case 5:
             mostLucrativeProd(productNames, id, price, unitSold);
             break;
+        case 6: 
+            averageUnitsByBranch(productNames, id, price, unitSold);
+            break;
         }
     } while (option != 0);
 
@@ -168,10 +174,11 @@ int mainMenu() {
         "[3] Ver lucro por filial no ano\n"
         "[4] Lucro por filial de um produto\n"
         "[5] Produto mais lucrativo\n"
+        "[6] Media de unidades por produto por filial\n"
         "[0] Encerrar Programa \n"
         "Sua opção: ");
         scanf("%d", &option);
-    } while (option > 5 || option < 0);
+    } while (option > 6 || option < 0);
     return option;
 }
 
@@ -281,6 +288,7 @@ void profitByBranch(char productNames[NUMPROD][SIZENAME],
 
     for (i = 0; i < NUMBRANCH; i ++) {
         profit = 0;
+        printf("Filial %d \n", i+1);
         for (j = 0; j < NUMMONTH; j ++ ) {
             profitMonth = 0;
             for (k = 0; k < NUMPROD; k ++) {
@@ -289,7 +297,7 @@ void profitByBranch(char productNames[NUMPROD][SIZENAME],
             printf("%14s%14.2f\n", month[j], profitMonth);
             profit += profitMonth;
         }
-        printf("Filial %d \nLucro total: R$%.2f\n\n", i+1, profit);
+        printf("Lucro total: R$%.2f\n\n", profit);
     }
     flushIn();
     printf("Enter para continuar...\n");
@@ -373,6 +381,30 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
             printf("%51s%8d%8d%14.2f\n", productNames[i], id[i], units[i], prodProfit[i]);
         }
     }
+    flushIn();
+    printf("Enter para continuar...\n");
+    fgetc(stdin);
+}
+
+void averageUnitsByBranch(char productNames[NUMPROD][SIZENAME], 
+                int id[NUMPROD], float price[NUMPROD], 
+                int unitSold[NUMPROD][NUMBRANCH][NUMMONTH]) {
+    int i, j, k;
+    int units;
+    float average;
+
+    for (i = 0; i < NUMPROD; i ++) {
+        units = 0; 
+        for (j = 0; j < NUMBRANCH; j ++) {
+            for (k = 0; k < NUMMONTH; k ++) {
+                units += unitSold[i][j][k];
+            }
+        }
+        average = (float)units / NUMBRANCH;
+        printf("Nome do produto                                     Código  Unidades  Média\n");
+        printf("%51s%8d%8d%14.2f\n\n", productNames[i], id[i], units, average);
+    }
+
     flushIn();
     printf("Enter para continuar...\n");
     fgetc(stdin);
