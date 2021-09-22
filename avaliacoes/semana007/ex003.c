@@ -236,11 +236,11 @@ void display_table(int matriz[M][N], int interface [M][N]) {
     }
 }
 void clearscreen(){
-    #ifdef WIN32
+    #ifdef _WIN32
         system("cls");
     #elif _POSIX_C_SOURCE >= 199309L
         system("clear");
-    #else
+    #elif 
         system("cls");
     #endif
 }
@@ -314,9 +314,10 @@ int dimensions(){
     return (size_table); 
 }
 void flush_in(){
-    int ch;
-    do {
-        ch = fgetc(stdin);
-    } while (ch != EOF && ch != '\n');
+    #ifdef WIN32
+        fflush(stdin);
+    #elsif _POSIX_C_SOURCE >= 199309L
+        __fpurge(stdin)ç
+    #endif
 
 }

@@ -119,9 +119,6 @@ int main() {
 
         printf("Insira o preço do produto %d: ", i + 1);
         scanf("%f", &price[i]);
-        printf("Preço: %.2f\n", price[i]);
-        __fpurge(stdin);
-        getchar();
         for (j = 0; j < NUMBRANCH; j ++) {
             for (k = 0; k < NUMMONTH; k ++) {
                 if (insertSold == 1) {
@@ -382,7 +379,7 @@ void mostLucrativeProd(char productNames[NUMPROD][SIZENAME],
 }
 
 void flushIn() {
-    #ifdef WIN32
+    #ifdef _WIN32
         fflush(stdin);
     #elif _POSIX_C_SOURCE >= 199309L
         __fpurge(stdin);
@@ -390,7 +387,7 @@ void flushIn() {
 }
 
 void clearscreen() {
-    #ifdef WIN32
+    #ifdef _WIN32
         system("cls");
     #elif _POSIX_C_SOURCE >= 199309L
         system("clear");
