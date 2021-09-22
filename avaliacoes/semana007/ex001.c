@@ -125,7 +125,7 @@ int main() {
         for (j = 0; j < NUMBRANCH; j ++) {
             for (k = 0; k < NUMMONTH; k ++) {
                 if (insertSold == 1) {
-                    printf("Insira a quatidade vendida do produto %d na filial %d no mês de %s: ", 
+                    printf("Insira a quantidade vendida do produto %d na filial %d no mês de %s: ", 
                             i + 1, j + 1, month[k]);
                     scanf("%d", &unitSold[i][j][k]);
                 }
