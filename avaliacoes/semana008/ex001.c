@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <math.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 typedef struct cartesian
 {
@@ -10,8 +13,23 @@ double pow2 (double x, double y);
 void showCircle(cartesian centro, double raio);
 
 int main() {
+    al_init();
+    al_init_font_addon();
+    al_init_ttf_addon();
     double raio;
     cartesian centro;
+
+    ALLEGRO_DISPLAY * display = al_create_display(640, 480);
+    ALLEGRO_FONT * font = al_load_ttf_font("YARDSALE.ttf", 64, 0);
+
+    while (true) {
+        al_clear_to_color(al_map_rgb(255, 255, 255));
+        al_draw_text(font, al_map_rgb(0,0,0),0,0,0, "Hello World");
+        al_flip_display();
+    }
+
+    al_destroy_display(display);
+    al_destroy_font(font);
 
     printf("Insira o raio de um círculo: ");
     scanf("%lf", &raio);
@@ -35,10 +53,11 @@ void showCircle(cartesian centro, double raio) {
             if (fabs( round(pow((j - centro.x), 2)) + round(pow((i - centro.y), 2)) - round(pow(raio, 2)) ) <= 0.9*raio) {
                 printf("# ");
             }
-            else if (i == 0 || j == 0){
+            else if (i == 0 || j == 0) {
                 printf("* ");
             }
-            else printf("  ");
+            else
+                printf("  ");
         }
         printf("\n");
     }
