@@ -66,7 +66,7 @@ void showReta(float m1, float n1, float m2, float n2) {
 
     for (i = tamanho2.y; i >= tamanho1.y; i --) {
         for (j = tamanho1.x; j < tamanho2.x; j ++) {
-            if (i == inty && j == intx){
+            if (i == round(inty) && j == round(intx)){
                 printf("o ");
             }
             else if (fabs(round((m1 * j) + n1) == i)) {
