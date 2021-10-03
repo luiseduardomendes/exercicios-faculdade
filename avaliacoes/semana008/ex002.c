@@ -69,10 +69,10 @@ void ShowRetangulo(float xe, float ye, float xd, float yd, points center) {
             if (round(center.x) == j && round(center.y) == i){
                 printf("o ");
             }
-            else if ((round(xe) == i || round(xd) == i) && j <= yd && j >= ye) {
+            else if ((round(xe) == j || round(xd) == j) && i <= yd && i >= ye) {
                 printf("# ");
             }
-            else if ((round(ye) == j || round(yd) == j) && i <= xd && i >= xe) {
+            else if ((round(ye) == i || round(yd) == i) && j <= xd && j >= xe) {
                 printf("# ");
             }
             else if (i == 0 || j == 0) {
