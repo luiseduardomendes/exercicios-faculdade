@@ -12,7 +12,7 @@ typedef struct points{
 int main() {
     points p1, p2;
     float coefAng, coefLin;
-    
+
     printf("Insira as coordenadas do primeiro ponto: ");
     scanf("%f %f", &p1.x, &p1.y);
     printf("Insira as coordenadas do segundo ponto: ");
@@ -28,12 +28,15 @@ int main() {
 }
 
 void coeficientes(float x1, float x2, float y1, float y2, float *coefAng, float *coefLin) {
-    *coefAng = (y2 - y1) / (x2 - x1);  
+    *coefAng = (y2 - y1) / (x2 - x1);
     *coefLin = y2 - x2 * (*coefAng);
 }
 void showReta(float m, float n) {
     int i, j;
     points tamanho2, tamanho1;
+    printf("m: %.2f\n", m);
+    printf("n: %.2f\n", n);
+
     tamanho1.x = -15;
     tamanho1.y = n - 15;
     tamanho2.x = 15;
@@ -42,7 +45,7 @@ void showReta(float m, float n) {
 
     for (i = tamanho2.y; i >= tamanho1.y; i --) {
         for (j = tamanho1.x; j < tamanho2.x; j ++) {
-            if (round(m*i + n) == j) {
+            if (fabs(round((m * j) + n) == i)) {
                 printf("# ");
             }
             else if (i == 0 || j == 0) {
