@@ -24,11 +24,6 @@ int main() {
 
     flag = interception(x11,y11,x12,y12,x21,y21,x22,y22);
 
-    coeficientes(x11, x12, y11, y12, &m1, &n1);
-    coeficientes(x21, x22, y21, y22, &m2, &n2);
-    if (flag)
-        showReta(m1, n1, m2, n2);
-
     return 0;
 }
 
@@ -47,6 +42,7 @@ int interception(float x11, float y11, float x12, float y12, float x21, float y2
     }
     else {
         flag = 1;
+        showReta(coefAng1, coefLin1, coefAng2, coefLin2);
     }
     return flag;
 }
@@ -59,6 +55,7 @@ void showReta(float m1, float n1, float m2, float n2) {
     intx = (n2 - n1) / (m1 - m2);
     inty = m1 * intx + n1;
 
+
     printf("intx: %.2f\n", intx);
     printf("inty: %.2f\n", inty);
 
@@ -69,7 +66,10 @@ void showReta(float m1, float n1, float m2, float n2) {
 
     for (i = tamanho2.y; i >= tamanho1.y; i --) {
         for (j = tamanho1.x; j < tamanho2.x; j ++) {
-            if (fabs(round((m1 * j) + n1) == i)) {
+            if (i == inty && j == intx){
+                printf("o ");
+            }
+            else if (fabs(round((m1 * j) + n1) == i)) {
                 printf("# ");
             }
             else if (fabs(round((m2 * j) + n2) == i)){
