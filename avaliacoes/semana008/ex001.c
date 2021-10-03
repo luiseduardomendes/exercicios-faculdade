@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
+#include <stdbool.h>
 
 typedef struct cartesian
 {
@@ -10,37 +8,20 @@ typedef struct cartesian
 }cartesian;
 
 double distance(double x1, double x2, double y1, double y2);
-void showCirclewPoints(cartesian centro, double raio, cartesian ponto);
 int pointInCircle(cartesian ponto, cartesian centro, double raio);
-void showCircle(cartesian centro, double raio);
+void showCircle(cartesian centro, double raio, cartesian ponto, bool pnts);
 
 int main() {
     double raio;
     int flag, pontosInseridos = 3, i;
     cartesian centro, ponto[100];
 
-    /*al_init();
-    al_init_font_addon();
-    al_init_ttf_addon();
-
-    ALLEGRO_DISPLAY * display = al_create_display(640, 480);
-    ALLEGRO_FONT * font = al_load_ttf_font("YARDSALE.ttf", 64, 0);
-
-    while (true) {
-        al_clear_to_color(al_map_rgb(255, 255, 255));
-        al_draw_text(font, al_map_rgb(0,0,0),0,0,0, "Hello World");
-        al_flip_display();
-    }
-
-    al_destroy_display(display);
-    al_destroy_font(font);*/
-
     printf("Insira o raio de um círculo: ");
     scanf("%lf", &raio);
     printf("Insira as coordenadas do centro do circulo: ");
     scanf("%lf %lf", &centro.x, &centro.y);
 
-    showCircle(centro, raio);
+    showCircle(centro, raio, ponto[0], false);
     __fpurge(stdin);
     getchar();
     for (i = 0; i < pontosInseridos; i ++) {
@@ -51,7 +32,7 @@ int main() {
 
         flag = pointInCircle(ponto[i], centro, raio);
 
-        showCirclewPoints(centro, raio, ponto[i]);
+        showCircle(centro, raio, ponto[i], true);
         switch (flag) {
             case 1: printf("O ponto está inserido na circunferencia!\n");
             break;
@@ -60,7 +41,7 @@ int main() {
             case -1: printf("O ponto está fora da circunferencia!\n");
             break;
         }
-
+        printf("Enter para continuar!\n");
         __fpurge(stdin);
         getchar();
     }
@@ -68,34 +49,7 @@ int main() {
     return 0;
 }
 
-void showCircle(cartesian centro, double raio) {
-    int i, j, escalaX = 1, escalaY = 1;
-    cartesian tamanho2, tamanho1;
-    double dist;
-    tamanho1.x = centro.x - (4*raio/3);
-    tamanho1.y = centro.y - (4*raio/3);
-    tamanho2.x = centro.x + (4*raio/3);
-    tamanho2.y = centro.y + (4*raio/3);
-
-
-    for (i = tamanho2.y; i >= tamanho1.y; i -= escalaY) {
-        for (j = tamanho1.x; j < tamanho2.x; j += escalaX) {
-            dist = distance(j, centro.x, i, centro.y);
-
-            if (fabs(dist - raio) <= 0.5) {
-                printf("# ");
-            }
-            else if (i == 0 || j == 0) {
-                printf("* ");
-            }
-            else
-                printf("  ");
-        }
-        printf("\n");
-    }
-}
-
-void showCirclewPoints(cartesian centro, double raio, cartesian ponto) {
+void showCircle(cartesian centro, double raio, cartesian ponto, bool pnts) {
     int i, j, escalaX = 1, escalaY = 1;
     double dist;
     cartesian tamanho2, tamanho1;
@@ -107,7 +61,7 @@ void showCirclewPoints(cartesian centro, double raio, cartesian ponto) {
     for (i = tamanho2.y; i >= tamanho1.y; i -= escalaY) {
         for (j = tamanho1.x; j < tamanho2.x; j += escalaX) {
             dist = distance(j, centro.x, i, centro.y);
-            if (round(ponto.x) == j && round(ponto.y) == i){
+            if (round(ponto.x) == j && round(ponto.y) == i && pnts == true){
                 printf("o ");
             }
             else if (fabs(dist - raio) <= 0.5) {
