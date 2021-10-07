@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
+#include <locale.h>
 
 void coeficientes(float x1, float x2, float y1, float y2, float *coefAng, float *coefLin);
-
 void showReta(float m, float n);
 
 typedef struct points{
@@ -10,6 +10,7 @@ typedef struct points{
 }points;
 
 int main() {
+    setlocale(LC_CTYPE, "");
     points p1, p2;
     float coefAng, coefLin;
 
@@ -42,10 +43,9 @@ void showReta(float m, float n) {
     tamanho2.x = 15;
     tamanho2.y = n + 15;
 
-
     for (i = tamanho2.y; i >= tamanho1.y; i --) {
         for (j = tamanho1.x; j < tamanho2.x; j ++) {
-            if (fabs(round((m * j) + n) == i)) {
+            if (round((m * j) + n) == i) {
                 printf("# ");
             }
             else if (i == 0 || j == 0) {
@@ -57,3 +57,4 @@ void showReta(float m, float n) {
         printf("\n");
     }
 }
+

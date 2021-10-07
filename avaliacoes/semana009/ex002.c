@@ -8,37 +8,35 @@ typedef struct points{
 }points;
 
 void ShowRetangulo(float xe, float ye, float xd, float yd, points center) ;
-
 int centroide(float xe, float ye, float xd, float yd, float *xc, float*yc);
+    //this function returns -1 if the user enter wrong cordinates for the vertices
 
 int main() {
-    points retangulo[2];
+    setlocale(LC_CTYPE, "");
+    points rectangle[2];
     points center;
     int errorFlag;
-    
-    printf("Digite o ponto inferior direito de um retângulo: ");
-    scanf("%f %f", &retangulo[infEsq].x, &retangulo[infEsq].y);
-    printf("Digite o ponto superior esquerdo do retângulo: ");
-    scanf("%f %f", &retangulo[supDir].x, &retangulo[supDir].y);
 
-    printf("Ponto inferior direito: %.2f, %.2f\n", retangulo[infEsq].x, retangulo[infEsq].y);
-    printf("Ponto superior esquerdo: %.2f, %.2f\n", retangulo[supDir].x, retangulo[supDir].y);
+    do {
+        printf("Digite o ponto inferior direito de um retângulo: ");
+        scanf("%f %f", &rectangle[infEsq].x, &rectangle[infEsq].y);
+        printf("Digite o ponto superior esquerdo do retângulo: ");
+        scanf("%f %f", &rectangle[supDir].x, &rectangle[supDir].y);
 
-    errorFlag = centroide(retangulo[infEsq].x, retangulo[infEsq].y, retangulo[supDir].x, 
-                retangulo[supDir].y, &center.x, &center.y);
-    
-    printf("Centroide: %.2f, %.2f\n", center.x, center.y);
+        errorFlag = centroide(rectangle[infEsq].x, rectangle[infEsq].y, rectangle[supDir].x, 
+                    rectangle[supDir].y, &center.x, &center.y);
 
-    if (errorFlag == 0){
-        printf("As coordenadas do ponto centroide do retângulo são: %.2f, %.2f\n", 
-                center.x, center.y);
+        if (!(errorFlag)) {
+            printf("As coordenadas do ponto centroide do retângulo são: %.2f, %.2f\n", 
+                    center.x, center.y);
 
-        ShowRetangulo(retangulo[infEsq].x, retangulo[infEsq].y, retangulo[supDir].x, 
-                retangulo[supDir].y, center);
-    }
-    else{
-        printf("As coordenadas inseridas para o retângulo estão inválidas!\n");
-    }
+            ShowRetangulo(rectangle[infEsq].x, rectangle[infEsq].y, rectangle[supDir].x, 
+                    rectangle[supDir].y, center);
+        }
+        else{
+            printf("As coordenadas inseridas para o retângulo estão inválidas! Insira novamente\n");
+        }
+    } while (errorFlag);
     return 0;
 }
 
@@ -84,3 +82,4 @@ void ShowRetangulo(float xe, float ye, float xd, float yd, points center) {
         printf("\n");
     }
 }
+
