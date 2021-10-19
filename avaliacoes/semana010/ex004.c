@@ -6,16 +6,19 @@
 
 int main() {
     float v1[SIZEV1] = {2, 8, 15, 9, 1, 10, 7, 16, 1, 19}, v2[SIZEV1/2] ={0};
-    int i, j, sizev2 = 3;
-    histograma(v1,v2,SIZEV1,sizev2);
+    int i, j, sizev2;
+
+    printf("Insira o numero de colunas do histograma: ");
+    scanf("%d", &sizev2);
+
+    printf("Insira os valores do vetor 1:\n");
     for (i = 0; i < SIZEV1; i ++) {
-        printf("%.2f\t", v1[i]);
+        scanf("%f", &v1[i]);
     }
-    printf("\n");
-    for (i = 0; i < sizev2; i ++) {
-        printf("%.2f\t", v2[i]);
-    }
-    printf("\n");
+
+    histograma(v1,v2,SIZEV1,sizev2);
+
+    printf("Histograma: \n");
     for (i = 0; i < sizev2; i ++){
         printf("Faixa %d: |", i+1);
         for (j = 0; j < v2[i]; j ++){
@@ -34,15 +37,12 @@ void histograma (float v1[], float v2[], int n1, int n2) {
     for (i = 0; i < n1; i ++){
         v1_ordenado[i] = v1[i];
     }
-    
+
     ordenaVetor(v1_ordenado, n1);
-    for (i = 0; i < n1; i ++) {
-        printf("%.2f\t", v1_ordenado[i]);
-    }
-    printf("\n");
+
     maior = v1_ordenado[n1-1];
     menor = v1_ordenado[0];
-    printf("Maior: %.2f\t\tMenor: %.2f\n", maior, menor);
+
     intervalo = (maior - menor) / n2;
     j = 0;
     for ( i = 0; i < n1; i ++) {
