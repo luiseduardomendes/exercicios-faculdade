@@ -25,6 +25,7 @@ int main() {
 
     printf("Sistema de gerenciamento de funcionários!\n");
     while (option != 0){
+        flushIn();
         option = mainMenu();
         flushIn();
         switch (option) {
@@ -48,6 +49,7 @@ int main() {
         case 3: 
             printf("Insira o nome do funcionário a ser removido: ");
             fgets(name, sizeof(SIZENAME), stdin);
+            removeEnter(name, SIZENAME);
             flag = removeEmployee(filename, name);
             break;
         case 4:
@@ -56,6 +58,10 @@ int main() {
             break;
         }
     }    
+    
+    printf("\nEncerrado\n");
+    return 0;
+
 }
 
 int mainMenu() {
@@ -148,26 +154,24 @@ int removeEmployee(char fileName[], char employeeName[]) {
         rewind(dataFile);
         
         fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
-        printf("%d\n", ftell(dataFile));
         while (!feof(dataFile)) {
             if (strcmp(employeeName, employee.name) == 0){
                 strcpy(employee.name, "");
                 employee.wage = 0;
                 fseek(dataFile, -1*sizeof(employee), SEEK_CUR);
-                printf("%d\n", ftell(dataFile));
                 fwrite(&employee, sizeof(employee), 1, dataFile);
-                printf("%d\n", ftell(dataFile));
             }
             fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
         }
-        rewind(dataFile);
+        
         if(!(auxDataFile = fopen("aux.dat", "ab"))){
             flag = 0;
         }
         else {
+            rewind(dataFile);
             while (!feof(dataFile)) {
                 fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
-                if (strcmp(employee.name, "") != 0){
+                if (employee.wage != 0){
                     fwrite(&employee, sizeof(employee), 1, auxDataFile);
                 }
             }
