@@ -10,18 +10,19 @@ typedef struct FUNCIONARIO
     } FUNCIONARIO;
 
 int mainMenu();
-int registerEmployee (char fileName[], FUNCIONARIO employee);
+int addEmployee (char fileName[], FUNCIONARIO employee);
+void registerEmployee (char fileName[]);
 void showEmployees(char fileName[]);
 void clearscreen();
 void flushIn();
 void removeEnter(char str[], int strSize);
 int removeEmployee(char fileName[], char employeeName[]);
+void removeEmployeeIO(char fileName[]); 
+int deleteAllData(char fileName[]);
 
 int main() {
-    char filename[] = {"funcionario.dat"}, name[SIZENAME];
-    int option = 1, flag;
-    FUNCIONARIO employee;
-
+    char filename[] = {"funcionario.dat"};
+    int option = 1;
 
     printf("Sistema de gerenciamento de funcionários!\n");
     while (option != 0){
@@ -30,31 +31,16 @@ int main() {
         flushIn();
         switch (option) {
         case 1:
-            do {
-                printf("Insira o salário do funcionário: R$");
-                scanf("%f", &employee.wage);
-                flushIn();
-                if (employee.wage < 0){
-                    printf("Valor inserido inválido, insira outro\n");
-                }
-            } while (employee.wage < 0);
-            printf("Insira o nome do funcionário: ");
-            fgets(employee.name, sizeof(employee.name), stdin);
-            removeEnter(employee.name, SIZENAME);
-            flag = registerEmployee(filename, employee);
+            registerEmployee(filename);
             break;
         case 2:
             showEmployees(filename);
             break;
         case 3: 
-            printf("Insira o nome do funcionário a ser removido: ");
-            fgets(name, sizeof(SIZENAME), stdin);
-            removeEnter(name, SIZENAME);
-            flag = removeEmployee(filename, name);
+            removeEmployeeIO(filename);
             break;
         case 4:
-            dataFile = fopen(filename, "wb");
-            fclose(dataFile);
+            deleteAllData(filename);
             break;
         }
     }    
@@ -85,17 +71,41 @@ int mainMenu() {
     } while (option < 0 || option > 4);
 }
 
-int registerEmployee (char fileName[], FUNCIONARIO employee) {
+void registerEmployee (char fileName[]){
+    FUNCIONARIO employee;
+    int addSucessful;
+    do {
+        printf("Insira o salário do funcionário: R$");
+        scanf("%f", &employee.wage);
+        flushIn();
+        if (employee.wage < 0){
+            printf("Valor inserido inválido, insira outro\n");
+        }
+    } while (employee.wage < 0);
+    printf("Insira o nome do funcionário: ");
+    fgets(employee.name, sizeof(employee.name), stdin);
+    removeEnter(employee.name, SIZENAME);
+    addSucessful = addEmployee(fileName, employee);
+    if (!addSucessful)
+        printf("Arquivo não encontrado");
+    else if (addSucessful == -1) 
+        printf("Erro na escrita");
+    printf("--------------------------------\n\n");
+    printf("[Enter para continuar]\n");
+    flushIn();
+    getchar(); 
+}
+
+int addEmployee (char fileName[], FUNCIONARIO employee) {
     int flag = 1;
 
-    if(!(dataFile = fopen(fileName, "ab"))){
+    if(!(dataFile = fopen(fileName, "ab")))
         flag = 0;
-    }
-    else{
-        if(fwrite(&employee, sizeof(FUNCIONARIO), 1, dataFile) != sizeof(FUNCIONARIO)){
-            flag = 0;   
-        }
-    }
+
+    else
+        if(!fwrite(&employee, sizeof(FUNCIONARIO), 1, dataFile))
+            flag = -1;
+
     fclose(dataFile);
     return flag;    
 }
@@ -109,7 +119,7 @@ void showEmployees(char fileName[]) {
         printf("----------Funcionários----------\n\n");
         fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
         while (!feof(dataFile)) {
-            printf("Nome:\t %s\n", employee.name);
+            printf("Nome:\t\t %s\n", employee.name);
             printf("Salário:\t R$%.2f\n\n", employee.wage);
             fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
         }
@@ -144,42 +154,73 @@ void removeEnter(char str[], int strSize){
             str[i] = '\0';    
 }
 
+void removeEmployeeIO(char fileName[]){
+    int foundEmployee;
+    char name[SIZENAME];
+
+    printf("Insira o nome do funcionário a ser removido: ");
+    fgets(name, SIZENAME, stdin);
+    removeEnter(name, SIZENAME);
+    foundEmployee = removeEmployee(fileName, name);
+    if (!foundEmployee)
+        printf("Arquivo não foi aberto!\n");
+    if(foundEmployee == -1)
+        printf("Funcionario não encontrado!\n");
+    printf("[Enter para continuar]\n");
+    flushIn();
+    getchar(); 
+}
+
 int removeEmployee(char fileName[], char employeeName[]) {
-    int flag = 1;
-    FUNCIONARIO employee;
-    if(!(dataFile = fopen(fileName, "rb+"))){
+    int flag = 1, found = 0;
+    FUNCIONARIO buffer;
+    if(!(dataFile = fopen(fileName, "rb")) || !(auxDataFile = fopen("aux.dat", "wb"))){
         flag = 0;
     }
     else{
         rewind(dataFile);
-        
-        fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
+        fread(&buffer, sizeof(buffer), 1, dataFile);
         while (!feof(dataFile)) {
-            if (strcmp(employeeName, employee.name) == 0){
-                strcpy(employee.name, "");
-                employee.wage = 0;
-                fseek(dataFile, -1*sizeof(employee), SEEK_CUR);
-                fwrite(&employee, sizeof(employee), 1, dataFile);
+            if (strcmp(employeeName, buffer.name) != 0){
+                fwrite(&buffer, sizeof(buffer), 1, auxDataFile);
             }
-            fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
-        }
-        
-        if(!(auxDataFile = fopen("aux.dat", "ab"))){
-            flag = 0;
-        }
-        else {
-            rewind(dataFile);
-            while (!feof(dataFile)) {
-                fread(&employee, sizeof(FUNCIONARIO), 1, dataFile);
-                if (employee.wage != 0){
-                    fwrite(&employee, sizeof(employee), 1, auxDataFile);
-                }
+            else{
+                found = 1;
             }
-            fclose(dataFile);
-            fclose(auxDataFile);
-            remove(fileName);
-            rename("aux.dat", fileName);
-        }   
+            fread(&buffer, sizeof(buffer), 1, dataFile);
+        }
+        fclose(dataFile);
+        fclose(auxDataFile);
+        remove(fileName);
+        rename("aux.dat", fileName);
     }
+    if(!found)
+        flag = -1;
+    return flag;
+}
+
+int deleteAllData(char fileName[]){
+    int flag;
+    int delete;
+    do {
+        printf("Deseja apagar todos os dados?\n"
+        "Esta operação não pode ser desfeita\n");
+        printf("[1] Apagar\n");
+        printf("[0] Cancelar\n");
+        printf("Sua opção: ");
+        scanf("%d", &delete);
+    } while (delete != 0 && delete != 1);
+    if (delete){
+        if(dataFile = fopen(fileName, "wb")){
+            fclose(dataFile);
+        }
+        else{
+            printf("O arquivo não foi encontrado!\n");
+        }
+    }
+    printf("--------------------------------\n\n");
+    printf("[Enter para continuar]\n");
+    flushIn();
+    getchar(); 
     return flag;
 }

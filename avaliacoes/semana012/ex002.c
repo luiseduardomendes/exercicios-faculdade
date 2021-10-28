@@ -15,30 +15,14 @@ void showEmployees(char fileName[], char updatedFileName[]);
 int main() {
     FILE *localDataFile1, *localDataFile2;
     FUNCIONARIO employee;
+    int sucessful;
     char fileName[] = {"funcionario.dat"};
     char newFileName[] = {"atualizados.dat"};
-    float percent;
-
-    printf("Informe o percentual do aumento salarial: ");
-    scanf("%f", &percent);
-
-    if ((localDataFile1 = fopen(fileName, "rb")) != NULL && (localDataFile2 = fopen(newFileName, "wb")) != NULL) {
-        rewind(localDataFile1);
-        rewind(localDataFile2);
-        
-        printf("%d\n", fread(&employee, sizeof(employee), 1, localDataFile1));
-        while(!(feof(localDataFile1))) {
-            updateWage(&employee, percent);
-            fwrite(&employee, sizeof(employee), 1, localDataFile2);
-            fread(&employee, sizeof(employee), 1, localDataFile1);
-        }
-        fclose(localDataFile1);
-        fclose(localDataFile2);
+    
+    sucessful = updateFile(fileName, newFileName);
+    if (sucessful){
         showEmployees(fileName, newFileName);
-    }
-    else{
-        printf("hello\n");
-    }
+    }    
 }
 
 void updateWage(FUNCIONARIO *employee, float percent) {
@@ -66,9 +50,12 @@ void showEmployees(char fileName[], char updatedFileName[]) {
         printf("[Enter para continuar]\n");
         flushIn();
         getchar();  
-    }    
-    fclose(dataFile);
-    fclose(auxDataFile);
+        fclose(dataFile);
+        fclose(auxDataFile);
+    }
+    else{
+        printf("Erro na abertura do arquivo!");
+    }
 }
 
 void clearscreen() {
@@ -85,4 +72,32 @@ void flushIn() {
     #elif _POSIX_C_SOURCE >= 199309L
         __fpurge(stdin);
     #endif
+}
+
+int updateFile(char fileName[], char newFileName[]) {
+    FUNCIONARIO *employee;
+    float percent;
+    int flag = 1;
+
+    printf("Informe o percentual do aumento salarial: ");
+    scanf("%f", &percent);
+    
+    if ((dataFile = fopen(fileName, "rb")) != NULL && (auxDataFile = fopen(newFileName, "wb")) != NULL) {
+        rewind(dataFile);
+        rewind(auxDataFile);
+        
+        fread(&employee, sizeof(employee), 1, dataFile);
+        while(!(feof(dataFile))) {
+            updateWage(&employee, percent);
+            fwrite(&employee, sizeof(employee), 1, auxDataFile);
+            fread(&employee, sizeof(employee), 1, dataFile);
+        }
+        fclose(dataFile);
+        fclose(auxDataFile);
+    }
+    else{
+        printf("Erro na abertura de arquivo\n");
+        flag = 0;
+    }
+    return flag;
 }
