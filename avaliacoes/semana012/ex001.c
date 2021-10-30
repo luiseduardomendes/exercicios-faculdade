@@ -82,9 +82,11 @@ void registerEmployee (char fileName[]){
             printf("Valor inserido inválido, insira outro\n");
         }
     } while (employee.wage < 0);
+    do{
     printf("Insira o nome do funcionário: ");
     fgets(employee.name, sizeof(employee.name), stdin);
     removeEnter(employee.name, SIZENAME);
+    } while (!strcmp(employee.name, ""));
     addSucessful = addEmployee(fileName, employee);
     if (!addSucessful)
         printf("Arquivo não encontrado");
