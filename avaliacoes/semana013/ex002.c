@@ -5,7 +5,7 @@
 #define SIZENAME 51
 #define NUMCARACT 4
 #define MAXCLASSES 25
-
+#define NUMANALYSED 150
 
 FILE *dataFile;
 int analysis(char fileName[], float numericData[][NUMCARACT], char className[][SIZENAME], int numAnalysed);
@@ -20,16 +20,15 @@ enum {sepalLenght, sepalWidht, petalLenght, petalWidht};
 int main() {
     const int numAnalysed = 150;
     int numWithoutRep = 0;
-    float numericData[150][4];
-    char className[150][SIZENAME];
-    char classNameWithoutRep[150][SIZENAME];
+    float numericData[numAnalysed][NUMCARACT];
+    char className[numAnalysed][SIZENAME];
+    char classNameWithoutRep[numAnalysed][SIZENAME];
     int i, j;
-
     float rplpw, rplsl, rplsw, rpwsl, rpwsw, rslsw;
-
-    float dataSepalLenght[150] = {0}, dataSepalWidth[150] = {0}, dataPetalLenght[150] = {0}, dataPetalWidth[150] = {0};
-    float mediaData[3][4] = {0};
-    float standardDeviat[3][4] = {0};
+    float dataSepalLenght[NUMANALYSED] = {0}, dataSepalWidth[NUMANALYSED] = {0};
+    float dataPetalLenght[NUMANALYSED] = {0}, dataPetalWidth[NUMANALYSED] = {0};
+    float mediaData[3][NUMCARACT] = {0};
+    float standardDeviat[3][NUMCARACT] = {0};
 
     analysis("iris.arff", numericData, className, numAnalysed);
 
