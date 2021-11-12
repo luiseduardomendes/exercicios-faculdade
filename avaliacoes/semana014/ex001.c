@@ -34,8 +34,10 @@ int somaDigitosRec(int num, int index, int size){
         return 0;
     }
     else {
+        // calcula o valor de cada algarismo
         aux = num / pow(10, size - index);
         digit = (num / (pow(10, size - index - 1))) - aux * 10;
+        
         return digit + somaDigitosRec(num, index+1, size);
     }
 }
