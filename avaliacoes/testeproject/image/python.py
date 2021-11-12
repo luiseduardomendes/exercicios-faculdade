@@ -16,7 +16,7 @@ coordenateWindowY = (heightScreen/2) - (height/2)
 mainMenu.geometry(f"%dx%d+%d+%d" % (widht, height, coordenateWindowX, coordenateWindowY))
 mainMenu.resizable(True, True)
 
-mainMenu.iconbitmap("E:/GitHub/exercicios-faculdade/avaliacoes/testeproject/image/icon.ico")
+mainMenu.iconbitmap("icon.ico")
 mainMenu['bg'] = "#49A"
 
 #mainMenu.minsize(widht = 640, height = 360)
