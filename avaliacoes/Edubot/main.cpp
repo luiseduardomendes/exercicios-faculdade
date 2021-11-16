@@ -2,46 +2,102 @@
 #include <cstdlib>
 #include "libs/EdubotLib.hpp"
 
+using namespace std;
+enum {RIGHT = 6, MID = 3, LEFT = 0};
+
+void rotateRight(int* wallDirect, EdubotLib **edubotLib);
+void rotateLeft(int* wallDirect, EdubotLib **edubotLib);
+void endOfWall(int direct, EdubotLib **edubotLib);
+
 int main(){
 
 	EdubotLib *edubotLib = new EdubotLib();
 	
 	int flag = 1;
-	int i;
+	int i, count = 0;
+	int wallDirect;
+	
 	//try to connect on robot
-	if(edubotLib->connect()){
-
-		while (1){
-			
+	if(edubotLib->connect()) {
+		wallDirect = RIGHT;
+		while (edubotLib->isConnected()) {
 			edubotLib->move(0.3);
-			
 			flag = 1;
 			do{
-				if(edubotLib->getSonar(3) >= 0.1){
-					edubotLib->sleepMilliseconds (1);	
+				edubotLib->sleepMilliseconds(2);
+				cout << "sonar meio " << edubotLib->getSonar(MID) << endl;
+				if (edubotLib->getSonar(MID) >= 0.25){
+					
+					 edubotLib->sleepMilliseconds(2);
+					 if (edubotLib->getSonar(wallDirect) > 0.5){
+					 	cout << "sonar " << edubotLib->getSonar(wallDirect) << endl;
+					 	if(wallDirect == RIGHT){
+						 	endOfWall(RIGHT, &edubotLib);
+						 	count ++;
+						 	flag = 0;
+						 }
+						 else{
+						 	endOfWall(LEFT, &edubotLib);
+						 	count --;
+						 	flag = 0;
+						 }
+					 }
+					 else{
+					 	edubotLib->sleepMilliseconds(2);
+					 }
 				}
-				else{
-				
-					if(edubotLib->getSonar(0) > edubotLib->getSonar(6))
-						edubotLib->rotate (-90);
-					else
-						edubotLib->rotate (90);
-					edubotLib->sleepMilliseconds(1500);
-					flag = 0;
-				}
-				for (i = 0; i < 4; i ++){
-					if(edubotLib->getBumper(i)){
-						edubotLib->stop();
+				else if (edubotLib->getSonar(MID) < 0.25){
+					if (edubotLib->getSonar(RIGHT) > edubotLib->getSonar(LEFT)) {
+						rotateRight(&wallDirect, &edubotLib);
+						count ++;
+						flag = 0;
+					}
+					else{			
+						rotateLeft(&wallDirect, &edubotLib);
+						count --;
 						flag = 0;
 					}
 				}
-			}while (flag == 1);
+				cout << "contador: " << count << endl;
+				if (count == 0){
+					edubotLib->disconnect();
+					
+				}
+			} while (flag);
+			
+			
 		}
 		edubotLib->disconnect();
 	}
 	else{
-		std::cout << "Could not connect on robot!" << std::endl;
+		cout << "Could not connect on robot!" << endl;
 	}
 
 	return 0;
 }
+
+void rotateRight(int* wallDirect, EdubotLib **edubotLib){
+	
+	(*edubotLib)->rotate(90);
+	(*edubotLib)->sleepMilliseconds(1500);
+}
+
+void rotateLeft(int* wallDirect, EdubotLib **edubotLib){
+	
+	(*edubotLib)->rotate(-90);
+	(*edubotLib)->sleepMilliseconds(1500);
+}
+
+void endOfWall(int direct, EdubotLib **edubotLib){
+	int flag = 0;
+	if (direct == RIGHT)
+		flag = 1;
+	
+	(*edubotLib)->sleepMilliseconds(750);
+ 	(*edubotLib)->stop();
+ 	(*edubotLib)->rotate(90 * flag);
+ 	(*edubotLib)->sleepMilliseconds(1500);
+ 	(*edubotLib)->move(0.3);
+ 	(*edubotLib)->sleepMilliseconds(1500);
+}
+
