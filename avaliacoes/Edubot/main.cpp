@@ -23,30 +23,30 @@ int main(){
 		wallDirect = RIGHT;
 		edubotLib->sleepMilliseconds(1000);
 		while (edubotLib->isConnected()) {
-			edubotLib->move(0.3);
+			edubotLib->move(0.2);
 			
 			
 			if (count == 0){
-				while(edubotLib->getSonar(MID) >= 0.1)
+				while(edubotLib->getSonar(MID) >= 0.065)
 					edubotLib->sleepMilliseconds(1);
 				
 				if (edubotLib->getSonar(RIGHT) > edubotLib->getSonar(LEFT)) {
 					rotateRight(&wallDirect, &edubotLib);
 					
 					wallDirect = LEFT;
-					count ++;
+					
 					
 					
 				}
 				else{			
 					rotateLeft(&wallDirect, &edubotLib);
 					wallDirect = RIGHT;
-					count --;
+					
 					
 				}
 			}
 			edubotLib->move(0.3);
-			while(edubotLib->getSonar(MID) >= 0.25 && edubotLib->getSonar(wallDirect) <= 0.25)
+			while(edubotLib->getSonar(MID) >= 0.065 && edubotLib->getSonar(wallDirect) <= 0.25)
 				edubotLib->sleepMilliseconds(1);
 			if(edubotLib->getSonar(MID) < 0.25){
 				if(edubotLib->getSonar(RIGHT) > edubotLib->getSonar(LEFT)){
@@ -96,7 +96,7 @@ void endOfWall(int direct, EdubotLib **edubotLib){
 	if (direct == RIGHT)
 		flag = 1;
 	
-	(*edubotLib)->sleepMilliseconds(950);
+	(*edubotLib)->sleepMilliseconds(750);
  	(*edubotLib)->stop();
  	(*edubotLib)->rotate(90 * flag);
  	(*edubotLib)->sleepMilliseconds(1500);
