@@ -71,7 +71,7 @@ int main(){
 					event.type = -1;
 					break;
 				case endOfWall:
-					edubotLib->sleepMilliseconds(750);
+					edubotLib->sleepMilliseconds(1000);
 					edubotLib->stop();
 					if (state.wallFollowed == leftSonar) {
 						edubotLib->rotate(-90);
@@ -82,6 +82,8 @@ int main(){
 						state.count ++;
 					}
 					edubotLib->sleepMilliseconds(1500);
+					edubotLib->move(0.2);
+					edubotLib->sleepMilliseconds(1650);
 					event.type = -1;
 					break;
 				case countZero:
@@ -89,6 +91,7 @@ int main(){
 					event.type = -1;
 					break;
 				case foundNewWallFollowed:
+					
 					if (edubotLib->getSonar(rightSonar) > edubotLib->getSonar(leftSonar)) {						
 						state.wallFollowed = leftSonar;
 						edubotLib->rotate(90);
@@ -192,28 +195,26 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 	}
 	
 	if (edubotLib->getSonar(midSonar) <= 0.06){
-		event->type = foundWall;
+		if (state->count != 0)
+			event->type = foundWall;
+		else
+			event->type = foundNewWallFollowed;
+			
 		return 1;
 	}
 
-	if (abs(edubotLib->getSonar(state->wallFollowed)) >= 0.15){
-		if (state->wallFollowed != -1){
-			event->type = endOfWall;
-			return 1;
-		}
-		else{
-			event->type = foundNewWallFollowed;
-			return 1;
-		}
-		
+	if (abs(edubotLib->getSonar(state->wallFollowed)) >= 0.15 && state->wallFollowed != -1) {
+		event->type = endOfWall;
+		return 1;
 	}
+		
 
-	if(state->count == 0 && state->wallFollowed != -1){
+	if(state->count == 0 && state->wallFollowed != -1) {
 		event->type = countZero; 
 		return 1;
 	}
 
 	
-	edubotLib->sleepMilliseconds(100);
+	edubotLib->sleepMilliseconds(50);
 	return 0;
 }
