@@ -107,7 +107,7 @@ void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state){
 
 void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
 	edubotLib->move(-0.1);
-	edubotLib->sleepMilliseconds(1500);
+	edubotLib->sleepMilliseconds(700);
 	/*cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
 	cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
 	while (abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) >= 0.025 && abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) >= 0.025){
