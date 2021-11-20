@@ -101,6 +101,8 @@ void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state){
 	}
 	moveBackward(edubotLib, event, state, vecDist);
 	edubotLib->rotate(90);
+	edubotLib->sleepMilliseconds(1500);
+	event->type = -1;
 }
 
 void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
