@@ -6,10 +6,9 @@
 using namespace std;
 
 enum {north=90, south=270, east=0, west=180};
-enum {bumperActived, timerDown, foundWall};
+enum {bumperActived, timerDown, foundWall, endOfWall, countZero, foundNewWallFollowed};
 enum {bumper0 = 0, bumper1, bumper2, bumper3};
 enum {leftSonar = 0, midSonar = 3, rightSonar = 6};
-enum {backward, forward};
 
 typedef struct {
 	double x;
@@ -27,6 +26,7 @@ typedef struct{
 	double lastPositionX;
 	double lastPositionY;
 	int wallFollowed;
+	int count;
 }t_state;
 
 int testBumpers(EdubotLib *edubotLib);
@@ -39,12 +39,14 @@ int main(){
 	EdubotLib *edubotLib = new EdubotLib();
 	t_event event;
 	t_state state;
-
+	event.timer = 0;
+	state.count = 0;
+	state.wallFollowed = -1;
 	//try to connect on robot
 	if(edubotLib->connect()) {
 	
 		edubotLib->sleepMilliseconds(1500);
-		event.timer = 0;
+		
 
 		do {
 			edubotLib->move(0.2);
@@ -53,13 +55,54 @@ int main(){
 			switch(event.type){
 				case bumperActived:
 					treatColision(edubotLib, &event, &state);
+					event.type = -1;
 					break;
+					
 				case foundWall:
-					edubotLib->rotate(90);
+					if (state.wallFollowed == leftSonar) {
+						edubotLib->rotate(90);
+						state.count ++;
+					}
+					else {
+						edubotLib->rotate(-90);	
+						state.count --;
+					}
 					edubotLib->sleepMilliseconds(1500);
+					event.type = -1;
 					break;
+				case endOfWall:
+					edubotLib->sleepMilliseconds(1000);
+					edubotLib->stop();
+					if (state.wallFollowed == leftSonar) {
+						edubotLib->rotate(-90);
+						state.count --;
+					}
+					else {
+						edubotLib->rotate(90);	
+						state.count ++;
+					}
+					edubotLib->sleepMilliseconds(1500);
+					event.type = -1;
+					break;
+				case countZero:
+					state.wallFollowed = -1;
+					event.type = -1;
+					break;
+				case foundNewWallFollowed:
+					if (edubotLib->getSonar(rightSonar) > edubotLib->getSonar(leftSonar)) {						
+						state.wallFollowed = leftSonar;
+						edubotLib->rotate(90);
+						state.count ++;
+					}
+					else{
+						state.wallFollowed = rightSonar;
+						edubotLib->rotate(-90);
+						state.count --;
+					}		
+					event.type = -1;
+					break;		
 			}
-		}while(1);
+		}while(abs(edubotLib->getX() < 2.5));
 		
 	}
 	else{
@@ -108,21 +151,23 @@ void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state){
 void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
 	edubotLib->move(-0.1);
 	edubotLib->sleepMilliseconds(700);
-	/*cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
+	cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
 	cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
 	while (abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) >= 0.025 && abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) >= 0.025){
 		//waitForEvent(edubotLib, event, state);
 		cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
 		cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
 		edubotLib->sleepMilliseconds(50);
-
-	}*/
+	}
 	edubotLib->stop();
 }
 
+void treatCountZero(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
+	
+}
+
 int testBumpers(EdubotLib *edubotLib){
-	int i;
-	for (i = 0; i < NUMBUMPERS; i ++){
+	for (int i = 0; i < NUMBUMPERS; i ++){
 		if (edubotLib->getBumper(i)){
 			return i;
 		}
@@ -134,7 +179,7 @@ int testBumpers(EdubotLib *edubotLib){
 
 int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 	event->bumperId = testBumpers(edubotLib);
-	edubotLib->sleepMilliseconds(100);
+	
 	if (event->timer > 0){
 		event->timer --;
 		if (event->timer == 0){
@@ -148,10 +193,29 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 		return 1;
 	}
 	
-	/*if (edubotLib->getSonar(midSonar) <= 0.00){
+	if (edubotLib->getSonar(midSonar) <= 0.06){
 		event->type = foundWall;
 		return 1;
-	}*/
+	}
 
+	if (edubotLib->getSonar(state->wallFollowed) >= 0.15 && state->wallFollowed != -1){
+		if (state->wallFollowed != -1){
+			event->type = endOfWall;
+			return 1;
+		}
+		else{
+			event->type = foundNewWallFollowed;
+			return 1;
+		}
+		
+	}
+
+	if(state->count == 0 && state->wallFollowed != -1){
+		event->type = countZero; 
+		return 1;
+	}
+
+	
+	edubotLib->sleepMilliseconds(100);
 	return 0;
 }
