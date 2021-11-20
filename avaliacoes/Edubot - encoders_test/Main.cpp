@@ -51,7 +51,7 @@ int main(){
 		do {
 			edubotLib->move(0.2);
 			while(!waitForEvent(edubotLib, &event, &state));
-
+			cout << "wall: " << state.wallFollowed << endl;
 			switch(event.type){
 				case bumperActived:
 					treatColision(edubotLib, &event, &state);
@@ -71,7 +71,7 @@ int main(){
 					event.type = -1;
 					break;
 				case endOfWall:
-					edubotLib->sleepMilliseconds(1000);
+					edubotLib->sleepMilliseconds(750);
 					edubotLib->stop();
 					if (state.wallFollowed == leftSonar) {
 						edubotLib->rotate(-90);
@@ -92,11 +92,13 @@ int main(){
 					if (edubotLib->getSonar(rightSonar) > edubotLib->getSonar(leftSonar)) {						
 						state.wallFollowed = leftSonar;
 						edubotLib->rotate(90);
+						edubotLib->sleepMilliseconds(1500);
 						state.count ++;
 					}
 					else{
 						state.wallFollowed = rightSonar;
 						edubotLib->rotate(-90);
+						edubotLib->sleepMilliseconds(1500);
 						state.count --;
 					}		
 					event.type = -1;
@@ -162,10 +164,6 @@ void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDis
 	edubotLib->stop();
 }
 
-void treatCountZero(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
-	
-}
-
 int testBumpers(EdubotLib *edubotLib){
 	for (int i = 0; i < NUMBUMPERS; i ++){
 		if (edubotLib->getBumper(i)){
@@ -198,7 +196,7 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 		return 1;
 	}
 
-	if (edubotLib->getSonar(state->wallFollowed) >= 0.15 && state->wallFollowed != -1){
+	if (abs(edubotLib->getSonar(state->wallFollowed)) >= 0.15){
 		if (state->wallFollowed != -1){
 			event->type = endOfWall;
 			return 1;
