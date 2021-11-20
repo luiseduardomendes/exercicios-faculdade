@@ -1,6 +1,6 @@
 #include <iostream>
 #include "libs/EdubotLib.hpp" 
-#include <math.h>
+#include <cmath>
 #define NUMBUMPERS 4
 
 using namespace std;
@@ -37,28 +37,29 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state);
 int main(){
 	
 	EdubotLib *edubotLib = new EdubotLib();
-	t_event *event;
-	t_state *state;
+	t_event event;
+	t_state state;
 
 	//try to connect on robot
 	if(edubotLib->connect()) {
+	
 		edubotLib->sleepMilliseconds(1500);
-		state->lastDirection = edubotLib->getTheta();
+		event.timer = 0;
 
-		for(int i=0;i<1000;i++){
-			edubotLib->move(0.3);
-			while(!waitForEvent(edubotLib, event, state));
+		do {
+			edubotLib->move(0.2);
+			while(!waitForEvent(edubotLib, &event, &state));
 
-			switch(event->type){
+			switch(event.type){
 				case bumperActived:
-					treatColision(edubotLib, event, state);
+					treatColision(edubotLib, &event, &state);
 					break;
 				case foundWall:
 					edubotLib->rotate(90);
 					edubotLib->sleepMilliseconds(1500);
 					break;
 			}
-		}//while(1);
+		}while(1);
 		
 	}
 	else{
@@ -99,13 +100,21 @@ void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state){
 			break;
 	}
 	moveBackward(edubotLib, event, state, vecDist);
+	edubotLib->rotate(90);
 }
 
 void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
 	edubotLib->move(-0.1);
-	while (edubotLib->getX() != state->lastPositionX + vecDist->x && edubotLib->getY() != state->lastPositionY + vecDist->y){
-		waitForEvent(edubotLib, event, state);
-	}
+	edubotLib->sleepMilliseconds(1500);
+	/*cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
+	cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
+	while (abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) >= 0.025 && abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) >= 0.025){
+		//waitForEvent(edubotLib, event, state);
+		cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
+		cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
+		edubotLib->sleepMilliseconds(50);
+
+	}*/
 	edubotLib->stop();
 }
 
@@ -123,7 +132,7 @@ int testBumpers(EdubotLib *edubotLib){
 
 int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 	event->bumperId = testBumpers(edubotLib);
-	edubotLib->sleepMilliseconds(10);
+	edubotLib->sleepMilliseconds(100);
 	if (event->timer > 0){
 		event->timer --;
 		if (event->timer == 0){
@@ -137,10 +146,10 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 		return 1;
 	}
 	
-	if (edubotLib->getSonar(midSonar) <= 0.6){
+	/*if (edubotLib->getSonar(midSonar) <= 0.00){
 		event->type = foundWall;
 		return 1;
-	}
+	}*/
 
 	return 0;
 }
