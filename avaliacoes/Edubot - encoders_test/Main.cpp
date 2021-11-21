@@ -6,7 +6,7 @@
 using namespace std;
 
 enum {north=90, south=270, east=0, west=180};
-enum {bumperActived, timerDown, foundWall, endOfWall, countZero, foundNewWallFollowed};
+enum {bumperActived, timerDown, foundWall, endOfWall, countZero, foundNewWallFollowed, endOfMaze};
 enum {bumper0 = 0, bumper1, bumper2, bumper3};
 enum {leftSonar = 0, midSonar = 3, rightSonar = 6};
 
@@ -39,19 +39,17 @@ int main(){
 	EdubotLib *edubotLib = new EdubotLib();
 	t_event event;
 	t_state state;
+	t_vecDist vecDist;
 	event.timer = 0;
 	state.count = 0;
 	state.wallFollowed = -1;
 	//try to connect on robot
 	if(edubotLib->connect()) {
-	
 		edubotLib->sleepMilliseconds(1500);
-		
 
 		do {
-			edubotLib->move(0.2);
+			edubotLib->move(0.25);
 			while(!waitForEvent(edubotLib, &event, &state));
-			cout << "wall: " << state.wallFollowed << endl;
 			switch(event.type){
 				case bumperActived:
 					treatColision(edubotLib, &event, &state);
@@ -71,7 +69,32 @@ int main(){
 					event.type = -1;
 					break;
 				case endOfWall:
-					edubotLib->sleepMilliseconds(1000);
+					state.lastPositionX = edubotLib->getX();
+					state.lastPositionY = edubotLib->getY();
+					switch((int)edubotLib->getTheta()){
+						case north: 
+							vecDist.x = 0;
+							vecDist.y = 0.15;
+							break;
+						case south:
+							vecDist.x = 0;
+							vecDist.y = -0.15;
+							break;
+						case east:
+							vecDist.x = 0.15;
+							vecDist.y = 0;
+							break;
+						case west:
+							vecDist.x = -0.15;
+							vecDist.y = 0;
+							break;
+					}
+					cout << vecDist.x << endl;
+					cout << vecDist.y << endl;
+					while(abs(edubotLib->getX() - (state.lastPositionX + vecDist.x)) <= 0.005 &&
+							abs(edubotLib->getY() - (state.lastPositionY + vecDist.y) <= 0.005)) {
+						edubotLib->sleepMilliseconds(25);
+					}
 					edubotLib->stop();
 					if (state.wallFollowed == leftSonar) {
 						edubotLib->rotate(-90);
@@ -82,8 +105,36 @@ int main(){
 						state.count ++;
 					}
 					edubotLib->sleepMilliseconds(1500);
-					edubotLib->move(0.2);
-					edubotLib->sleepMilliseconds(1650);
+					
+					state.lastPositionX = edubotLib->getX();
+					state.lastPositionY = edubotLib->getY();
+					
+					cout << (int)edubotLib->getTheta() << endl;
+					switch((int)edubotLib->getTheta()){
+						case north: 
+							vecDist.x = 0;
+							vecDist.y = 0.25;
+							break;
+						case south:
+							vecDist.x = 0;
+							vecDist.y = -0.25;
+							break;
+						case east:
+							vecDist.x = 0.25;
+							vecDist.y = 0;
+							break;
+						case west:
+							vecDist.x = -0.25;
+							vecDist.y = 0;
+							break;
+					}
+					cout << vecDist.x << endl;
+					cout << vecDist.y << endl;
+					edubotLib->move(0.25);
+					//while(abs(edubotLib->getX() - (state.lastPositionX + vecDist.x)) <= 0.005 &&
+					//		abs(edubotLib->getY() - (state.lastPositionY + vecDist.y) <= 0.005)) {
+						edubotLib->sleepMilliseconds(1500);
+					//}
 					event.type = -1;
 					break;
 				case countZero:
@@ -105,9 +156,15 @@ int main(){
 						state.count --;
 					}		
 					event.type = -1;
-					break;		
+					break;
+				case endOfMaze:
+					edubotLib->stop();
+					
+					break;
+					
 			}
-		}while(abs(edubotLib->getX() < 2.5));
+		}while(edubotLib->getX() > -2.0);
+        edubotLib->stop();
 		
 	}
 	else{
@@ -211,6 +268,11 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 
 	if(state->count == 0 && state->wallFollowed != -1) {
 		event->type = countZero; 
+		return 1;
+	}
+
+	if(abs(edubotLib->getX()) >= 2.0){
+		event->type = endOfMaze;
 		return 1;
 	}
 
