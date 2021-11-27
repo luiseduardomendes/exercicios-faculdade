@@ -19,8 +19,8 @@ coordenateWindowY = (heightScreen/2) - (height/2)
 mainMenu.geometry(f"%dx%d+%d+%d" % (widht, height, coordenateWindowX, coordenateWindowY))
 mainMenu.resizable(True, True)
 
-mainMenu.iconbitmap("icon.ico")
-mainMenu['bg'] = "#5c5d61"
+#mainMenu.iconbitmap("icon.ico")
+mainMenu['bg'] = "#2c2d31"
 
 #mainMenu.minsize(widht = 640, height = 360)
 #mainMenu.maxsize(widht = 1280, height = 768)
@@ -40,7 +40,7 @@ def clearScreen():
 
 
 label1 = Label(mainMenu, text="Leitor de gráficos: ",
-                bg="#5c5d61",
+                bg="#2c2d31",
                 fg="#a9a8a2",
                 font="arial 20 ",
                 height=5)
