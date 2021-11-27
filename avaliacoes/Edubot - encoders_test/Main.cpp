@@ -9,6 +9,7 @@ enum {north=90, south=270, east=0, west=180};
 enum {bumperActived, timerDown, foundWall, endOfWall, countZero, foundNewWallFollowed};
 enum {bumper0 = 0, bumper1, bumper2, bumper3};
 enum {leftSonar = 0, midSonar = 3, rightSonar = 6};
+enum {backwardMove = 0, forwardMove};
 
 typedef struct {
 	double x;
@@ -30,16 +31,19 @@ typedef struct{
 }t_state;
 
 int testBumpers(EdubotLib *edubotLib);
-void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist);
+void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, int direction);
 void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state);
 int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state);
+void move(EdubotLib *edubotLib, int direction);
 
 int main(){
 	
 	EdubotLib *edubotLib = new EdubotLib();
 	t_event event;
 	t_state state;
-	event.timer = 0;
+	int aux;
+	
+event.timer = 0;
 	state.count = 0;
 	state.wallFollowed = -1;
 	//try to connect on robot
@@ -51,7 +55,7 @@ int main(){
 		do {
 			edubotLib->move(0.2);
 			while(!waitForEvent(edubotLib, &event, &state));
-			cout << "wall: " << state.wallFollowed << endl;
+
 			switch(event.type){
 				case bumperActived:
 					treatColision(edubotLib, &event, &state);
@@ -61,13 +65,27 @@ int main(){
 				case foundWall:
 					if (state.wallFollowed == leftSonar) {
 						edubotLib->rotate(90);
+						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
 						state.count ++;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
+						
 					}
 					else {
 						edubotLib->rotate(-90);	
+						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
 						state.count --;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
+						
 					}
-					edubotLib->sleepMilliseconds(1500);
+					
 					event.type = -1;
 					break;
 				case endOfWall:
@@ -75,15 +93,28 @@ int main(){
 					edubotLib->stop();
 					if (state.wallFollowed == leftSonar) {
 						edubotLib->rotate(-90);
+						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
 						state.count --;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
+						
 					}
 					else {
 						edubotLib->rotate(90);	
+						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
 						state.count ++;
 					}
-					edubotLib->sleepMilliseconds(1500);
+					
 					edubotLib->move(0.2);
-					edubotLib->sleepMilliseconds(1650);
+					edubotLib->sleepMilliseconds(1500);
 					event.type = -1;
 					break;
 				case countZero:
@@ -96,19 +127,32 @@ int main(){
 						state.wallFollowed = leftSonar;
 						edubotLib->rotate(90);
 						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
 						state.count ++;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
+						
 					}
 					else{
 						state.wallFollowed = rightSonar;
 						edubotLib->rotate(-90);
 						edubotLib->sleepMilliseconds(1500);
+						aux = edubotLib->getTheta();
+						cout << "getTheta: " << aux << endl;
 						state.count --;
+						if ((aux % 90) != 0){
+							treatColision(edubotLib, &event, &state);
+						}
+						
 					}		
 					event.type = -1;
 					break;		
 			}
-		}while(abs(edubotLib->getX() < 2.5));
-		
+		}while(edubotLib->getX() > -2.0);
+		edubotLib->stop();
+		edubotLib->disconnect();
 	}
 	else{
 		std::cout << "Could not connect on robot!" << std::endl;
@@ -118,52 +162,46 @@ int main(){
 }
 
 void treatColision(EdubotLib *edubotLib, t_event *event, t_state *state){
-	state->lastPositionX = edubotLib->getX();
-	state->lastPositionY = edubotLib->getY();
-	state->lastDirection = edubotLib->getTheta();
-	t_vecDist *vecDist;
 	
 	
-	switch((int)state->lastDirection){
-		case north:
-			vecDist->y = -0.1;
-			vecDist->x = 0.0;
+	switch (testBumpers(edubotLib)){
+		case bumper0:
+		case bumper1:
+			move(edubotLib, backwardMove);
 			break;
-		case south:
-			vecDist->y = 0.1;
-			vecDist->x = 0.0;
-			break;
-		case east:
-			vecDist->y = 0.0;
-			vecDist->x = -0.1;
-			break;
-		case west:
-			vecDist->y = 0.0;
-			vecDist->x = 0.1;
-			break;
-		default:
-			vecDist->y = sin(state->lastDirection)*(-0.1);
-			vecDist->x = cos(state->lastDirection)*(-0.1); 
-			//treatAngularPosition(edubotLib, event, state);
-			break;
+		case bumper2:
+		case bumper3:
+			move(edubotLib, forwardMove);
+			break;	
 	}
-	moveBackward(edubotLib, event, state, vecDist);
+	
 	edubotLib->rotate(90);
 	edubotLib->sleepMilliseconds(1500);
+	state->wallFollowed = -1;
+	state->count = 0;
 	event->type = -1;
 }
 
-void moveBackward(EdubotLib *edubotLib, t_event *event, t_state *state, t_vecDist *vecDist){
-	edubotLib->move(-0.1);
-	edubotLib->sleepMilliseconds(700);
-	cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
-	cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
-	while (abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) >= 0.025 && abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) >= 0.025){
-		//waitForEvent(edubotLib, event, state);
-		cout << "distx: " << abs(edubotLib->getX() - (state->lastPositionX + vecDist->x)) << endl;
-		cout << "disty: " << abs(edubotLib->getY() - (state->lastPositionY + vecDist->y)) << endl;
-		edubotLib->sleepMilliseconds(50);
+void move(EdubotLib *edubotLib, int direction){
+	int auxRotate;
+	if (direction == backwardMove)
+		edubotLib->move(-0.1);
+	else{
+		edubotLib->move(0.1);
 	}
+	edubotLib->sleepMilliseconds(500);
+	if (((int)edubotLib->getTheta() % 90) - 45 >= 0){
+		auxRotate = -1;
+	}
+	else{
+		auxRotate = 1;
+	}
+	while((int)edubotLib->getTheta() % 90 != 0 && testBumpers(edubotLib) == -1){
+		edubotLib->rotate(auxRotate);
+		edubotLib->sleepMilliseconds(1500);
+		
+	}
+	
 	edubotLib->stop();
 }
 
@@ -172,10 +210,8 @@ int testBumpers(EdubotLib *edubotLib){
 		if (edubotLib->getBumper(i)){
 			return i;
 		}
-		else{
-			return -1;
-		}
 	}
+	return -1;
 }
 
 int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
@@ -213,8 +249,9 @@ int waitForEvent(EdubotLib *edubotLib, t_event *event, t_state *state){
 		event->type = countZero; 
 		return 1;
 	}
-
 	
-	edubotLib->sleepMilliseconds(50);
+	edubotLib->sleepMilliseconds(50);
 	return 0;
 }
+
+
