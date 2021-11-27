@@ -1,5 +1,5 @@
 #pragma once
-#define NUMCHAMPIONS 150
+#define NUMCHAMPIONS 166
 #include <iostream>
 
 enum{TOPLANE, JUNGLE, MIDLANE, ADCARRY, SUPPORT};
@@ -31,4 +31,6 @@ public:
     bool isMarksman();
     bool isControll();
     bool isTank();
+
+    void ShowChampionInfo();
 };
