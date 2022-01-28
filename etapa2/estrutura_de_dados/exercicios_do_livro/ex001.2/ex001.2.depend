@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1642644343 source:e:\github\exercicios-faculdade\etapa2\estrutura_de_dados\exercicios_do_livro\ex001.2\datemanipulation.c
+	"DateManipulation.h"
+
+1642644274 e:\github\exercicios-faculdade\etapa2\estrutura_de_dados\exercicios_do_livro\ex001.2\datemanipulation.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+

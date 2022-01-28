@@ -73,7 +73,15 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp",
-    "string.h": "c"
+    "string.h": "c",
+    "*.tcc": "cpp",
+    "cstdarg": "cpp",
+    "cwctype": "cpp",
+    "deque": "cpp",
+    "memory_resource": "cpp",
+    "string_view": "cpp",
+    "cinttypes": "cpp",
+    "linearlistwdescript.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "C:\\MinGW\\bin\\gcc.exe",
   "C_Cpp_Runner.cppCompilerPath": "C:\\MinGW\\bin\\g++.exe",
