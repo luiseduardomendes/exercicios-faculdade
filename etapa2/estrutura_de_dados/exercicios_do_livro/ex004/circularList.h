@@ -1,3 +1,9 @@
+/* 
+ * Author: Luis Eduardo Pereira Mendes
+ * Contact: luis.pmendes13@gmail.com
+ * Cartao UFRGS: 00333936
+*/
+
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
