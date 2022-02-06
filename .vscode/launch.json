@@ -26,11 +26,13 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": [
+        ""
+      ],
       "stopAtEntry": false,
-      "cwd": "e:\\GitHub\\exercicios-faculdade\\avaliacoes\\testeproject\\image",
+      "cwd": "e:/GitHub/exercicios-faculdade",
       "environment": [],
-      "program": "e:\\GitHub\\exercicios-faculdade\\avaliacoes\\testeproject\\image\\build\\Debug\\outDebug",
+      "program": "e:/GitHub/exercicios-faculdade/build/Debug/outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
