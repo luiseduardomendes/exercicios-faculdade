@@ -6,6 +6,8 @@ public:
     Player();
     t_coord position;
     t_coord fall_speed;
+    t_hitbox hitbox;
+    void set_hitbox();
     bool jumping;
     void jump();
     void move();

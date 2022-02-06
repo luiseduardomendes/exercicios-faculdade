@@ -23,3 +23,9 @@ void Player::set_fall_speed(){
 void Player::move(){
     position.y += fall_speed.y;
 }
+
+void Player::set_hitbox(){
+    hitbox.inf = position;
+    hitbox.sup.x = position.x + 40;
+    hitbox.sup.y = position.y + 40;
+}

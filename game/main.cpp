@@ -62,20 +62,29 @@ int main(){
                     speed += 0.5;
                     obs = Obstacle(speed);
                 }
-                if(abs(player.position.x - obs.position.x) < 5 && abs(player.position.y - obs.position.y) < 5)
+                if(isHitboxIn(player.hitbox, obs.hitbox))
                     scr.exit = true;
 
                 obs.move();
+                obs.set_hitbox();
                 player.move();
+                player.set_hitbox();
 
                 al_clear_to_color(al_map_rgb(0,0,0));
+                al_draw_filled_rectangle(0,542,scr.width,scr.height, al_map_rgb(255,255,255));
+
                 al_draw_filled_rectangle(player.position.x, player.position.y,
                                         player.position.x + 40, player.position.y + 40,
                                         al_map_rgb(255,255,255));
                 al_draw_filled_triangle(obs.position.x, obs.position.y + 40,
                                         obs.position.x + 40, obs.position.y + 40,
+                                        obs.position.x + 20, obs.position.y+20,
+                                        al_map_rgb(255,255,255));
+                al_draw_filled_triangle(obs.position.x, obs.position.y + 20,
+                                        obs.position.x + 40, obs.position.y + 20,
                                         obs.position.x + 20, obs.position.y,
                                         al_map_rgb(255,255,255));
+
                 al_flip_display();
             }
         }

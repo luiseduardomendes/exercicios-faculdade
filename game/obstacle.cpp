@@ -9,3 +9,9 @@ Obstacle::Obstacle(float speed_){
 void Obstacle::move(){
     position.x -= speed;
 }
+
+void Obstacle::set_hitbox(){
+    hitbox.inf = position;
+    hitbox.sup.x = position.x + 40;
+    hitbox.sup.y = position.y + 40;
+}

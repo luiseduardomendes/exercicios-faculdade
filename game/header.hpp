@@ -22,6 +22,13 @@ typedef struct{
     float x, y;
 }t_coord;
 
+typedef struct{
+    t_coord inf, sup;
+}t_hitbox;
+
 #include "player.hpp"
 #include "obstacle.hpp"
+
+bool pointInsideBox(t_coord point_, t_hitbox box_);
+bool isHitboxIn(t_hitbox HB1, t_hitbox HB2);
 
