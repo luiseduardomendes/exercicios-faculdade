@@ -23,11 +23,14 @@ void list_print(t_node* head);
 
 int main()
 {
-    t_node *head = NULL, *e1 = NULL, *e2 = NULL, *e3 = NULL;
+    t_node *head = NULL, *e1 = NULL, *e2 = NULL, *e3 = NULL, *e4 = NULL, *e5 = NULL, *e6 = NULL;
     head = (t_node*)malloc(sizeof(t_node));
     e1 = (t_node*)malloc(sizeof(t_node));
     e2 = (t_node*)malloc(sizeof(t_node));
     e3 = (t_node*)malloc(sizeof(t_node));
+    e4 = (t_node*)malloc(sizeof(t_node));
+    e5 = (t_node*)malloc(sizeof(t_node));
+    e6 = (t_node*)malloc(sizeof(t_node));
     head->data.id = 0;
     head->next = e1;
     e1->data.id = 1;
@@ -35,7 +38,13 @@ int main()
     e2->data.id = 2;
     e2->next = e3;
     e3->data.id = 3;
-    e3->next = NULL;
+    e3->next = e4;
+    e4->data.id = 4;
+    e4->next = e5;
+    e5->data.id = 5;
+    e5->next = e6;
+    e6->data.id = 6;
+    e6->next = NULL;
     list_print(head);
     head = invert_list(head);
     list_print(head);
@@ -43,24 +52,19 @@ int main()
 }
 t_node* invert_list(t_node* head)
 {
-    t_node *index = NULL, buffer, *output = NULL;
-    t_node *prev = NULL, *prev2 = NULL;
-    t_node bufferPrev, bufferPrev2;
+    t_node *i = NULL, *prev = head->next, *prev2 = head;
 
-    bufferPrev = *(head->next);
-    bufferPrev2 = *head;
-    prev = (head->next);
-    prev2 = head;
-
-
-    for (index = head->next->next; index->next->next != NULL; index = index->next){
-        
-
+    for (i = prev->next; i != NULL; i = i->next)
+    {
+        prev->next = prev2;
+        prev2 = prev;
+        prev = i;
     }
+    prev->next = prev2;
+    prev2 = prev;
     head->next = NULL;
 
-    output = index;
-    return output;      
+    return prev;
 }
 
 void list_print(t_node *head){
