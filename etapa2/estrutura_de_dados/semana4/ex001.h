@@ -21,9 +21,14 @@ t_node *list_initialize();
 
 t_node *list_append_item(t_node *head);
 
+t_node *list_insert_element_sort(t_node *head);
+
 void list_print_elements(t_node *head);
+
+void list_print_elements_sort(t_node *head);
 
 void clear_buffer();
 
 int list_min(t_node *head);
 
+void input_node(t_node *new_element);

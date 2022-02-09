@@ -5,7 +5,7 @@ int main(){
 
     head = list_initialize();
     do {
-        head = list_append_item(head);
+        head = list_insert_element_sort(head);
         list_print_elements(head);
     } while(1);
 

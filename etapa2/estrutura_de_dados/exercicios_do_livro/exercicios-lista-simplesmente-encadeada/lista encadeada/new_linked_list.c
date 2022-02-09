@@ -54,7 +54,7 @@ t_node* invert_list(t_node* head)
 {
     t_node *i = NULL, *prev = head->next, *prev2 = head;
 
-    for (i = prev->next; i != NULL; i = i->next)
+    for (i = prev->next; prev != NULL; i = i->next)
     {
         prev->next = prev2;
         prev2 = prev;
