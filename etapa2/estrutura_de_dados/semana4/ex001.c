@@ -45,8 +45,6 @@ t_node *list_insert_element_sort(t_node *head){
             index = index->next;
         }
         
-        printf("%d\n", position);
-        
         if(index != NULL)
             head = list_insert_element_in_position(head, new_element, position);
         else
