@@ -12,105 +12,73 @@ t_node* list_append_item(t_node *head){
     new_element = (t_node*)malloc(sizeof(t_node));
 
     // insert data in new element fields
-    printf("identifier: ");
-    scanf("%d", &(new_element->product_info.id));
-    printf("price: ");
-    scanf("%f", &(new_element->product_info.price));
-    printf("name: ");
-    clear_buffer();
-    fgets((new_element->product_info.name), SIZE_NAME * sizeof(char), stdin);
-    for (int i = 0; i < SIZE_NAME; i ++)
-        if (new_element->product_info.name[i] == '\n')
-            new_element->product_info.name[i] = ' ';
+    console_input_keyboard_to_node(new_element);
 
     new_element->next = NULL;
     
     // appends new element to list
-    if(head != NULL){
-        for (index = head; index->next != NULL; index = index->next);
-        index->next = new_element;
-    }
-    else
-        head = new_element; 
+    list_insert_last_element(head, new_element);
 
     return head;   
 }
 
 t_node *list_insert_element_sort(t_node *head){
     t_node *index = NULL, *new_element = NULL, previous;
+    int position = 0;
 
     // allocates memory for the new element
     new_element = (t_node*)malloc(sizeof(t_node));
 
     // insert data in new element fields
-    input_node(new_element);
+    console_input_keyboard_to_node(new_element);
 
     new_element->next = NULL;
 
     // appends new element to list
-    if (head != NULL){ //list is not empty
-        if(head-> next != NULL){ // list has more than one element
-            index = head;
-            while (index->next != NULL && index->next->product_info.id < new_element->product_info.id)
-            // while not reaches the end of list and not reach the position sort
-                index = index->next;
-            
-            if(index->next == NULL){ // reaches the end of list 
-                index->next = new_element;
-            }
-            else{ // reaches the position sort
-                if(index->product_info.id < new_element->product_info.id){
-                    t_node *buffer = index->next;
-                    index->next = new_element;
-                    new_element->next = buffer;
-                }
-                else{ // match in the first position
-                    new_element->next = index;
-                    head = new_element;
-                }
-            }
-        } 
-        else{ // list has only one element
-            if(head->product_info.id > new_element->product_info.id){
-                new_element->next = head;
-                head = new_element;
-            }
-            else{
-                head->next = new_element;
-            }
+    if(head == NULL)
+        head = list_insert_first_element(head, new_element);
+    else{
+        index = head;
+        position = 0;
+        while (index != NULL && index->product_info.id < new_element->product_info.id){
+            position ++;
+            index = index->next;
         }
+        
+        printf("%d\n", position);
+        
+        if(index != NULL)
+            head = list_insert_element_in_position(head, new_element, position);
+        else
+            head = list_insert_last_element(head, new_element);
     }
-    else{ //list is empty
-        head = new_element;
     
-    }
     return head;   
 }
 
 void list_print_elements(t_node *head){
     t_node* index = NULL;
     for (index = head; index != NULL; index = index->next)    
-        printf("----------------------------\n"
-                "\tname: %s\n"
-                "\tidentifier: %d\n"
-                "\tprice: US$ %.2f\n"
-                "----------------------------\n", 
-                index->product_info.name,
-                index->product_info.id,
-                index->product_info.price);
+        console_output_data_element(*index);
 
 }
 
 void list_print_elements_sort(t_node *head){
-    int i, size = 0, count = 0;
+    int i, count = 0;
     t_node* index = NULL;
 
-    size = list_size(head);
+    // this function has more complexity than the list_print_elements()
+    // cause it prints elements sorted without change the original order
+    // of the list, deppending on list size, its run can be slow
     
-    for(i = list_min(head), count = 0; count < size; i ++)
+    // prints elements from the min ID until print all the elements
+    // increments size when prints a data
+    // increments i when check if i is an identifier of a node for all nodes
+
+    for(i = list_min(head), count = 0; count < list_size(head); i ++)
         for (index = head; index != NULL; index = index->next){
             if (index->product_info.id == i){
-                output_data_element(*index);
+                console_output_data_element(*index);
                 count ++;
             }
     }
@@ -119,28 +87,66 @@ void list_print_elements_sort(t_node *head){
 
 // auxiliar functions
 
-void input_node(t_node *new_element){
-    printf("identifier: ");
-    scanf("%d", &(new_element->product_info.id));
-    printf("price: ");
-    scanf("%f", &(new_element->product_info.price));
-    printf("name: ");
-    clear_buffer();
-    fgets((new_element->product_info.name), SIZE_NAME * sizeof(char), stdin);
-    for (int i = 0; i < SIZE_NAME; i ++)
-        if (new_element->product_info.name[i] == '\n')
-            new_element->product_info.name[i] = ' ';
+t_node* list_insert_first_element(t_node* head, t_node* element) {
+    element->next = head;
+    return element;
 }
 
-void output_data_element(t_node e){
+t_node* list_insert_element_in_position(t_node* head, t_node* element, int position){
+    t_node *index = NULL, buffer;
+    int i;
+
+    if (position == 0)
+        head = list_insert_first_element(head, element);
+
+    else if (list_size(head) == position)
+        head = list_insert_last_element(head, element);
+
+    else if (position < list_size(head)){
+        for (index = head, i = 0; i < position-1; i ++, index = index->next);
+        buffer = *index;
+        index->next = element;
+        element->next = buffer.next;
+    }
+
+    return head;
+}
+
+t_node* list_insert_last_element(t_node* head, t_node* element){
+    t_node *index = NULL;
+    
+    if(head != NULL){
+        for (index = head; index->next != NULL; index = index->next);
+        index->next = element;
+    }
+    else
+        head = element;
+
+    return head;
+}
+
+void console_input_keyboard_to_node(t_node *element){
+    printf("identifier: ");
+    scanf("%d", &(element->product_info.id));
+    printf("price: ");
+    scanf("%f", &(element->product_info.price));
+    printf("name: ");
+    console_clear_buffer();
+    fgets((element->product_info.name), SIZE_NAME * sizeof(char), stdin);
+    for (int i = 0; i < SIZE_NAME; i ++)
+        if (element->product_info.name[i] == '\n')
+            element->product_info.name[i] = ' ';
+}
+
+void console_output_data_element(t_node element){
     printf("----------------------------\n"
         "\tname: %s\n"
         "\tidentifier: %d\n"
         "\tprice: US$ %.2f\n"
         "----------------------------\n", 
-        e.product_info.name,
-        e.product_info.id,
-        e.product_info.price);
+        element.product_info.name,
+        element.product_info.id,
+        element.product_info.price);
 }
 
 int list_size(t_node *head){
@@ -160,7 +166,7 @@ int list_min(t_node *head){
     return min;
 }
 
-void clear_buffer(){
+void console_clear_buffer(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
