@@ -1,0 +1,111 @@
+ORG 0
+                                                    ; TODO: initialize the vector pointer 
+                                                    ; aux_vec_ind and aux_vec_num
+                        LDR X #0
+while:
+                        LDR A vet, X
+                        SUB A #HFF
+                        JZ fim_while
+                        ADD A #HFF
+                        
+num_value:
+                        JN index_value
+
+                        STR A aux_vec_num, I
+                        LDR B aux_vec_num
+                        ADD B #1
+                        STR B aux_vec_num
+
+                        ADD X #1
+
+                        JMP while  
+
+index_value:
+                        SUB A #H80
+                        STR A aux_vec_ind, I
+                        LDR B aux_vec_ind
+                        ADD B #1
+                        STR B aux_vec_ind 
+
+                        ADD X #1
+
+                        JMP while
+
+fim_while:
+                    
+
+                        LDR B aux_vec_ind
+                        SUB B #vecInd
+                        STR B size_of_index_vec
+
+                        LDR B aux_vec_num
+                        SUB B #vecNum
+                        STR B size_of_number_vec
+
+                        LDR X #0
+                        STR X cont
+
+WHILE_LOOP:
+
+                        LDR X cont
+
+                        SUB X size_of_index_vec
+                        JZ FIM_LOOP
+                        ADD X size_of_index_vec
+
+                        SUB X size_of_number_vec
+                        JZ FIM_LOOP
+                        ADD X size_of_number_vec
+
+                        LDR B vecInd, X
+                        STR B aux
+
+                        SUB B size_of_index_vec
+                        JN VALID1
+                        JMP NOT_VALID
+VALID1:
+                        ADD B size_of_index_vec
+
+                        SUB B size_of_number_vec
+                        JN VALID2
+                        JMP NOT_VALID
+VALID2:
+                        ADD B size_of_number_vec
+
+                        LDR X aux
+                        LDR A vecNum, X
+                        ADD A result
+                        STR A result
+
+NOT_VALID:
+
+                        LDR X cont
+                        ADD X #1
+                        STR X cont
+
+                        JMP WHILE_LOOP
+
+FIM_LOOP:
+                        
+fim:
+                        HLT
+
+
+
+ORG hCC
+size_of_index_vec:      DB
+size_of_number_vec:     DB
+cont:                   DB
+aux:                    DB 0
+
+ORG HD0
+aux_vec_ind:            DB HD1
+vecInd:                 DAB [14]
+
+ORG HE0
+aux_vec_num:            DB HE1
+vecNum:                 DAB [14]
+
+ORG HF0
+result:                 DB 0
+vet:                    DAB 01, H82, 02, H81, 03, 04, H8F, HFF, 0

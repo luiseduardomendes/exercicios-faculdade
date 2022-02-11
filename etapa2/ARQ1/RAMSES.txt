@@ -1,0 +1,79 @@
+ORG 0
+
+                LDR X #0
+while:
+                LDR A vet, X
+                JZ fim_while
+                
+num_value:
+                JN index_value
+
+                STR A size_vec_num, I
+                LDR B size_vec_num
+                ADD B #1
+                STR B size_vec_num
+                JMP while  
+
+index_value:
+                SUB A #h80
+                STR A size_vec_ind, I
+                LDR B size_vec_ind
+                ADD B #1
+                STR B size_vec_ind 
+                JMP while
+
+fim_while:
+                LDR X #0
+for_loop:
+                SUB X size_vec_ind          ;cont < size_index
+                ADD X #1
+                JZ  fim_for
+                ADD X size_vec_ind
+                SUB X #1
+
+                SUB X size_vec_num          ;cont < size_num
+                ADD X #1
+                JZ  fim_for
+                ADD X size_vec_num
+                SUB X #1
+
+                LDR A size_vec_ind, X 
+                
+                
+                LDR A vecInd, X
+                ADD A #vecNum
+                STR A aux                   ;index = vi[cont]
+
+                SUB A size_vec_ind          ;cont < size_index
+                ADD A #vecInd
+                JN  for_loop
+                ADD A size_vec_ind
+                SUB A #vecInd
+
+                LDR A aux, I
+                ADD A result
+                STR A result
+
+                ADD X #1
+
+                JMP for_loop
+    
+fim_for:        
+                
+fim:
+                HLT
+
+ORG hCF
+aux:           DB 0
+
+ORG HD0
+size_vec_ind:   DB HD1
+vecInd:         DAB [14]
+
+ORG HE0
+size_vec_num:   DB HE1
+vecNum:         DAB [14]
+
+ORG HF0
+result:         DB 0
+vet:            DAB 01, 82, 02, 81, 03, 04, h8F, hFF
