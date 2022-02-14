@@ -1,45 +1,44 @@
 from random import randint
-from numpy import number
-
 from pandas import DataFrame
 
 class new_test_ramses:
 
     def __init__(self, name: str):
-        
         self.set_name(name)
-        
-        self.init_lists()
+
+        self.__init_lists__()
 
         self.__generate_random_values__()
 
-        self.split_vector_index_and_number()
+        self.__split_vector_index_and_number__()
 
-        self.sum = self.set_sum()
+        self.sum = self.__set_sum__()
 
-        self.generate_excel_file()
+        self.__generate_excel_file__()
 
     def set_name(self, name):
         self.output_file = name
 
-    def init_lists(self):
+    def __init_lists__(self):
         self.v = []
         self.vi = []
-        self.vn = []        
+        self.vn = []      
 
-        for i in range(0,15):
+        index = 7 + randint(0,7)  
+
+        for i in range(0,index):
             self.v.append(0);
+        
+        self.v.append(255);
 
     def __generate_random_values__(self):
-
-        self.v[7 + randint(0,7)] = 255
 
         i = 0
         while self.v[i] != 255:
             self.v[i] = randint(0, 16) + randint(0,1) * 128
             i += 1
 
-    def split_vector_index_and_number(self):
+    def __split_vector_index_and_number__(self):
         i = 0
         self.size_index_vec = 0
         self.size_number_vec = 0
@@ -57,7 +56,7 @@ class new_test_ramses:
             
             i += 1
         
-    def generate_excel_file(self):
+    def __generate_excel_file__(self):
         for i in range(self.size_number_vec,len(self.v)):
             self.vn.append('')
         for i in range(self.size_index_vec,len(self.v)):
@@ -77,14 +76,9 @@ class new_test_ramses:
         
         DataFrame(vectors).to_excel(excel_writer=self.output_file)
 
-    def set_sum(self):
-        if self.size_number_vec < self.size_index_vec:
-            min_value_size = self.size_number_vec
-        else:
-            min_value_size = self.size_index_vec
-
+    def __set_sum__(self):
         sum = 0
-        for cont in range (0, min_value_size):
+        for cont in range (0, self.size_index_vec):
             if self.vi[cont] < self.size_number_vec:
                 sum += self.vn[self.vi[cont]]
 
@@ -94,5 +88,5 @@ class new_test_ramses:
         for elem in v:
             print(f"{elem}  ", end='')
         
-for i in range(0,100):
+for i in range(0,5):
     generator_excel = new_test_ramses(f'excel_file{i}.xlsx')

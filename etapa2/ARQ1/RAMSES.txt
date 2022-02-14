@@ -31,23 +31,16 @@ for_loop:
                 ADD X size_vec_ind
                 SUB X #1
 
-                SUB X size_vec_num          ;cont < size_num
-                ADD X #1
-                JZ  fim_for
-                ADD X size_vec_num
-                SUB X #1
-
-                LDR A size_vec_ind, X 
-                
+                LDR A size_vec_ind, X   
                 
                 LDR A vecInd, X
                 ADD A #vecNum
                 STR A aux                   ;index = vi[cont]
 
-                SUB A size_vec_ind          ;cont < size_index
+                SUB A size_vec_num          ;cont < size_index
                 ADD A #vecInd
                 JN  for_loop
-                ADD A size_vec_ind
+                ADD A size_vec_num
                 SUB A #vecInd
 
                 LDR A aux, I
