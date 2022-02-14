@@ -55,11 +55,16 @@ class new_test_ramses:
                 self.size_number_vec += 1
             
             i += 1
+
+        vi_new = [i for i in self.vi if i < self.size_number_vec]
+        self.vi.clear()
+        self.vi = vi_new
+        
         
     def __generate_excel_file__(self):
-        for i in range(self.size_number_vec,len(self.v)):
+        for i in range(len(self.vn),len(self.v)):
             self.vn.append('')
-        for i in range(self.size_index_vec,len(self.v)):
+        for i in range(len(self.vi),len(self.v)):
             self.vi.append('')
 
         soma_vector = []
@@ -78,9 +83,10 @@ class new_test_ramses:
 
     def __set_sum__(self):
         sum = 0
-        for cont in range (0, self.size_index_vec):
+        for cont in range (0, len(self.vi)):
             if self.vi[cont] < self.size_number_vec:
                 sum += self.vn[self.vi[cont]]
+            
 
         return sum
 
@@ -88,5 +94,5 @@ class new_test_ramses:
         for elem in v:
             print(f"{elem}  ", end='')
         
-for i in range(0,5):
+for i in range(5,7):
     generator_excel = new_test_ramses(f'excel_file{i}.xlsx')
