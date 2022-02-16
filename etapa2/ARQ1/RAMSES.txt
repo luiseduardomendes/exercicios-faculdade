@@ -15,7 +15,7 @@ num_value:
                 JMP while  
 
 index_value:
-                SUB A #h80
+                AND A #h7F
                 STR A size_vec_ind, I
                 LDR B size_vec_ind
                 ADD B #1

@@ -49,7 +49,7 @@ class new_test_ramses:
                 self.vi.append(aux)
                 self.size_index_vec += 1
             
-            elif aux > 0 and aux <= 128 :
+            elif aux <= 128:
             
                 self.vn.append(aux)
                 self.size_number_vec += 1
@@ -94,5 +94,5 @@ class new_test_ramses:
         for elem in v:
             print(f"{elem}  ", end='')
         
-for i in range(5,7):
+for i in range(0,50):
     generator_excel = new_test_ramses(f'excel_file{i}.xlsx')

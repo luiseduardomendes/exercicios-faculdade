@@ -1,0 +1,27 @@
+ORG 0
+                LDR A #0
+                STR A aux
+                
+while_clear:
+                JZ end_while_clear
+                STR A aux, X
+                ADD X #1
+                JMP while_clear
+
+end_while_clear:
+
+
+ORG hCF
+aux:            DB 0
+
+ORG HD0
+size_vi:        DB 0
+vecInd:         DAB [14]
+
+ORG HE0
+size_vn:        DB 0
+vecNum:         DAB [14]
+
+ORG HF0
+result:         DB 0
+vet:            DAB 01, 82, 02, 81, 03, 04, h8F, hFF
