@@ -8,7 +8,7 @@ t_node* list_init(void){
 void list_print(t_node* head){
     t_node *index = NULL;
 
-    if(head != NULL)
+    if(head != NULL) 
         for (index = head; index != NULL; index = index->next)
             list_print_node(*index);
     else
@@ -44,8 +44,6 @@ t_node* list_insert_begin(t_node *head, t_info_node data){
     // novo elemento inicial sera o elemento adicionado
     head = new_elem;
 
-    
-
     return head;
 }
 
@@ -56,6 +54,7 @@ t_node* list_insert_end(t_node *head, t_info_node data){
 
     // ultimo elemento da lista atualizada eh new_elem, logo ele
     // sera precedido pelo elemento final da lista antiga
+    // e seu sucessor sera nulo
     new_elem->next = NULL;
     new_elem->info = data;
 
@@ -79,11 +78,13 @@ t_node* list_insert_end(t_node *head, t_info_node data){
 t_node* list_clear(t_node* head){
     t_node *index = NULL;
 
+    // desaloca o elemento anterior ao elemento atual
     for(index = head->next; index->next != NULL; index = index->next)
         free(index->prev);
+    // desaloca os elementos que sobraram, ou seja, o ultimo 
+    // e o penultimo
     free(index->prev);
     free(index);
-
 
     head = NULL;
 
@@ -95,7 +96,7 @@ t_node* list_remove(t_node *head, int id){
     t_node *index = NULL;
     
     for(index = head; index != NULL; index = index->next){
-        if (index->info.id == id){
+        if (index->info.id == id){ // if found the element
             
             if (index == head){ // index in first element
                 if(head->next != NULL){ // list has more than one element
@@ -105,7 +106,6 @@ t_node* list_remove(t_node *head, int id){
 
                 else // list has only one element
                     head = NULL;
-                
             }
 
             else if (index->next == NULL){ // index in last element
@@ -122,6 +122,52 @@ t_node* list_remove(t_node *head, int id){
     return head;
 }
 
+t_node *list_insert_position(t_node *head, t_info_node data, int position){
+    t_node *index = NULL, *new_element = NULL;
+    int i;
+
+    // allocates memory to the new node
+    new_element = (t_node*) malloc (sizeof(t_node));
+    new_element->info = data;
+
+    if(position <= list_size(head) && position >= 0){ // verify if position is valid
+        if (head != NULL){ // if list is not empty
+            if (position == 0){ // if position is the first element 
+                head = list_insert_begin(head, data);
+            }
+            else if(position == list_size(head)){ // position is the last element
+                head = list_insert_end(head, data);
+            }
+            else{ // positions is in the middle of the list
+                for(index = head, i = 0; i < position; index = index->next, i ++);
+                new_element->next = index;
+                new_element->prev = index->prev;
+                index->prev->next = new_element;
+                index->prev = new_element;
+                
+            }
+        }
+        else{ // new element is the first element added
+            new_element->next = NULL;
+            new_element->prev = NULL;
+            head = new_element;
+        }
+    }
+    return head;
+}
+
+t_node *list_insert_sorted(t_node *head, t_info_node data){
+    t_node *index = NULL;
+    int i = 0;
+    
+    // find the index to insert the new element
+    for(index = head; index != NULL && index->info.id < data.id; index = index->next)
+        i ++;
+    
+    head = list_insert_position(head, data, i);
+    
+    return head;
+}
 
 // AUXILIAR FUNCTIONS
 
@@ -150,6 +196,15 @@ t_info_node list_input_node(){
     scanf("%f", &node.price);
 
     return node;
+}
+
+int list_size(t_node *head){
+    t_node *index;
+    int i = 0;
+
+    for(index = head; index != NULL; index = index->next)
+        i ++;
+    return i;
 }
 
 void clear_screen(){
