@@ -1,0 +1,117 @@
+; ------- variables --------- ;
+ORG HC8
+
+aux:        DB 1
+index:      DB 1
+
+size_vi:    DB 1
+size_vn:    DB 1
+
+vec_i:      DAB [14] = {1}
+vec_n:      DAB [14] = {1}
+
+p_vi:       DB vec_i    ; const value to first pos of vec_i
+p_vn:       DB vec_n    ; const value to first pos of vec_n
+
+ORG HF0
+
+result:     DB 0
+vec:        DAB 
+
+ORG 0
+
+; ------- INIT LISTS -------- ;
+
+            LDR A #0
+            LDR B #H20
+            LDR X #HFF
+while_clear:
+            ADD X #1
+            STR A HC8, X
+            SUB B #1
+            JZ end_while_clear
+            JMP while_clear
+end_while_clear:
+            STR A result
+
+; ------ SPLIT VECTORS ------ ;
+
+            LDR B #vec
+            SUB B #1
+            STR B index
+
+while:
+
+            LDR B index
+            ADD B #1
+            STR B index
+
+            LDR A index, I
+
+            SUB A #HFF
+            JZ end_of_vec
+            ADD A #HFF
+
+            JN index_value
+
+; ---- APPEND NUMBER VEC ---- ;
+
+            LDR X #vec_n
+            ADD X size_vn           ; X = end
+
+            STR A 0, X              ; end = aux
+        
+            LDR A size_vn
+            ADD A #1                ; size_vn ++
+            STR A size_vn
+
+            JMP while
+
+; ---- APPEND INDEX VEC ----- ;
+
+index_value:
+
+            LDR X #vec_i
+            ADD X size_vi           ; X = end
+
+            SUB A #H80
+            STR A 0, X              ; end = aux - 128
+            
+            LDR A size_vi
+            ADD A #1                ; size_vi ++
+            STR A size_vi
+
+            JMP while
+
+end_of_vec:
+
+            LDR X size_vi               ; controle do laço
+	    
+for:
+
+         	SUB X #1
+		JN fim
+
+            LDR A vec_i, X   
+            SUB A size_vn
+            JN valid
+		
+            JMP for
+valid:
+            ADD A size_vn
+	    	
+            ADD A #vec_n
+            STR A aux 
+            
+            LDR A aux, I
+            ADD A result
+            STR A result 
+		                 
+
+            JMP for   
+                
+fim:
+            HLT
+
+
+
