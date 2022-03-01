@@ -20,9 +20,8 @@ void list_print(t_node* head){
 void list_print_reversed(t_node *head){
     t_node *index = head->prev;
     if(head != NULL){ // list is not empty
-        // place the index in the last position of the list
         list_print_node(*index);
-        for (index->prev; index != head->prev; index = index->prev)
+        for (index = index->prev; index != head->prev; index = index->prev)
             list_print_node(*index);
     }
     else
@@ -220,7 +219,21 @@ void clear_screen(){
         system("cls");
     #elif _POSIX_C_SOURCE >= 199309L
         system("clear");
-    #elif 
+    #else
         system("cls");
     #endif
+}
+
+t_info_node list_middle_element(t_node *head){
+    t_node *i1 = head, *i2 = head;
+
+    do{
+        i1 = i1->prev;
+        if (i1 == i2)
+            return i1->info;
+        i2 = i2->next;
+        if (i1 == i2)
+            return i1->info;
+
+    } while(1);
 }
