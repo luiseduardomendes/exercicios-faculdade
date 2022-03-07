@@ -13,18 +13,21 @@ typedef struct t_node_doubly{
 }t_node_doubly;
 
 int main(){
+    t_node =NULL;
     return 0;
 }
 
 t_node_doubly* toDoubly(t_node *headLinked){
-    t_node_doubly* index_doubly = headLinked;
-    t_node *ant = NULL;
-    while (headLinked != NULL){
+    
+    t_node *ant = NULL, *index = headLinked;
+    t_node_doubly* index_doubly = NULL;
+
+    while (index != NULL){
         index_doubly = malloc(sizeof(t_node_doubly));
         
-        index->prev = ant;
-        index->data = 
-    }
-    else    
-        return NULL;
+        index_doubly->prev = ant;
+        index_doubly->data = index->data;
+        index_doubly->next = index->next;
+    }  
+    return index_doubly;
 }
