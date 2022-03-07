@@ -10,7 +10,7 @@ int main(){
     do{
         head = list_insert_begin(head, list_input_node());
         list_print(head);
-        printf("elemento intermediario: %d\n", list_middle_element(head).id);
+        printf("elemento intermediario: %d\n", encontraMeio(head).id);
     } while (1);
 
     

@@ -1,7 +1,7 @@
 ; ------- variables --------- ;
 ORG HC8
 
-aux:        DB 1
+aux:        DB 1        ; auxiliar variables
 index:      DB 1
 
 size_vi:    DB 1
@@ -25,18 +25,18 @@ ORG 0
             LDR A #0
             LDR B #H20
             LDR X #HFF
-while_clear:
+while_clear:                        ; clear the memory
             ADD X #1
             STR A HC8, X
             SUB B #1
             JZ end_while_clear
             JMP while_clear
 end_while_clear:
-            STR A result
+            STR A result            ; clear result
 
 ; ------ SPLIT VECTORS ------ ;
 
-            LDR B #vec
+            LDR B #vec              ; index = &vec[0] - 1
             SUB B #1
             STR B index
 
@@ -44,22 +44,22 @@ while:
 
             LDR B index
             ADD B #1
-            STR B index
+            STR B index             ; index = index + 1
 
-            LDR A index, I
+            LDR A index, I          ; RA = vec[index]
 
             SUB A #HFF
-            JZ end_of_vec
+            JZ end_of_vec           ; if vec[index] = HFF then break
             ADD A #HFF
 
-            JN index_value
+            JN index_value          ; if vec[index] >= 128 then isIndexValue, else isNumberValue
 
 ; ---- APPEND NUMBER VEC ---- ;
 
-            LDR X #vec_n
-            ADD X size_vn           ; X = end
+            LDR X #vec_n            
+            ADD X size_vn           ; X = address to the last element of vec_n + 1
 
-            STR A 0, X              ; end = aux
+            STR A 0, X              ; vec_n.append(vec[index])
         
             LDR A size_vn
             ADD A #1                ; size_vn ++
@@ -72,10 +72,10 @@ while:
 index_value:
 
             LDR X #vec_i
-            ADD X size_vi           ; X = end
+            ADD X size_vi           ; X = address to the last element of vec_i + 1
 
             SUB A #H80
-            STR A 0, X              ; end = aux - 128
+            STR A 0, X              ; vec_i.append(vec[index] - 128)
             
             LDR A size_vi
             ADD A #1                ; size_vi ++
@@ -85,26 +85,26 @@ index_value:
 
 end_of_vec:
 
-            LDR X size_vi               ; controle do laço
+            LDR X size_vi           ; counter = vi.size()
 	    
 for:
 
-         	SUB X #1
-		JN fim
+         	SUB X #1                ; counter --;
+		JN fim                  ; if counter < 0 break
 
-            LDR A vec_i, X   
-            SUB A size_vn
+            LDR A vec_i, X          ; RA = vec_i[counter] // index used
+            SUB A size_vn           ; if RA >= vec_n.size() then back to loop init
             JN valid
 		
             JMP for
 valid:
-            ADD A size_vn
+            ADD A size_vn           ; else restore RA
 	    	
-            ADD A #vec_n
+            ADD A #vec_n            ; aux = &vec_n[RA]
             STR A aux 
             
-            LDR A aux, I
-            ADD A result
+            LDR A aux, I            ; RA = vec_n[vec_i[counter]]
+            ADD A result            ; result += RA
             STR A result 
 		                 
 
