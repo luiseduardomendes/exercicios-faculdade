@@ -81,7 +81,8 @@
     "memory_resource": "cpp",
     "string_view": "cpp",
     "cinttypes": "cpp",
-    "linearlistwdescript.h": "c"
+    "linearlistwdescript.h": "c",
+    "MAIN4.C": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "C:\\MinGW\\bin\\gcc.exe",
   "C_Cpp_Runner.cppCompilerPath": "C:\\MinGW\\bin\\g++.exe",
