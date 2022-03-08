@@ -2,13 +2,14 @@
 
 void print_bin(int num){ 
     tStackNode* top;
-    int i;
+    int i = num;
 
     top = stack_init();
     
     while(num != 0){
-        num = num % 2;
-        stack_push(&top, num);
+        i = num % 2;
+        num = num/2;
+        stack_push(&top, i);
     }
 
     while(!stack_isEmpty(top)){
@@ -21,8 +22,8 @@ int main(){
     int n;
 
     do {
-    scanf("%d", &n);
-    pritn(n);
+        scanf("%d", &n);
+        print_bin(n);
     } while(1);
     
     return 0;
