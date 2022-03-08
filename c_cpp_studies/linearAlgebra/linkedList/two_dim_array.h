@@ -25,6 +25,8 @@ typedef struct Matrix{
 
 void Matrix_init(Matrix *A, int lines, int columns, ...);
 void Matrix_print(Matrix A);
+double Matrix_determinant(Matrix A);
+bool Matrix_isInversible(Matrix A);
 //void mat_insert_begin(Matrix *A, t_node *list);
 //void mat_insert_end(Matrix *A, t_node *list);
 //bool mat_insert_position(Matrix *A, t_node *list, int pos);

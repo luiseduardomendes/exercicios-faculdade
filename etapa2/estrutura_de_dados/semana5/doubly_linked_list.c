@@ -212,7 +212,7 @@ void clear_screen(){
         system("cls");
     #elif _POSIX_C_SOURCE >= 199309L
         system("clear");
-    #elif 
+    #else
         system("cls");
     #endif
 }

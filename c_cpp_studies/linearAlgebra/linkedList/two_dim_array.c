@@ -182,3 +182,12 @@ void Matrix_init(Matrix *A, int lines, int columns, ...){
     va_end(ap);
 }  
 
+bool Matrix_isInversible(Matrix A){
+    if (Matrix_determinant(A) != 0)
+        return true;
+    else return false;
+}
+
+double Matrix_determinant(Matrix A){
+    return 0;
+}

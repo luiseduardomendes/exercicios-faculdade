@@ -1,5 +1,4 @@
-#include "doubly_linked_list_circular.h"
-#include "bolsonmain.c"
+#include "doubly_linked_list.h"
 
 t_info_node list_middle_element(t_node *head);
 
@@ -20,15 +19,19 @@ int main(){
 }
 
 t_info_node list_middle_element(t_node *head){
-    t_node *i1 = head, *i2 = head;
+    t_node *i1 = head, *i2;
 
-    do{
+    // place i2 in the last position
+    for (i2 = head; i2->next != NULL; i2 = i2->next);
+
+    while (i2 != i1){
         i1 = i1->next;
         if (i1 == i2)
             return i1->info;
         i2 = i2->prev;
         if (i1 == i2)
             return i1->info;
-
-    } while(1);
+    }
+    
+    return i1->info;
 }
