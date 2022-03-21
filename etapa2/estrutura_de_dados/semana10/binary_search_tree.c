@@ -39,7 +39,7 @@ node* bst_insert(node *root, int item, node *prev){
 }
 
 node* bst_remove(node *root, int item){
-    node *buffer = NULL, *index = root;
+    node *max_left = NULL, *index = root, *b1, *b2;
     
     index = bst_search(root, item);
     
@@ -53,19 +53,39 @@ node* bst_remove(node *root, int item){
             free(index);
         }
         else if (index->left != NULL && index->right != NULL){
-            buffer = index->left;
-            while (buffer->right != NULL)
-                buffer = buffer->right;
             
-            if (buffer->data < buffer->parent->data)
-                buffer->parent->left = NULL;
-            else
-                buffer->parent->right = NULL;
+            max_left = index->left;
+            while (max_left->right != NULL)
+                max_left = max_left->right;
             
-            if (index->data < index->parent->data)
-                index->parent->left = buffer;
+            
+            // remove the maximum element from its original position
+            if (max_left->data < max_left->parent->data)
+                max_left->parent->left = NULL;
             else
-                index->parent->right = buffer;
+                max_left->parent->right = NULL;
+            
+            // save its subtrees
+            b1 = max_left->left;
+            
+            // place maximum
+            if(index->parent != NULL){
+                if (index->data < index->parent->data)
+                    index->parent->left = max_left;
+                else
+                    index->parent->right = max_left;
+            }
+            else
+                root = max_left;
+
+            // append the subtrees of the removed element
+            max_left->left = index->left;
+            max_left->right = index->right;
+
+            // insert subtree of the maximum
+            bst_insert_subtree(b1, root);
+
+            free(index);
         }
         else if (index->left != NULL){
             if (index->parent->data > index->data)
@@ -80,7 +100,7 @@ node* bst_remove(node *root, int item){
                 index->parent->right = index->right;
         }
     }
-        
+    return root;
 }
 
 void print_inorder_left(node *root){
@@ -90,3 +110,24 @@ void print_inorder_left(node *root){
         print_inorder_left(root->right);
     }
 } 
+
+node* bst_insert_subtree(node *orig, node *dest){
+    if (orig != NULL){
+        
+        if (orig->parent->data > orig->data)
+            orig->parent->left = NULL;
+        else
+            orig->parent->right = NULL;
+        
+        dest = bst_insert(dest, orig->data, NULL);
+
+        bst_insert_subtree(orig->left, dest);
+        bst_insert_subtree(orig->right, dest);
+
+        free(orig);
+    }
+    else{
+        return dest;
+    }
+    
+}

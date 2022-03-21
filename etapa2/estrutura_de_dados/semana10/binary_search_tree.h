@@ -14,4 +14,5 @@ typedef struct node {
 node* bst_search(node *root, int key);
 node* bst_insert(node *root, int item, node *prev);
 node* bst_remove(node *root, int item);
+node* bst_insert_subtree(node *orig, node *dest);
 void print_inorder_left(node *root);
