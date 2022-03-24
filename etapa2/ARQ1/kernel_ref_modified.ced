@@ -92,29 +92,29 @@ VISOR:	dab		[36]		; Portas de acesso ao visor
 ; 3) Inicializar as variáveis internas usadas pelo sistema de interrupções e periféricos (IVET, INTE, etc.)
 
 		clr		INTS			; Reset pedidos de interrupcao
-		
-		mov		#isr,IVET		; Set Interrupt Service Rotine
 
 ; 4) Inicializar as variáveis internas do kernel
+
+		clr 	clock_sec
+		clr 	clock_min
+		clr 	clock_hor
+		clr 	getchar_waiting
+
 ; 5) Inicializar o teclado zerando o byte de estado (TECST, endereço 65498)
 
 		clr 	TECST			; Reset estado do hardware do teclado
-		clr 	TECDT			; Reset dado do hardware do teclado
 
 ; 6) Inicializar o timer
 
 		mov 	#250,TIMDT
 
 ; 7) Limpar o visor
-
-		mov 	#31,r0
-	clear_display:
-		clr 	(VISOR(r0))
-		sob 	r0, clear_display
+	
+		jsr 	clear_display, r7
 
 ; 8) Habilitar interrupções
 
-		mov 	#83,INTS
+		mov 	#h81,INTS
 
 ; 9) Retornar para o programa de aplicação com um desvio para o endereço _APP da memória
 		jmp		_APP
@@ -123,18 +123,66 @@ VISOR:	dab		[36]		; Portas de acesso ao visor
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _kbhit:
+
+		clr 	r0
+		cmp 	TECST, #h80
+		bne 	not_found
+		inc 	r0
+	not_found:
 		rts		r7
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _getchar:
+
+		jsr		_kbhit
+		tst 	r0
+		bne		_getchar
+		mov 	#1, getchar_waiting
+		mov 	TECDT, r0
 		rts		r7
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _putchar:
+
+		cmp 	r5, #h20
+		blt 	symbol
+		cmp 	r5, #h7A
+		bgt 	error_putch
+		mov 	r5, display_cursor
+		jmp 	end_putch
+
+	symbol:
+
+		cmp 	r5, #h0D
+		bne 	a_putchar
+		mov 	#VISOR, display_cursor
+		jmp 	end_putch
+
+	a_putchar:
+
+		cmp 	r5, #h0A
+		bne 	b_putchar
+		jsr 	clear_display, r7
+		jmp 	end_putch
+
+	b_putchar:
+
+		cmp 	r5, #h08
+		bne 	b_putchar
+		dec 	display_cursor
+		jmp 	end_putch
+
+	error_putch:
+
+		mov 	#1, r0
+
+	end_putch:
+
+		
 		rts		r7
 
 ;		
@@ -161,15 +209,18 @@ _setclock:
 _setalarm:
 		rts		r7
 
-org _APP
-
-fill_display:
-		mov 	#Hfffe, r1
-		mov		#31, (r1)
-		sob		r1, fill_display
-
-		hlt
+getchar_waiting	: 	dw 0
+clock_hor		:	dw 0
+clock_min		:	dw 0
+clock_sec 		: 	dw 0
+display_cursor 	: 	dw 0
 
 
-
-
+clear_display:
+		mov 	r0, -(r6)
+		mov 	#31,r0
+	clear_display_a:
+		clr 	(VISOR(r0))
+		sob 	r0, clear_display_a
+		mov 	(r6)+, r0
+		rts 	r7
