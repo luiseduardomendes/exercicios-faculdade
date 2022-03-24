@@ -1,0 +1,14 @@
+(2)
+
+B,D,A,G,E,H,C,F,central a esquerda
+F,C,H,E,G,A,D,B,central a direita
+A,B,D,C,E,G,H,F,pre-fixado a esquerda
+A,C,F,E,H,G,B,D,pre-fixado a direita
+D,B,G,H,E,F,C,A,pos-fixado a esquerda
+F,H,G,E,C,D,B,A,pos-fixado a direita
+
+(5)
+pre-fixado a esquerda
+central a esquerda
+pre-fixado a direita
+pos-fixado a esquerda   

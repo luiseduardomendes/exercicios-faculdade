@@ -1,36 +1,39 @@
 import sys
 
-class Node:
-    def __init__(self, state, parent, action) -> None:
-        self.state = state
-        self.parent = parent
-        self.action = action
+from click import option
 
-class StackFrontier:
+class Node:
+    def __init__(self, state, action, parent, cost) -> None:
+        self.parent = parent
+        self.state = state
+        self.action = action
+        self.cost = cost
+    
+class StackFrontier():
     def __init__(self) -> None:
         self.frontier = []
 
-    def add(self, node) -> None:
+    def add(self, node):
         self.frontier.append(node)
-
-    def contains_state(self, state):
-        return any(node.state == state for node in self.frontier)
-
-    def empty(self) -> bool:
-        return len(self.frontier) == 0
 
     def remove(self):
         if self.empty():
-            raise Exception("Empty frontier")
+            raise Exception("Frontier is empty")
         else:
             node = self.frontier[-1]
             self.frontier = self.frontier[:-1]
             return node
 
+    def contains_state(self, state):
+        return any(state == node.state for node in self.frontier)
+
+    def empty(self):
+        return len(self.frontier) == 0
+
 class QueueFrontier(StackFrontier):
     def remove(self):
         if self.empty():
-            raise Exception("Empty frontier")
+            raise Exception("Frontier is empty")
         else:
             node = self.frontier[0]
             self.frontier = self.frontier[1:]
@@ -76,7 +79,7 @@ class Maze():
             self.walls.append(row)
 
         self.solution = None
-                    
+
     def print(self):
         solution = self.solution[1] if self.solution is not None else None
         print()
@@ -113,8 +116,8 @@ class Maze():
     def solve(self):
         self.explored = 0
 
-        start = Node(state=self.start, parent=None, action=None)
-        frontier = QueueFrontier()
+        start = Node(state=self.start, parent=None, action=None, cost=0)
+        frontier = StackFrontier()
         frontier.add(start)
 
         self.explored = set()
@@ -139,12 +142,37 @@ class Maze():
 
             self.explored.add(node.state)
 
+            options = []
 
             for action, state in self.neighbors(node.state):
                 if not frontier.contains_state(state) and state not in self.explored:
-                    child = Node(state=state, parent=node, action=action)
-                    frontier.add(child)
+                    child = Node(state=state, parent=node, action=action, cost=node.cost+1)
+                    options.append((child, self.heuristic(child.state, child.cost)))
+
+            options = self.sort(options)
+
+            for n, h in options:
+                frontier.add(n)
+            
     
+    def heuristic(self, state, cost) -> int:
+        return abs(self.goal[0] - state[0]) + abs(self.goal[1] - state[1]) + cost
+
+    def sort(self, options):
+        t = True
+        while t:
+            t = False
+            for i in range(len(options) - 1):
+                if options[i][1] < options[i+1][1]:
+                    b = options[i]
+                    options[i] = options[i+1]
+                    options[i+1] = b
+                    t = True
+
+        return options
+        
+
+
     def output_image(self, filename, show_solution=True, show_explored=False):
         from PIL import Image, ImageDraw
         cell_size = 50
@@ -206,5 +234,5 @@ m.solve()
 print("States Explored:", m.explored)
 print("Solution:")
 m.print()
-m.output_image("maze.png", show_explored=False)
+m.output_image("maze.png", show_explored=True)
 
