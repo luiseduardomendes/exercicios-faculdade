@@ -1,4 +1,4 @@
-;
+	jmp 	_KERNEL
 ;
 ;******************************************************************************
 ;
@@ -181,7 +181,6 @@ _putchar:
 		mov 	#1, r0
 
 	end_putch:
-
 		
 		rts		r7
 
@@ -195,25 +194,167 @@ _putmsg:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _getclock:
+
+		mov 	clock_hor, r2
+		mov 	clock_min, r1
+		mov 	clock_sec, r0
 		rts		r7
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _setclock:
+; r0 = 1 : error in second
+; r0 = 2 : error in minute
+; r0 = 3 : error in hour 
+		
+		cmp 	r3, #60
+		blt		sec_not_error
+		mov 	#1, r0
+		jmp 	end
+
+	sec_not_error:
+		mov 	r3, clock_sec
+
+		cmp 	r4, #60
+		blt		min_not_error
+		mov  	#2, r0
+		jmp 	end
+
+	min_not_error:
+		mov 	r4, clock_min
+	
+		cmp 	r5, #24
+		blt		hor_not_error
+		mov 	#3, r0
+		jmp 	end
+
+	hor_not_error:
+		mov 	r5, clock_hor
+
+	end:
+
 		rts		r7
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _setalarm:
+
+; r0 = 1 : error in second
+; r0 = 2 : error in minute
+; r0 = 3 : error in hour 
+		
+		cmp 	r2, #60
+		blt		sec_not_error_a
+		mov 	#1, r0
+		jmp 	end_alarm
+
+	sec_not_error_a:
+		mov 	r2, clock_sec
+
+		cmp 	r3, #60
+		blt		min_not_error_a
+		mov  	#2, r0
+		jmp 	end_alarm
+
+	min_not_error_a:
+		mov 	r3, clock_min
+	
+		cmp 	r5, #24
+		blt		hor_not_error
+		mov 	#3, r0
+		jmp 	end_alarm
+
+	hor_not_error_a:
+		mov 	r5, clock_hor
+
+	end_alarm:
+
 		rts		r7
+
 
 getchar_waiting	: 	dw 0
 clock_hor		:	dw 0
 clock_min		:	dw 0
 clock_sec 		: 	dw 0
 display_cursor 	: 	dw 0
+alarm_hor		:	dw 0
+alarm_min		:	dw 0
+alarm_sec 		: 	dw 0
+
+_display_clock:
+
+	
+
+		mov 	r4, -(r6)
+		mov 	r5, -(r6)
+
+		clr 	r4
+		mov 	#-1, r5
+	display_clock_loop1:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_hor
+		blt		display_clock_loop1
+
+		add 	r5, #H30
+		mov 	r5, #28(VISOR)
+
+		sub 	#10, r4
+		mov 	clock_hor, r5
+		sub 	r4, r5
+
+		add 	r5, #H30
+		mov 	r5, #29(VISOR)
+
+		mov 	#H3A, #30(VISOR)
+
+
+		clr 	r4
+		mov 	#-1, r5
+	display_clock_loop2:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_min
+		blt		display_clock_loop2
+
+		add 	r5, #H31
+		mov 	r5, #32(VISOR)
+
+		sub 	#10, r4
+		mov 	clock_min, r5
+		sub 	r4, r5
+
+		add 	r5, #H30
+		mov 	r5, #32(VISOR)
+
+
+		mov 	#H3A, #33(VISOR)
+
+
+	clr 	r4
+		mov 	#-1, r5
+	display_clock_loop3:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_sec
+		blt		display_clock_loop3
+
+		add 	r5, #H30
+		mov 	r5, #34(VISOR)
+
+		sub 	#10, r4
+		mov 	clock_sec, r5
+		sub 	r4, r5
+
+		add 	r5, #H30
+		mov 	r5, #35(VISOR)
+
+		rts 	r7
+
+		
+
 
 
 clear_display:
@@ -224,3 +365,10 @@ clear_display:
 		sob 	r0, clear_display_a
 		mov 	(r6)+, r0
 		rts 	r7
+
+
+org _APP
+
+		jsr 	_display_clock, r7
+		jmp 	_APP
+		
