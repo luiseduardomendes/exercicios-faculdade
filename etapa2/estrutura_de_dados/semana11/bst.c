@@ -14,12 +14,19 @@ pNodoA* InsereAVL (pNodoA *a, int x, int *ok){
         *ok = 1;
     }
     else if (x < a->info) {
-    a->esq = InsereAVL(a->esq,x,ok);
+        a->esq = InsereAVL(a->esq,x,ok);
         if (*ok) {
             switch (a->FB) {
-                case -1: a->FB = 0; *ok = 0; break;
-                case 0: a->FB = 1; break;
-                case 1: a=Caso1(a,ok); break;
+                case -1: 
+                    a->FB = 0; 
+                    *ok = 0; 
+                    break;
+                case 0: 
+                    a->FB = 1; 
+                    break;
+                case 1: 
+                    a = Caso1(a,ok); 
+                    break;
             }
         }
     }
@@ -27,9 +34,16 @@ pNodoA* InsereAVL (pNodoA *a, int x, int *ok){
         a->dir = InsereAVL(a->dir,x,ok);
         if (*ok) {
             switch (a->FB) {
-                case 1: a->FB = 0; *ok = 0; break;
-                case 0: a->FB = -1; break;
-                case -1: a = Caso2(a,ok); break;
+                case 1: 
+                    a->FB = 0; 
+                    *ok = 0; 
+                    break;
+                case 0: 
+                    a->FB = -1; 
+                    break;
+                case -1: 
+                    a = Caso2(a,ok); 
+                    break;
             }
         }
     }
@@ -135,6 +149,30 @@ int bst_avl_height_node(pNodoA *a){
         if (height_left > height_right)
             return height_left;
         return height_right;
+    }
+    return 0;
+}
+
+int bst_factor(pNodoA *a){
+    return (bst_avl_height_node(a->esq) - bst_avl_height_node(a->dir));
+}
+
+int bst_factor_tree(pNodoA *a){
+    int fat_a, fat_b, fat_c;
+    
+    if (a != NULL){
+        fat_a = abs(bst_factor_tree(a->esq));
+        fat_b = abs(bst_factor_tree(a->dir));
+        fat_c = abs(bst_factor(a));
+        
+        if (fat_a > fat_b){
+            if (fat_a > fat_c)
+                return fat_a; // a > b && a > c
+            return fat_c; // a > b && a <= c
+        }
+        if (fat_b > fat_c)
+            return fat_b; // b >= a && b > c
+        return fat_c; // b >= a && b <= c
     }
     return 0;
 }

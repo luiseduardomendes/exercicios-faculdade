@@ -16,3 +16,5 @@ pNodoA* rotacao_esquerda(pNodoA* p);
 pNodoA* rotacao_dupla_direita(pNodoA* p);
 pNodoA* rotacao_dupla_esquerda(pNodoA* p);
 int bst_avl_height_node(pNodoA *a);
+int bst_factor(pNodoA *a);
+int bst_factor_tree(pNodoA *a);
