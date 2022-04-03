@@ -63,6 +63,23 @@ VISOR:	dab		[36]		; Portas de acesso ao visor
 		org		_KERNEL
 		jmp		_RESET
 
+		org 	10
+		tick_cnt:		dw 0 
+		clock_sec:		dw 0
+		clock_min:		dw 0
+		clock_hor:		dw 0
+		alarm_sec:		dw 0
+		alarm_min:		dw 0
+		alarm_hor:		dw 0
+		interrupt: 		equ h81
+		getchar_actived:		dw 0
+		getchar_buffer:			dw 0
+		getchar_buffer_status:	dw 0
+		alarm_status:			dw 0
+		callback_routine:		dw 0
+		alarm_actived:			dw 0
+		display_cursor:			dw 0
+
 ;
 ;------------------------------------------------------------------------------
 ;	Area do kernel com os vetores das funções do kernel
@@ -96,7 +113,19 @@ org		_RESET
 
 	; 4) Inicializar as variáveis internas do kernel
 
-
+		clr 	tick_cnt 
+		clr 	clock_sec
+		clr 	clock_min
+		clr 	clock_hor
+		clr 	alarm_sec
+		clr 	alarm_min
+		clr 	alarm_hor
+		clr 	getchar_actived
+		clr 	getchar_buffer
+		clr 	getchar_buffer_status
+		clr 	alarm_status
+		clr 	display_cursor
+		clr 	callback_routine
 
 	; 5) Inicializar o teclado zerando o byte de estado (TECST, endereço 65498)
 
@@ -113,10 +142,10 @@ org		_RESET
 
 	; 8) Habilitar interrupções
 
-		mov 	#interrupt,INTE		; interrupcoes de timer e teclado
+		mov 	0,INTE		; interrupcoes de timer e teclado
 
 	; 9) Retornar para o programa de aplicação com um desvio para o endereço _APP da memória
-		jmp		_APP
+		jmp	_APP
 
 ;		
 ;------------------------------------------------------------------------------
@@ -128,20 +157,32 @@ _kbhit:
 		bne 	not_found			; if (r0 = 0x80)	
 		inc 	r0				;	 r0 = true
 	not_found:
-		rts		r7			; return r0
+		rts	r7				; return r0
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _getchar:
 
-		mov	 	#1, getchar_actived
+		mov	 #1, getchar_actived
 	char_not_found:
-		jsr 	r7, _kbhit			; while (_kbhit() == false) {}
+		jsr 	r7, _kbhit				; while (_kbhit() == false) {}
 		tst 	r0
-		bne 	char_not_found
+		beq 	char_not_found
 		
-		mov 	TECDT, r0
+		tst 	getchar_buffer_status			; recupera a informacao do visor caso ele 
+		beq 	get_data				; tenha sido trocado por '_' no momento
+		mov 	display_cursor, r0			; posiciona r0 no lugar do cursor
+		mov	getchar_buffer, VISOR(r0)
+
+	get_data:
+
+		mov 	TECDT, r0				; coleta os dados
+		clr 	getchar_actived				; limpa as variaveis
+		clr 	TECDT
+		clr 	TECST
+		clr 	getchar_buffer
+		clr 	getchar_buffer_status
 
 		rts	r7
 		
@@ -149,7 +190,52 @@ _getchar:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _putchar:
-		rts		r7
+		cmp 	display_cursor, #36		; if (display_cursor == 36) {
+		bne 	valid_putchar			; 	clear_display();
+		jsr 	r7, clear_display		;	display_cursor = 0;
+		clr	display_cursor			; }
+	valid_putchar:
+
+		cmp 	r5, #h20			; if (ch < 0x20) 
+		blt 	symbol				;	// caracter ASCII nao visivel
+		cmp 	r5, #h7A			; if (ch > 0x7A)
+		bgt 	error_putch			; 	// caracter invalido
+
+		mov 	display_cursor, r0			; // posiciona r0 no inicio do visor	
+		mov 	r5, visor(r0)			; visor[display_cursor] = ch;
+
+		inc 	display_cursor			; display_cursor ++;
+		jmp 	end_putch			; return;
+
+	symbol:
+							; switch (r5) {
+		cmp 	r5, #h0D			
+		bne 	a_putchar			; 	case carriage_return:
+		clr 	display_cursor			; 		display_cursor = 0;
+		jmp 	end_putch			;		break;
+
+	a_putchar:
+
+		cmp 	r5, #h0A			
+		bne 	b_putchar			; 	case line_feed:
+		jsr 	r7, clear_display		;		clear_display();
+		jmp 	end_putch			;		break;
+
+	b_putchar:
+
+		cmp 	r5, #h08
+		bne 	b_putchar			; 	case backspace:
+		dec 	display_cursor			; 		display_cursor --;
+		jmp 	end_putch			;		break;
+							; }
+
+	error_putch:
+
+		mov 	#1, r0				; error = true;
+
+	end_putch:
+	
+		rts		r7				; return
 
 ;		
 ;------------------------------------------------------------------------------
@@ -238,7 +324,7 @@ _setalarm:
 	hor_not_error_a:
 		mov 	r4, alarm_hor
 		mov 	r5, callback_routine
-		mov 	#1, alarm_active
+		mov 	#1, alarm_actived
 
 	end_alarm:
 		
@@ -250,22 +336,21 @@ _setalarm:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 isr:
+		clr 		INTE
+		
 		mov		r0,-(r6)		; Salva os registradores na pilha
 		mov		r1,-(r6)
 		mov		r2,-(r6)
 		mov		r3,-(r6)
 		mov		r4,-(r6)
-		mov		r5,-(r6)
-		
-		clr 		INTE
+		mov		r5,-(r6)		
 
 		cmp 		INTS, #h81		; if (interrupcao.source == timer){
-		bne		ISR2			
+		bne		isrEND			
 		jsr		r7,ISRtim		; 	Tratamento da INT do TIMER
 		and		#hFFFE,INTS		; 	Desliga bit de INT TIMER
 		jmp 		isrEND			; }
-	ISR2:
-
+	
 	isrEND:
 		mov		(r6)+,r5
 		mov		(r6)+,r4		; Retorna os registradores da pilha
@@ -285,36 +370,36 @@ ISRtim:
 		
 		jsr 	r7, inc_clock			
 		jsr 	r7, alarm_verify
+		jsr 	r7, blink_getchar
 
-	endISRtim:
 		rts 	r7
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 inc_clock:
-		inc 	tick_cnt				; incrementa contador
+		inc 	tick_cnt			; incrementa contador
 		cmp 	tick_cnt, #4			; if (count == 4) {
-		bne		end_inc_timer			; 	count = 0;
+		bne	end_inc_timer			; 	count = 0;
 		
-		clr 	tick_cnt				;	inc_timer();
-		inc 	clock_sec				; sec ++;
+		clr 	tick_cnt			;	inc_timer();
+		inc 	clock_sec			; sec ++;
 		cmp 	clock_sec, #60			; if (sec == 60) {
 		bne 	end_inc_timer			
 	
-		clr 	clock_sec				; 	sec = 0;
-		inc 	clock_min				; 	min ++;
+		clr 	clock_sec			; 	sec = 0;
+		inc 	clock_min			; 	min ++;
 		cmp 	clock_min, #60
 		bne 	end_inc_timer			;	if (min == 60){
 
-		clr 	clock_min				;		min = 0;
-		inc 	clock_hor				; 		hor ++;
+		clr 	clock_min			;		min = 0;
+		inc 	clock_hor			; 		hor ++;
 		cmp 	clock_hor, #24			; 		if (hor == 24)
 		bne 	end_inc_timer
 
-		clr 	clock_hor				;			hor = 0;
-										;	}
-										; }
+		clr 	clock_hor			;			hor = 0;
+							;	}
+							; }
 
 	end_inc_timer:
 		rts 	r7
@@ -340,17 +425,144 @@ alarm_verify:
 
 	end_alarm_verify:
 
-		jsr r7
+		rts	r7
 
-tick_cnt:		dw 0 
-clock_sec:		dw 0
-clock_min:		dw 0
-clock_hor:		dw 0
-alarm_sec:		dw 0
-alarm_min:		dw 0
-alarm_hor:		dw 0
+;		
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+clear_display:
+		mov 	r0, -(r6)			; salva r0
+		mov 	#35,r0				; r0 = 35
+	clear_display_a:
+		clr 	VISOR(r0)			; while (r0 != 0)
+		sob 	r0, clear_display_a		; *r0 = 0 // valor apontado por r0 = 0
+		mov 	(r6)+, r0
+		rts 	r7
 
-interrupt: 		equ 81
+;		
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+blink_getchar:
 
-getchar_actived:		dw 0
-alarm_status:			dw 0
+		tst 	getchar_actived
+		beq	end_blink
+
+		mov 	display_cursor, r0
+
+		tst 	getchar_buffer_status
+		beq 	put_underline
+
+		mov 	getchar_buffer, VISOR(r0)
+		dec 	getchar_buffer_status
+		jmp 	end_blink
+
+	put_underline:
+		mov 	VISOR(r0), getchar_buffer
+		inc 	getchar_buffer_status
+		mov 	#'_', VISOR(r0)
+		
+
+	end_blink:
+		rts 	r7
+;		
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+
+_display_clock:
+
+		clr 	INTE
+		mov 	r3, -(r6)
+		mov 	r4, -(r6)
+		mov 	r5, -(r6)
+		
+
+		mov 	#VISOR, r3
+		add 	#28, r3
+
+		clr 	r4
+		mov 	#-1, r5
+	display_clock_loop1:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_hor
+		ble	display_clock_loop1
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	clock_hor, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		mov 	#H3A, (r3)			; dois pontos
+		inc 	r3
+		
+
+
+		clr 	r4
+		mov 	#-1, r5
+	display_clock_loop2:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_min
+		ble	display_clock_loop2
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	clock_min, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+
+		mov 	#H3A, (r3)			; dois pontos
+		inc 	r3
+
+
+		clr 	r4
+		mov 	#-1, r5
+	display_clock_loop3:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, clock_sec
+		ble	display_clock_loop3
+
+		add 	#H30, r5 
+		
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	clock_sec, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		mov 	(r6)+, r5
+		mov 	(r6)+, r4
+		mov 	(r6)+, r3
+		mov 	#interrupt, INTE
+
+		rts 	r7
+
+;		
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+
+org _APP	
+		jsr 	r7, _getchar
+		mov 	r0, r5
+		jsr 	r7, _putchar
+		jmp 	_APP

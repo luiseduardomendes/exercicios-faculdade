@@ -1,0 +1,1201 @@
+   0   40  2F   2   0           JMP ((R7)+)
+   4    0                       NOP
+   5    0                       NOP
+   6    0                       NOP
+   7    0                       NOP
+   8    0                       NOP
+   9    0                       NOP
+   A    0                       NOP
+   B    0                       NOP
+   C    0                       NOP
+   D    1                       NOP
+   E    0                       NOP
+   F    0                       NOP
+  10    0                       NOP
+  11    0                       NOP
+  12    0                       NOP
+  13    0                       NOP
+  14    0                       NOP
+  15    0                       NOP
+  16    0                       NOP
+  17    0                       NOP
+  18    0                       NOP
+  19    1                       NOP
+  1A    0                       NOP
+  1B    0                       NOP
+  1C    0                       NOP
+  1D    0                       NOP
+  1E    0                       NOP
+  1F    0                       NOP
+  20    0                       NOP
+  21    0                       NOP
+  22    0                       NOP
+  23    0                       NOP
+  24    0                       NOP
+  25    1                       NOP
+  26    0                       NOP
+  27    0                       NOP
+  28    0                       NOP
+  29    0                       NOP
+  2A    0                       NOP
+  2B    0                       NOP
+  2C    0                       NOP
+  2D    0                       NOP
+  2E    0                       NOP
+  2F    0                       NOP
+  30    0                       NOP
+  31    0                       NOP
+  32    0                       NOP
+  33    0                       NOP
+  34    0                       NOP
+  35    0                       NOP
+  36    0                       NOP
+  37    0                       NOP
+  38    0                       NOP
+  39    0                       NOP
+  3A    0                       NOP
+  3B    0                       NOP
+  3C    0                       NOP
+  3D    0                       NOP
+  3E    0                       NOP
+  3F    0                       NOP
+  40    0                       NOP
+  41    0                       NOP
+  42    0                       NOP
+  43    0                       NOP
+  44    0                       NOP
+  45    0                       NOP
+  46    0                       NOP
+  47    0                       NOP
+  48    0                       NOP
+  49    0                       NOP
+  4A    0                       NOP
+  4B    0                       NOP
+  4C    0                       NOP
+  4D    0                       NOP
+  4E    0                       NOP
+  4F    0                       NOP
+  50    0                       NOP
+  51    0                       NOP
+  52    0                       NOP
+  53    0                       NOP
+  54    0                       NOP
+  55    0                       NOP
+  56    0                       NOP
+  57    0                       NOP
+  58    0                       NOP
+  59    0                       NOP
+  5A    0                       NOP
+  5B    0                       NOP
+  5C    0                       NOP
+  5D    0                       NOP
+  5E    0                       NOP
+  5F    0                       NOP
+  60    0                       NOP
+  61    0                       NOP
+  62    0                       NOP
+  63    0                       NOP
+  64    0                       NOP
+  65    0                       NOP
+  66    0                       NOP
+  67    0                       NOP
+  68    0                       NOP
+  69    0                       NOP
+  6A    0                       NOP
+  6B    0                       NOP
+  6C    0                       NOP
+  6D    0                       NOP
+  6E    0                       NOP
+  6F    0                       NOP
+  70    0                       NOP
+  71    0                       NOP
+  72    0                       NOP
+  73    0                       NOP
+  74    0                       NOP
+  75    0                       NOP
+  76    0                       NOP
+  77    0                       NOP
+  78    0                       NOP
+  79    0                       NOP
+  7A    0                       NOP
+  7B    0                       NOP
+  7C    0                       NOP
+  7D    0                       NOP
+  7E    0                       NOP
+  7F    0                       NOP
+  80    0                       NOP
+  81    0                       NOP
+  82    0                       NOP
+  83    0                       NOP
+  84    0                       NOP
+  85    0                       NOP
+  86    0                       NOP
+  87    0                       NOP
+  88    0                       NOP
+  89    0                       NOP
+  8A    0                       NOP
+  8B    0                       NOP
+  8C    0                       NOP
+  8D    0                       NOP
+  8E    0                       NOP
+  8F    0                       NOP
+  90    0                       NOP
+  91    0                       NOP
+  92    0                       NOP
+  93    0                       NOP
+  94    0                       NOP
+  95    0                       NOP
+  96    0                       NOP
+  97    0                       NOP
+  98    0                       NOP
+  99    0                       NOP
+  9A    0                       NOP
+  9B    0                       NOP
+  9C    0                       NOP
+  9D    0                       NOP
+  9E    0                       NOP
+  9F    0                       NOP
+  A0    0                       NOP
+  A1    0                       NOP
+  A2    0                       NOP
+  A3    0                       NOP
+  A4    0                       NOP
+  A5    0                       NOP
+  A6    0                       NOP
+  A7    0                       NOP
+  A8    0                       NOP
+  A9    0                       NOP
+  AA    0                       NOP
+  AB    0                       NOP
+  AC    0                       NOP
+  AD    0                       NOP
+  AE    0                       NOP
+  AF    0                       NOP
+  B0    0                       NOP
+  B1    0                       NOP
+  B2    0                       NOP
+  B3    0                       NOP
+  B4    0                       NOP
+  B5    0                       NOP
+  B6    0                       NOP
+  B7    0                       NOP
+  B8    0                       NOP
+  B9    0                       NOP
+  BA    0                       NOP
+  BB    0                       NOP
+  BC    0                       NOP
+  BD    0                       NOP
+  BE    0                       NOP
+  BF    0                       NOP
+  C0    0                       NOP
+  C1    0                       NOP
+  C2    0                       NOP
+  C3    0                       NOP
+  C4    0                       NOP
+  C5    0                       NOP
+  C6    0                       NOP
+  C7    0                       NOP
+  C8    0                       NOP
+  C9    0                       NOP
+  CA    0                       NOP
+  CB    0                       NOP
+  CC    0                       NOP
+  CD    0                       NOP
+  CE    0                       NOP
+  CF    0                       NOP
+  D0    0                       NOP
+  D1    0                       NOP
+  D2    0                       NOP
+  D3    0                       NOP
+  D4    0                       NOP
+  D5    0                       NOP
+  D6    0                       NOP
+  D7    0                       NOP
+  D8    0                       NOP
+  D9    0                       NOP
+  DA    0                       NOP
+  DB    0                       NOP
+  DC    0                       NOP
+  DD    0                       NOP
+  DE    0                       NOP
+  DF    0                       NOP
+  E0    0                       NOP
+  E1    0                       NOP
+  E2    0                       NOP
+  E3    0                       NOP
+  E4    0                       NOP
+  E5    0                       NOP
+  E6    0                       NOP
+  E7    0                       NOP
+  E8    0                       NOP
+  E9    0                       NOP
+  EA    0                       NOP
+  EB    0                       NOP
+  EC    0                       NOP
+  ED    0                       NOP
+  EE    0                       NOP
+  EF    0                       NOP
+  F0    0                       NOP
+  F1    0                       NOP
+  F2    0                       NOP
+  F3    0                       NOP
+  F4    0                       NOP
+  F5    0                       NOP
+  F6    0                       NOP
+  F7    0                       NOP
+  F8    0                       NOP
+  F9    0                       NOP
+  FA    0                       NOP
+  FB    0                       NOP
+  FC    0                       NOP
+  FD    0                       NOP
+  FE    0                       NOP
+  FF    0                       NOP
+ 100    2                       NOP
+ 101   62   2                   JSR R2, R2
+ 103   6F   2                   JSR R7, R2
+ 105   B0   3                   SUB R0, R3
+ 107    B                       NOP
+ 108    3                       NOP
+ 109    C                       NOP
+ 10A    3                       NOP
+ 10B   19                       CCC NC
+ 10C    3                       NOP
+ 10D   5C   0                   SOB R4, 0
+ 10F    0                       NOP
+ 110    0                       NOP
+ 111    0                       NOP
+ 112    0                       NOP
+ 113    0                       NOP
+ 114    0                       NOP
+ 115    0                       NOP
+ 116    0                       NOP
+ 117    0                       NOP
+ 118    0                       NOP
+ 119    0                       NOP
+ 11A    0                       NOP
+ 11B    0                       NOP
+ 11C    0                       NOP
+ 11D    0                       NOP
+ 11E    0                       NOP
+ 11F    0                       NOP
+ 120    0                       NOP
+ 121    0                       NOP
+ 122    0                       NOP
+ 123    0                       NOP
+ 124    0                       NOP
+ 125    0                       NOP
+ 126    0                       NOP
+ 127    0                       NOP
+ 128    0                       NOP
+ 129    0                       NOP
+ 12A    0                       NOP
+ 12B    0                       NOP
+ 12C    0                       NOP
+ 12D    0                       NOP
+ 12E    0                       NOP
+ 12F    0                       NOP
+ 130    0                       NOP
+ 131    0                       NOP
+ 132    0                       NOP
+ 133    0                       NOP
+ 134    0                       NOP
+ 135    0                       NOP
+ 136    0                       NOP
+ 137    0                       NOP
+ 138    0                       NOP
+ 139    0                       NOP
+ 13A    0                       NOP
+ 13B    0                       NOP
+ 13C    0                       NOP
+ 13D    0                       NOP
+ 13E    0                       NOP
+ 13F    0                       NOP
+ 140    0                       NOP
+ 141    0                       NOP
+ 142    0                       NOP
+ 143    0                       NOP
+ 144    0                       NOP
+ 145    0                       NOP
+ 146    0                       NOP
+ 147    0                       NOP
+ 148    0                       NOP
+ 149    0                       NOP
+ 14A    0                       NOP
+ 14B    0                       NOP
+ 14C    0                       NOP
+ 14D    0                       NOP
+ 14E    0                       NOP
+ 14F    0                       NOP
+ 150    0                       NOP
+ 151    0                       NOP
+ 152    0                       NOP
+ 153    0                       NOP
+ 154    0                       NOP
+ 155    0                       NOP
+ 156    0                       NOP
+ 157    0                       NOP
+ 158    0                       NOP
+ 159    0                       NOP
+ 15A    0                       NOP
+ 15B    0                       NOP
+ 15C    0                       NOP
+ 15D    0                       NOP
+ 15E    0                       NOP
+ 15F    0                       NOP
+ 160    0                       NOP
+ 161    0                       NOP
+ 162    0                       NOP
+ 163    0                       NOP
+ 164    0                       NOP
+ 165    0                       NOP
+ 166    0                       NOP
+ 167    0                       NOP
+ 168    0                       NOP
+ 169    0                       NOP
+ 16A    0                       NOP
+ 16B    0                       NOP
+ 16C    0                       NOP
+ 16D    0                       NOP
+ 16E    0                       NOP
+ 16F    0                       NOP
+ 170    0                       NOP
+ 171    0                       NOP
+ 172    0                       NOP
+ 173    0                       NOP
+ 174    0                       NOP
+ 175    0                       NOP
+ 176    0                       NOP
+ 177    0                       NOP
+ 178    0                       NOP
+ 179    0                       NOP
+ 17A    0                       NOP
+ 17B    0                       NOP
+ 17C    0                       NOP
+ 17D    0                       NOP
+ 17E    0                       NOP
+ 17F    0                       NOP
+ 180    0                       NOP
+ 181    0                       NOP
+ 182    0                       NOP
+ 183    0                       NOP
+ 184    0                       NOP
+ 185    0                       NOP
+ 186    0                       NOP
+ 187    0                       NOP
+ 188    0                       NOP
+ 189    0                       NOP
+ 18A    0                       NOP
+ 18B    0                       NOP
+ 18C    0                       NOP
+ 18D    0                       NOP
+ 18E    0                       NOP
+ 18F    0                       NOP
+ 190    0                       NOP
+ 191    0                       NOP
+ 192    0                       NOP
+ 193    0                       NOP
+ 194    0                       NOP
+ 195    0                       NOP
+ 196    0                       NOP
+ 197    0                       NOP
+ 198    0                       NOP
+ 199    0                       NOP
+ 19A    0                       NOP
+ 19B    0                       NOP
+ 19C    0                       NOP
+ 19D    0                       NOP
+ 19E    0                       NOP
+ 19F    0                       NOP
+ 1A0    0                       NOP
+ 1A1    0                       NOP
+ 1A2    0                       NOP
+ 1A3    0                       NOP
+ 1A4    0                       NOP
+ 1A5    0                       NOP
+ 1A6    0                       NOP
+ 1A7    0                       NOP
+ 1A8    0                       NOP
+ 1A9    0                       NOP
+ 1AA    0                       NOP
+ 1AB    0                       NOP
+ 1AC    0                       NOP
+ 1AD    0                       NOP
+ 1AE    0                       NOP
+ 1AF    0                       NOP
+ 1B0    0                       NOP
+ 1B1    0                       NOP
+ 1B2    0                       NOP
+ 1B3    0                       NOP
+ 1B4    0                       NOP
+ 1B5    0                       NOP
+ 1B6    0                       NOP
+ 1B7    0                       NOP
+ 1B8    0                       NOP
+ 1B9    0                       NOP
+ 1BA    0                       NOP
+ 1BB    0                       NOP
+ 1BC    0                       NOP
+ 1BD    0                       NOP
+ 1BE    0                       NOP
+ 1BF    0                       NOP
+ 1C0    0                       NOP
+ 1C1    0                       NOP
+ 1C2    0                       NOP
+ 1C3    0                       NOP
+ 1C4    0                       NOP
+ 1C5    0                       NOP
+ 1C6    0                       NOP
+ 1C7    0                       NOP
+ 1C8    0                       NOP
+ 1C9    0                       NOP
+ 1CA    0                       NOP
+ 1CB    0                       NOP
+ 1CC    0                       NOP
+ 1CD    0                       NOP
+ 1CE    0                       NOP
+ 1CF    0                       NOP
+ 1D0    0                       NOP
+ 1D1    0                       NOP
+ 1D2    0                       NOP
+ 1D3    0                       NOP
+ 1D4    0                       NOP
+ 1D5    0                       NOP
+ 1D6    0                       NOP
+ 1D7    0                       NOP
+ 1D8    0                       NOP
+ 1D9    0                       NOP
+ 1DA    0                       NOP
+ 1DB    0                       NOP
+ 1DC    0                       NOP
+ 1DD    0                       NOP
+ 1DE    0                       NOP
+ 1DF    0                       NOP
+ 1E0    0                       NOP
+ 1E1    0                       NOP
+ 1E2    0                       NOP
+ 1E3    0                       NOP
+ 1E4    0                       NOP
+ 1E5    0                       NOP
+ 1E6    0                       NOP
+ 1E7    0                       NOP
+ 1E8    0                       NOP
+ 1E9    0                       NOP
+ 1EA    0                       NOP
+ 1EB    0                       NOP
+ 1EC    0                       NOP
+ 1ED    0                       NOP
+ 1EE    0                       NOP
+ 1EF    0                       NOP
+ 1F0    0                       NOP
+ 1F1    0                       NOP
+ 1F2    0                       NOP
+ 1F3    0                       NOP
+ 1F4    0                       NOP
+ 1F5    0                       NOP
+ 1F6    0                       NOP
+ 1F7    0                       NOP
+ 1F8    0                       NOP
+ 1F9    0                       NOP
+ 1FA    0                       NOP
+ 1FB    0                       NOP
+ 1FC    0                       NOP
+ 1FD    0                       NOP
+ 1FE    0                       NOP
+ 1FF    0                       NOP
+ 200   80  2F  FF  D8           CLR ((R7)+)
+ 204   93  C6  80   0           MOV (R7)+, R6
+ 208   80  2F  FF  D9           CLR ((R7)+)
+ 20C   93  EF   3  A9  FF  BE   MOV (R7)+, ((R7)+)
+ 212   80  2F   0   A           CLR ((R7)+)
+ 216   80  2F   0   C           CLR ((R7)+)
+ 21A   80  2F   0   E           CLR ((R7)+)
+ 21E   80  2F   0  10           CLR ((R7)+)
+ 222   80  2F   0  12           CLR ((R7)+)
+ 226   80  2F   0  14           CLR ((R7)+)
+ 22A   80  2F   0  16           CLR ((R7)+)
+ 22E   80  2F   0  18           CLR ((R7)+)
+ 232   80  2F   0  1A           CLR ((R7)+)
+ 236   80  2F   0  1C           CLR ((R7)+)
+ 23A   80  2F   0  1E           CLR ((R7)+)
+ 23E   80  2F   0  24           CLR ((R7)+)
+ 242   80  2F   0  20           CLR ((R7)+)
+ 246   80  2F  FF  DA           CLR ((R7)+)
+ 24A   80  2F  FF  DB           CLR ((R7)+)
+ 24E   93  EF   0  FA  FF  D7   MOV (R7)+, ((R7)+)
+ 254   67  2F   4  4F           JSR R7, ((R7)+)
+ 258   93  EF   0  81  FF  D9   MOV (R7)+, ((R7)+)
+ 25E   40  2F  80   0           JMP ((R7)+)
+ 262   80   0                   CLR R0
+ 264   CB  CF  FF  DA   0  80   CMP ((R7)+), (R7)+
+ 26A   31   2                   BNE 2
+ 26C   82   0                   INC R0
+ 26E   77                       RTS R7
+ 26F   93  EF   0   1   0  18   MOV (R7)+, ((R7)+)
+ 275   67  2F   2  62           JSR R7, ((R7)+)
+ 279   85   0                   TST R0
+ 27B   32  F8                   BEQ F8
+ 27D   80  2F  FF  D9           CLR ((R7)+)
+ 281   85  2F   0  1C           TST ((R7)+)
+ 285   32   A                   BEQ A
+ 287   9B  C0   0  24           MOV ((R7)+), R0
+ 28B   9B  D8   0  1A  FF  DC   MOV ((R7)+), FFDC(R0)
+ 291   9B  C0  FF  DB           MOV ((R7)+), R0
+ 295   80  2F   0  18           CLR ((R7)+)
+ 299   80  2F  FF  DB           CLR ((R7)+)
+ 29D   80  2F  FF  DA           CLR ((R7)+)
+ 2A1   80  2F   0  1A           CLR ((R7)+)
+ 2A5   80  2F   0  1C           CLR ((R7)+)
+ 2A9   93  EF   0  81  FF  D9   MOV (R7)+, ((R7)+)
+ 2AF   77                       RTS R7
+ 2B0   CB  CF   0  24   0  24   CMP ((R7)+), (R7)+
+ 2B6   31   8                   BNE 8
+ 2B8   67  2F   4  4F           JSR R7, ((R7)+)
+ 2BC   80  2F   0  24           CLR ((R7)+)
+ 2C0   C1  4F   0  20           CMP R5, (R7)+
+ 2C4   3A  16                   BLT 16
+ 2C6   C1  4F   0  7A           CMP R5, (R7)+
+ 2CA   3B  3A                   BGT 3A
+ 2CC   9B  C0   0  24           MOV ((R7)+), R0
+ 2D0   91  58  FF  DC           MOV R5, FFDC(R0)
+ 2D4   82  2F   0  24           INC ((R7)+)
+ 2D8   40  2F   3   A           JMP ((R7)+)
+ 2DC   C1  4F   0   D           CMP R5, (R7)+
+ 2E0   31   8                   BNE 8
+ 2E2   80  2F   0  24           CLR ((R7)+)
+ 2E6   40  2F   3   A           JMP ((R7)+)
+ 2EA   C1  4F   0   A           CMP R5, (R7)+
+ 2EE   31   8                   BNE 8
+ 2F0   67  2F   4  4F           JSR R7, ((R7)+)
+ 2F4   40  2F   3   A           JMP ((R7)+)
+ 2F8   C1  4F   0   8           CMP R5, (R7)+
+ 2FC   31  FA                   BNE FA
+ 2FE   83  2F   0  24           DEC ((R7)+)
+ 302   40  2F   3   A           JMP ((R7)+)
+ 306   93  C0   0   1           MOV (R7)+, R0
+ 30A   77                       RTS R7
+ 30B   77                       RTS R7
+ 30C   9B  C2   0  10           MOV ((R7)+), R2
+ 310   9B  C1   0   E           MOV ((R7)+), R1
+ 314   9B  C0   0   C           MOV ((R7)+), R0
+ 318   77                       RTS R7
+ 319   80  2F  FF  D9           CLR ((R7)+)
+ 31D   C0  CF   0  3C           CMP R3, (R7)+
+ 321   3A   8                   BLT 8
+ 323   93  C0   0   1           MOV (R7)+, R0
+ 327   40  2F   3  55           JMP ((R7)+)
+ 32B   90  EF   0   C           MOV R3, ((R7)+)
+ 32F   C1   F   0  3C           CMP R4, (R7)+
+ 333   3A   8                   BLT 8
+ 335   93  C0   0   2           MOV (R7)+, R0
+ 339   40  2F   3  55           JMP ((R7)+)
+ 33D   91  2F   0   E           MOV R4, ((R7)+)
+ 341   C1  4F   0  18           CMP R5, (R7)+
+ 345   3A   8                   BLT 8
+ 347   93  C0   0   3           MOV (R7)+, R0
+ 34B   40  2F   3  55           JMP ((R7)+)
+ 34F   91  6F   0  10           MOV R5, ((R7)+)
+ 353   80   0                   CLR R0
+ 355   93  EF   0  81  FF  D9   MOV (R7)+, ((R7)+)
+ 35B   77                       RTS R7
+ 35C   80  2F  FF  D9           CLR ((R7)+)
+ 360   80   0                   CLR R0
+ 362   C0  8F   0  3C           CMP R2, (R7)+
+ 366   3A   8                   BLT 8
+ 368   93  C0   0   1           MOV (R7)+, R0
+ 36C   40  2F   3  A2           JMP ((R7)+)
+ 370   90  AF   0  12           MOV R2, ((R7)+)
+ 374   C0  CF   0  3C           CMP R3, (R7)+
+ 378   3A   8                   BLT 8
+ 37A   93  C0   0   2           MOV (R7)+, R0
+ 37E   40  2F   3  A2           JMP ((R7)+)
+ 382   90  EF   0  14           MOV R3, ((R7)+)
+ 386   C1   F   0  18           CMP R4, (R7)+
+ 38A   3A   8                   BLT 8
+ 38C   93  C0   0   3           MOV (R7)+, R0
+ 390   40  2F   3  A2           JMP ((R7)+)
+ 394   91  2F   0  16           MOV R4, ((R7)+)
+ 398   91  6F   0  20           MOV R5, ((R7)+)
+ 39C   93  EF   0   1   0  22   MOV (R7)+, ((R7)+)
+ 3A2   93  EF   0  81  FF  D9   MOV (R7)+, ((R7)+)
+ 3A8   77                       RTS R7
+ 3A9   80  2F  FF  D9           CLR ((R7)+)
+ 3AD   90  16                   MOV R0, -(R6)
+ 3AF   90  56                   MOV R1, -(R6)
+ 3B1   90  96                   MOV R2, -(R6)
+ 3B3   90  D6                   MOV R3, -(R6)
+ 3B5   91  16                   MOV R4, -(R6)
+ 3B7   91  56                   MOV R5, -(R6)
+ 3B9   CB  CF  FF  D8   0  81   CMP ((R7)+), (R7)+
+ 3BF   31   E                   BNE E
+ 3C1   67  2F   3  E2           JSR R7, ((R7)+)
+ 3C5   D3  EF  FF  FE  FF  D8   AND (R7)+, ((R7)+)
+ 3CB   40  2F   3  CF           JMP ((R7)+)
+ 3CF   93  85                   MOV (R6)+, R5
+ 3D1   93  84                   MOV (R6)+, R4
+ 3D3   93  83                   MOV (R6)+, R3
+ 3D5   93  82                   MOV (R6)+, R2
+ 3D7   93  81                   MOV (R6)+, R1
+ 3D9   93  80                   MOV (R6)+, R0
+ 3DB   93  EF   0   0  73   0   MOV (R7)+, ((R7)+)
+ 3E1    0                       NOP
+ 3E2   80   0                   CLR R0
+ 3E4   FF                       HLT
+ 3E5   F4                       HLT
+ 3E6    0                       NOP
+ 3E7    0                       NOP
+ 3E8    0                       NOP
+ 3E9    0                       NOP
+ 3EA   80   0                   CLR R0
+ 3EC    3                       NOP
+ 3ED   E1  80                   OR  R6, R0
+ 3EF    0                       NOP
+ 3F0    3                       NOP
+ 3F1   E1  80                   OR  R6, R0
+ 3F3    0                       NOP
+ 3F4    3                       NOP
+ 3F5   E1  80                   OR  R6, R0
+ 3F7    0                       NOP
+ 3F8    3                       NOP
+ 3F9   E1  80                   OR  R6, R0
+ 3FB    0                       NOP
+ 3FC    3                       NOP
+ 3FD   E1  80                   OR  R6, R0
+ 3FF    0                       NOP
+
+FDE8    0                      
+FDE9    0                      
+FDEA    0                      
+FDEB    0                      
+FDEC    0                      
+FDED    0                      
+FDEE    0                      
+FDEF    0                      
+FDF0    0                      
+FDF1    0                      
+FDF2    0                      
+FDF3    0                      
+FDF4    0                      
+FDF5    0                      
+FDF6    0                      
+FDF7    0                      
+FDF8    0                      
+FDF9    0                      
+FDFA    0                      
+FDFB    0                      
+FDFC    0                      
+FDFD    0                      
+FDFE    0                      
+FDFF    0                      
+FE00    0                      
+FE01    0                      
+FE02    0                      
+FE03    0                      
+FE04    0                      
+FE05    0                      
+FE06    0                      
+FE07    0                      
+FE08    0                      
+FE09    0                      
+FE0A    0                      
+FE0B    0                      
+FE0C    0                      
+FE0D    0                      
+FE0E    0                      
+FE0F    0                      
+FE10    0                      
+FE11    0                      
+FE12    0                      
+FE13    0                      
+FE14    0                      
+FE15    0                      
+FE16    0                      
+FE17    0                      
+FE18    0                      
+FE19    0                      
+FE1A    0                      
+FE1B    0                      
+FE1C    0                      
+FE1D    0                      
+FE1E    0                      
+FE1F    0                      
+FE20    0                      
+FE21    0                      
+FE22    0                      
+FE23    0                      
+FE24    0                      
+FE25    0                      
+FE26    0                      
+FE27    0                      
+FE28    0                      
+FE29    0                      
+FE2A    0                      
+FE2B    0                      
+FE2C    0                      
+FE2D    0                      
+FE2E    0                      
+FE2F    0                      
+FE30    0                      
+FE31    0                      
+FE32    0                      
+FE33    0                      
+FE34    0                      
+FE35    0                      
+FE36    0                      
+FE37    0                      
+FE38    0                      
+FE39    0                      
+FE3A    0                      
+FE3B    0                      
+FE3C    0                      
+FE3D    0                      
+FE3E    0                      
+FE3F    0                      
+FE40    0                      
+FE41    0                      
+FE42    0                      
+FE43    0                      
+FE44    0                      
+FE45    0                      
+FE46    0                      
+FE47    0                      
+FE48    0                      
+FE49    0                      
+FE4A    0                      
+FE4B    0                      
+FE4C    0                      
+FE4D    0                      
+FE4E    0                      
+FE4F    0                      
+FE50    0                      
+FE51    0                      
+FE52    0                      
+FE53    0                      
+FE54    0                      
+FE55    0                      
+FE56    0                      
+FE57    0                      
+FE58    0                      
+FE59    0                      
+FE5A    0                      
+FE5B    0                      
+FE5C    0                      
+FE5D    0                      
+FE5E    0                      
+FE5F    0                      
+FE60    0                      
+FE61    0                      
+FE62    0                      
+FE63    0                      
+FE64    0                      
+FE65    0                      
+FE66    0                      
+FE67    0                      
+FE68    0                      
+FE69    0                      
+FE6A    0                      
+FE6B    0                      
+FE6C    0                      
+FE6D    0                      
+FE6E    0                      
+FE6F    0                      
+FE70    0                      
+FE71    0                      
+FE72    0                      
+FE73    0                      
+FE74    0                      
+FE75    0                      
+FE76    0                      
+FE77    0                      
+FE78    0                      
+FE79    0                      
+FE7A    0                      
+FE7B    0                      
+FE7C    0                      
+FE7D    0                      
+FE7E    0                      
+FE7F    0                      
+FE80    0                      
+FE81    0                      
+FE82    0                      
+FE83    0                      
+FE84    0                      
+FE85    0                      
+FE86    0                      
+FE87    0                      
+FE88    0                      
+FE89    0                      
+FE8A    0                      
+FE8B    0                      
+FE8C    0                      
+FE8D    0                      
+FE8E    0                      
+FE8F    0                      
+FE90    0                      
+FE91    0                      
+FE92    0                      
+FE93    0                      
+FE94    0                      
+FE95    0                      
+FE96    0                      
+FE97    0                      
+FE98    0                      
+FE99    0                      
+FE9A    0                      
+FE9B    0                      
+FE9C    0                      
+FE9D    0                      
+FE9E    0                      
+FE9F    0                      
+FEA0    0                      
+FEA1    0                      
+FEA2    0                      
+FEA3    0                      
+FEA4    0                      
+FEA5    0                      
+FEA6    0                      
+FEA7    0                      
+FEA8    0                      
+FEA9    0                      
+FEAA    0                      
+FEAB    0                      
+FEAC    0                      
+FEAD    0                      
+FEAE    0                      
+FEAF    0                      
+FEB0    0                      
+FEB1    0                      
+FEB2    0                      
+FEB3    0                      
+FEB4    0                      
+FEB5    0                      
+FEB6    0                      
+FEB7    0                      
+FEB8    0                      
+FEB9    0                      
+FEBA    0                      
+FEBB    0                      
+FEBC    0                      
+FEBD    0                      
+FEBE    0                      
+FEBF    0                      
+FEC0    0                      
+FEC1    0                      
+FEC2    0                      
+FEC3    0                      
+FEC4    0                      
+FEC5    0                      
+FEC6    0                      
+FEC7    0                      
+FEC8    0                      
+FEC9    0                      
+FECA    0                      
+FECB    0                      
+FECC    0                      
+FECD    0                      
+FECE    0                      
+FECF    0                      
+FED0    0                      
+FED1    0                      
+FED2    0                      
+FED3    0                      
+FED4    0                      
+FED5    0                      
+FED6    0                      
+FED7    0                      
+FED8    0                      
+FED9    0                      
+FEDA    0                      
+FEDB    0                      
+FEDC    0                      
+FEDD    0                      
+FEDE    0                      
+FEDF    0                      
+FEE0    0                      
+FEE1    0                      
+FEE2    0                      
+FEE3    0                      
+FEE4    0                      
+FEE5    0                      
+FEE6    0                      
+FEE7    0                      
+FEE8    0                      
+FEE9    0                      
+FEEA    0                      
+FEEB    0                      
+FEEC    0                      
+FEED    0                      
+FEEE    0                      
+FEEF    0                      
+FEF0    0                      
+FEF1    0                      
+FEF2    0                      
+FEF3    0                      
+FEF4    0                      
+FEF5    0                      
+FEF6    0                      
+FEF7    0                      
+FEF8    0                      
+FEF9    0                      
+FEFA    0                      
+FEFB    0                      
+FEFC    0                      
+FEFD    0                      
+FEFE    0                      
+FEFF    0                      
+FF00    0                      
+FF01    0                      
+FF02    0                      
+FF03    0                      
+FF04    0                      
+FF05    0                      
+FF06    0                      
+FF07    0                      
+FF08    0                      
+FF09    0                      
+FF0A    0                      
+FF0B    0                      
+FF0C    0                      
+FF0D    0                      
+FF0E    0                      
+FF0F    0                      
+FF10    0                      
+FF11    0                      
+FF12    0                      
+FF13    0                      
+FF14    0                      
+FF15    0                      
+FF16    0                      
+FF17    0                      
+FF18    0                      
+FF19    0                      
+FF1A    0                      
+FF1B    0                      
+FF1C    0                      
+FF1D    0                      
+FF1E    0                      
+FF1F    0                      
+FF20    0                      
+FF21    0                      
+FF22    0                      
+FF23    0                      
+FF24    0                      
+FF25    0                      
+FF26    0                      
+FF27    0                      
+FF28    0                      
+FF29    0                      
+FF2A    0                      
+FF2B    0                      
+FF2C    0                      
+FF2D    0                      
+FF2E    0                      
+FF2F    0                      
+FF30    0                      
+FF31    0                      
+FF32    0                      
+FF33    0                      
+FF34    0                      
+FF35    0                      
+FF36    0                      
+FF37    0                      
+FF38    0                      
+FF39    0                      
+FF3A    0                      
+FF3B    0                      
+FF3C    0                      
+FF3D    0                      
+FF3E    0                      
+FF3F    0                      
+FF40    0                      
+FF41    0                      
+FF42    0                      
+FF43    0                      
+FF44    0                      
+FF45    0                      
+FF46    0                      
+FF47    0                      
+FF48    0                      
+FF49    0                      
+FF4A    0                      
+FF4B    0                      
+FF4C    0                      
+FF4D    0                      
+FF4E    0                      
+FF4F    0                      
+FF50    0                      
+FF51    0                      
+FF52    0                      
+FF53    0                      
+FF54    0                      
+FF55    0                      
+FF56    0                      
+FF57    0                      
+FF58    0                      
+FF59    0                      
+FF5A    0                      
+FF5B    0                      
+FF5C    0                      
+FF5D    0                      
+FF5E    0                      
+FF5F    0                      
+FF60    0                      
+FF61    0                      
+FF62    0                      
+FF63    0                      
+FF64    0                      
+FF65    0                      
+FF66    0                      
+FF67    0                      
+FF68    0                      
+FF69    0                      
+FF6A    0                      
+FF6B    0                      
+FF6C    0                      
+FF6D    0                      
+FF6E    0                      
+FF6F    0                      
+FF70    0                      
+FF71    0                      
+FF72    0                      
+FF73    0                      
+FF74    0                      
+FF75    0                      
+FF76    0                      
+FF77    0                      
+FF78    0                      
+FF79    0                      
+FF7A    0                      
+FF7B    0                      
+FF7C    0                      
+FF7D    0                      
+FF7E    0                      
+FF7F    0                      
+FF80    0                      
+FF81    0                      
+FF82    0                      
+FF83    0                      
+FF84    0                      
+FF85    0                      
+FF86    0                      
+FF87    0                      
+FF88    0                      
+FF89    0                      
+FF8A    0                      
+FF8B    0                      
+FF8C    0                      
+FF8D    0                      
+FF8E    0                      
+FF8F    0                      
+FF90    0                      
+FF91    0                      
+FF92    0                      
+FF93    0                      
+FF94    0                      
+FF95    0                      
+FF96    0                      
+FF97    0                      
+FF98    0                      
+FF99    0                      
+FF9A    0                      
+FF9B    0                      
+FF9C    0                      
+FF9D    0                      
+FF9E    0                      
+FF9F    0                      
+FFA0    0                      
+FFA1    0                      
+FFA2    0                      
+FFA3    0                      
+FFA4    0                      
+FFA5    0                      
+FFA6    0                      
+FFA7    0                      
+FFA8    0                      
+FFA9    0                      
+FFAA    0                      
+FFAB    0                      
+FFAC    0                      
+FFAD    0                      
+FFAE    0                      
+FFAF    0                      
+FFB0    0                      
+FFB1    0                      
+FFB2    0                      
+FFB3    0                      
+FFB4    0                      
+FFB5    0                      
+FFB6    0                      
+FFB7    0                      
+FFB8    0                      
+FFB9    0                      
+FFBA    0                      
+FFBB    0                      
+FFBC    0                      
+FFBD    0                      
+FFBE    3                      
+FFBF   A9                      
+FFC0    0                      
+FFC1    0                      
+FFC2    0                      
+FFC3    0                      
+FFC4    0                      
+FFC5    0                      
+FFC6    0                      
+FFC7    0                      
+FFC8    0                      
+FFC9    0                      
+FFCA    0                      
+FFCB    0                      
+FFCC    0                      
+FFCD    0                      
+FFCE    0                      
+FFCF    0                      
+FFD0    0                      
+FFD1    0                      
+FFD2    0                      
+FFD3    0                      
+FFD4    0                      
+FFD5    0                      
+FFD6    0                      
+FFD7   FA                      
+FFD8   83                      
+FFD9    0                      
+FFDA    0                      
+FFDB    0                      
+FFDC   73                      
+FFDD    0                      
+FFDE    0                      
+FFDF    0                      
+FFE0    0                      
+FFE1    0                      
+FFE2    0                      
+FFE3    0                      
+FFE4    0                      
+FFE5    0                      
+FFE6    0                      
+FFE7    0                      
+FFE8    0                      
+FFE9    0                      
+FFEA    0                      
+FFEB    0                      
+FFEC    0                      
+FFED    0                      
+FFEE    0                      
+FFEF    0                      
+FFF0    0                      
+FFF1    0                      
+FFF2    0                      
+FFF3    0                      
+FFF4    0                      
+FFF5    0                      
+FFF6    0                      
+FFF7    0                      
+FFF8    0                      
+FFF9    0                      
+FFFA    0                      
+FFFB    0                      
+FFFC    0                      
+FFFD    0                      
+FFFE    0                      
+FFFF    0                      
