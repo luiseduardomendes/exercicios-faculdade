@@ -77,7 +77,6 @@ VISOR:	dab		[36]		; Portas de acesso ao visor
 		getchar_buffer_status:	dw 0
 		alarm_status:			dw 0
 		callback_routine:		dw 0
-		alarm_actived:			dw 0
 		display_cursor:			dw 0
 
 ;
@@ -100,15 +99,15 @@ VISOR:	dab		[36]		; Portas de acesso ao visor
 org		_RESET
 	; 1) Desabilitar o sistema de interrupções
 
-		clr INTS
+		clr 	INTS
 
 	; 2) Inicializar o stack pointer (SP = R6)
 
-		mov #h8000, R6
+		mov 	#h8000, R6
 
 	; 3) Inicializar as variáveis internas usadas pelo sistema de interrupções e periféricos (IVET, INTE, etc.)
 
-		clr			INTE			; Reset pedidos de interrupcao
+		clr		INTE			; Reset pedidos de interrupcao
 		mov 		#isr, IVET		; inicializa o vetor de interrupcao
 
 	; 4) Inicializar as variáveis internas do kernel
@@ -129,109 +128,118 @@ org		_RESET
 
 	; 5) Inicializar o teclado zerando o byte de estado (TECST, endereço 65498)
 
-		clr 	TECST				; Reset estado e dados do hardware do teclado
-		clr 	TECDT
+		clr 		TECST				; Reset estado e dados do hardware do teclado
+		clr 		TECDT
 
 	; 6) Inicializar o timer
 
-		mov 	#250,TIMDT			; timer = 250;
+		mov 		#250,TIMDT			; timer = 250;
 
 	; 7) Limpar o visor
 
-		jsr 	r7, clear_display	; clear_display();
+		jsr 		r7, clear_display		; clear_display();
 
 	; 8) Habilitar interrupções
 
-		mov 	0,INTE		; interrupcoes de timer e teclado
+		mov 		#interrupt,INTE			; interrupcoes de timer e teclado
 
 	; 9) Retornar para o programa de aplicação com um desvio para o endereço _APP da memória
-		jmp	_APP
+		jmp		_APP
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _kbhit:
 
-		clr 	r0				; r0 = false
-		cmp 	TECST, #h80
-		bne 	not_found			; if (r0 = 0x80)	
-		inc 	r0				;	 r0 = true
-	not_found:
-		rts	r7				; return r0
+		clr 		r0				; r0 = false
+		cmp 		TECST, #h80
+		beq 		found_kbhit			; if (r0 = 0x80)	
+		inc 		r0				;	 r0 = true
+
+	found_kbhit:
+		rts		r7				; return r0
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _getchar:
 
-		mov	 #1, getchar_actived
+		mov	 	#1, getchar_actived
 	char_not_found:
-		jsr 	r7, _kbhit				; while (_kbhit() == false) {}
-		tst 	r0
-		beq 	char_not_found
+		jsr 		r7, _kbhit			; while (_kbhit() == false) {}
+		tst 		r0
+		bne 		char_not_found
 		
-		tst 	getchar_buffer_status			; recupera a informacao do visor caso ele 
-		beq 	get_data				; tenha sido trocado por '_' no momento
-		mov 	display_cursor, r0			; posiciona r0 no lugar do cursor
-		mov	getchar_buffer, VISOR(r0)
+		tst 		getchar_buffer_status		; recupera a informacao do visor caso ele 
+		beq 		get_data			; tenha sido trocado por '_' no momento
+		mov 		display_cursor, r0		; posiciona r0 no lugar do cursor
+		mov		getchar_buffer, VISOR(r0)
 
 	get_data:
 
-		mov 	TECDT, r0				; coleta os dados
-		clr 	getchar_actived				; limpa as variaveis
-		clr 	TECDT
-		clr 	TECST
-		clr 	getchar_buffer
-		clr 	getchar_buffer_status
+		mov 		TECDT, r0			; coleta os dados
+		clr 		getchar_actived			; limpa as variaveis
+		clr 		TECDT
+		clr 		TECST
+		clr 		getchar_buffer
+		clr 		getchar_buffer_status
 
-		rts	r7
+		rts		r7
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _putchar:
-		cmp 	display_cursor, #36		; if (display_cursor == 36) {
-		bne 	valid_putchar			; 	clear_display();
-		jsr 	r7, clear_display		;	display_cursor = 0;
-		clr	display_cursor			; }
-	valid_putchar:
+		
+		cmp 		r5, #h20			; if (ch < 0x20) 
+		blt 		carriage_rtn				;	// caracter ASCII nao visivel
+		cmp 		r5, #h7A			; if (ch > 0x7A)
+		bgt 		error_putch			; 	// caracter invalido
 
-		cmp 	r5, #h20			; if (ch < 0x20) 
-		blt 	symbol				;	// caracter ASCII nao visivel
-		cmp 	r5, #h7A			; if (ch > 0x7A)
-		bgt 	error_putch			; 	// caracter invalido
+		mov 		display_cursor, r0			; // posiciona r0 no inicio do visor	
+		mov 		r5, visor(r0)			; visor[display_cursor] = ch;
 
-		mov 	display_cursor, r0			; // posiciona r0 no inicio do visor	
-		mov 	r5, visor(r0)			; visor[display_cursor] = ch;
+		clr 		r0
 
-		inc 	display_cursor			; display_cursor ++;
-		jmp 	end_putch			; return;
+		inc 		display_cursor			; display_cursor ++;
 
-	symbol:
-							; switch (r5) {
-		cmp 	r5, #h0D			
-		bne 	a_putchar			; 	case carriage_return:
-		clr 	display_cursor			; 		display_cursor = 0;
-		jmp 	end_putch			;		break;
+		cmp 		display_cursor, #36		; if (display_cursor == 36) {
+		blt 		end_putch			; return;
+		
+		jsr 		r7, clear_display		;	display_cursor = 0;
+		clr		display_cursor			; }
 
-	a_putchar:
+		jmp 		end_putch
 
-		cmp 	r5, #h0A			
-		bne 	b_putchar			; 	case line_feed:
-		jsr 	r7, clear_display		;		clear_display();
-		jmp 	end_putch			;		break;
+	carriage_rtn:
+								; switch (r5) {
+		cmp 		r5, #h0D			
+		bne 		line_feed			; 	case carriage_return:
+		clr 		display_cursor			; 		display_cursor = 0;
+		jmp 		end_putch			;		break;
 
-	b_putchar:
+	line_feed:
 
-		cmp 	r5, #h08
-		bne 	b_putchar			; 	case backspace:
-		dec 	display_cursor			; 		display_cursor --;
-		jmp 	end_putch			;		break;
-							; }
+		cmp 		r5, #h0A			
+		bne 		backspace			; 	case line_feed:
+		jsr 		r7, clear_display		;		clear_display();
+		jmp 		end_putch			;		break;
+
+	backspace:
+
+		cmp 		r5, #h08
+		bne 		error_putch			; 	case backspace:
+		tst 		display_cursor
+		beq 		end_putch
+		dec 		display_cursor			; 		display_cursor --;
+		
+
+		jmp 		end_putch			;		break;
+								; }
 
 	error_putch:
 
-		mov 	#1, r0				; error = true;
+		mov 		#1, r0				; error = true;
 
 	end_putch:
 	
@@ -241,165 +249,198 @@ _putchar:
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _putmsg:
+
+		mov 		r1, -(r6)			; salva o reg na pilha
+
+		jsr 		r7, clear_display
+		clr 		display_cursor 
+
+		clr 		r0				; se nao houver erro r0 = 0
+
+		dec 		r5
+		mov 		r5, r1
+
+
+	loop_putmsg:
+		mov 		(r1), r5
+		and 		#h00ff, r5
+
+		tst 		r5
+		beq 		end_putmsg			; se char = h00, end
+
+		jsr 		r7, _putchar
+
+		;tst 		r0
+		;bne 		end_putmsg
+
+		inc		r1
+		jmp		loop_putmsg
+
+	end_putmsg:
+
+		mov 		(r6)+, r1
+
 		rts		r7
 	
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _getclock:
-										; struct Hora {int hor, min, sec; } clock;
-		mov 	clock_hor, r2			; clock.hor = hor_atual
-		mov 	clock_min, r1			; clock.min = min_atual
-		mov 	clock_sec, r0			; clock.sec = sec_atual
-		rts	r7							; return clock
+								; struct Hora {int hor, min, sec; } clock;
+		mov 		clock_hor, r2			; clock.hor = hor_atual
+		mov 		clock_min, r1			; clock.min = min_atual
+		mov 		clock_sec, r0			; clock.sec = sec_atual
+		rts		r7				; return clock
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _setclock:
 		
-		clr 	INTE
+		clr 		INTE				; desativa interrupcao de timer
 
-							; struct Hora {int hor, min, sec; } clock;
-		cmp 	r3, #60				; if (clock.sec > 60) {
-		blt	sec_not_error			; 	error = 1;
-		mov 	#1, r0				
-		jmp 	end				;	return;
+								; struct Hora {int hor, min, sec; } clock;
+		cmp 		r3, #60				; if (clock.sec > 60) {
+		blt		sec_not_error			; 	error = 1;
+		mov 		#1, r0				
+		jmp 		end				;	return;
 
 	sec_not_error:
-		mov 	r3, clock_sec			; sec_atual = clock.sec
 
-		cmp 	r4, #60				; if (clock.min > 60) {
-		blt	min_not_error			; 	error = 2;
-		mov  	#2, r0
-		jmp 	end				;	return;
+		cmp 		r4, #60				; if (clock.min > 60) {
+		blt		min_not_error			; 	error = 2;
+		mov  		#2, r0
+		jmp 		end				;	return;
 
 	min_not_error:
-		mov 	r4, clock_min			; min_atual = clock.min
+		
 	
-		cmp 	r5, #24				; if (clock.hor > 24) {
-		blt	hor_not_error			; 	error = 3;
-		mov 	#3, r0
-		jmp 	end				;	return;
+		cmp 		r5, #24				; if (clock.hor > 24) {
+		blt		hor_not_error			; 	error = 3;
+		mov 		#3, r0
+		jmp 		end				;	return;
 
 	hor_not_error:
-		mov 	r5, clock_hor			; hor_atual = clock.hor
-		clr 	r0				; error = 0;
+		mov 		r3, clock_sec			; sec_atual = clock.sec
+		mov 		r4, clock_min			; min_atual = clock.min
+		mov 		r5, clock_hor			; hor_atual = clock.hor
+		clr 		r0				; error = 0;
+		clr 		tick_cnt
 
 	end:
 
-		mov 	#interrupt, INTE
+		mov 		#interrupt, INTE		; reativa as interrupcoes de timer
 
-		rts	r7 				; return;
+		rts		r7 				; return;
 		
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 _setalarm:
 
-		clr 	INTE
-		clr 	r0
+		clr 		r0
 
-		cmp 	r2, #60
-		blt	sec_not_error_a
-		mov 	#1, r0
-		jmp 	end_alarm
+		cmp 		r2, #60
+		blt		sec_not_error_a
+		mov 		#1, r0
+		jmp 		end_alarm
 
 	sec_not_error_a:
-		mov 	r2, alarm_sec
 
-		cmp 	r3, #60
-		blt	min_not_error_a
-		mov  	#2, r0
-		jmp 	end_alarm
+		cmp 		r3, #60
+		blt		min_not_error_a
+		mov  		#2, r0
+		jmp 		end_alarm
 
 	min_not_error_a:
-		mov 	r3, alarm_min
 	
-		cmp 	r4, #24
-		blt	hor_not_error_a
-		mov 	#3, r0
-		jmp 	end_alarm
+		cmp 		r4, #24
+		blt		hor_not_error_a
+		mov 		#3, r0
+		jmp 		end_alarm
 
 	hor_not_error_a:
-		mov 	r4, alarm_hor
-		mov 	r5, callback_routine
-		mov 	#1, alarm_actived
+		mov 		r4, alarm_hor
+		mov 		r3, alarm_min
+		mov 		r2, alarm_sec
+		mov 		r5, callback_routine
+		mov 		#1, alarm_status
 
 	end_alarm:
-		
-		mov 	#interrupt, INTE
 
-		rts	r7
+		rts		r7
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 isr:
-		clr 		INTE
 		
-		mov		r0,-(r6)		; Salva os registradores na pilha
+		clr 		INTE
+
+		mov		r0,-(r6)			; Salva os registradores na pilha
 		mov		r1,-(r6)
 		mov		r2,-(r6)
-		mov		r3,-(r6)
-		mov		r4,-(r6)
-		mov		r5,-(r6)		
+		mov 		r3,-(r6)
+		mov 		r4,-(r6)
+		mov 		r5,-(r6)
 
-		cmp 		INTS, #h81		; if (interrupcao.source == timer){
-		bne		isrEND			
-		jsr		r7,ISRtim		; 	Tratamento da INT do TIMER
-		and		#hFFFE,INTS		; 	Desliga bit de INT TIMER
-		jmp 		isrEND			; }
+
+		mov 		INTS, r0
+		and 		#1, r0
+		beq		isrEND
+		jsr		r7,ISRtim			; 	Tratamento da INT do TIMER
+		and		#hFFFE,INTS			; 	Desliga bit de INT TIMER
+		jmp 		isrEND				; }
 	
-	isrEND:
-		mov		(r6)+,r5
-		mov		(r6)+,r4		; Retorna os registradores da pilha
-		mov		(r6)+,r3
+	isrEND:		
+		mov 		(r6)+,r5
+		mov 		(r6)+,r4
+		mov 		(r6)+,r3
 		mov		(r6)+,r2
-		mov		(r6)+,r1
+		mov		(r6)+,r1			; Retorna os registradores da pilha
 		mov		(r6)+,r0
-			
+		
 		mov 		#interrupt, INTE
 
-		rti					; Return From Interrupt
+		rti						; Return From Interrupt
 	
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 ISRtim:
 		
-		jsr 	r7, inc_clock			
-		jsr 	r7, alarm_verify
-		jsr 	r7, blink_getchar
+		jsr 		r7, inc_clock			
+		jsr 		r7, alarm_verify
+		jsr 		r7, blink_getchar
 
-		rts 	r7
+		rts 		r7
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 inc_clock:
-		inc 	tick_cnt			; incrementa contador
-		cmp 	tick_cnt, #4			; if (count == 4) {
-		bne	end_inc_timer			; 	count = 0;
+		inc 		tick_cnt			; incrementa contador
+		cmp 		tick_cnt, #4			; if (count == 4) {
+		bne		end_inc_timer			; 	count = 0;
 		
-		clr 	tick_cnt			;	inc_timer();
-		inc 	clock_sec			; sec ++;
-		cmp 	clock_sec, #60			; if (sec == 60) {
-		bne 	end_inc_timer			
+		clr 		tick_cnt			;	inc_timer();
+		inc 		clock_sec			; sec ++;
+		cmp 		clock_sec, #60			; if (sec == 60) {
+		bne 		end_inc_timer			
 	
-		clr 	clock_sec			; 	sec = 0;
-		inc 	clock_min			; 	min ++;
-		cmp 	clock_min, #60
-		bne 	end_inc_timer			;	if (min == 60){
+		clr 		clock_sec			; 	sec = 0;
+		inc 		clock_min			; 	min ++;
+		cmp 		clock_min, #60
+		bne 		end_inc_timer			;	if (min == 60){
 
-		clr 	clock_min			;		min = 0;
-		inc 	clock_hor			; 		hor ++;
-		cmp 	clock_hor, #24			; 		if (hor == 24)
-		bne 	end_inc_timer
+		clr 		clock_min			;		min = 0;
+		inc 		clock_hor			; 		hor ++;
+		cmp 		clock_hor, #24			; 		if (hor == 24)
+		bne 		end_inc_timer
 
-		clr 	clock_hor			;			hor = 0;
-							;	}
-							; }
+		clr 		clock_hor			;			hor = 0;
+								;	}
+								; }
 
 	end_inc_timer:
 		rts 	r7
@@ -409,68 +450,75 @@ inc_clock:
 ;------------------------------------------------------------------------------
 alarm_verify:
 
-		cmp 	alarm_status, #1
-		bne 	end_alarm_verify
+		cmp 		alarm_status, #1
+		bne 		end_alarm_verify
 
-		jsr 	r7, _getclock
+		jsr 		r7, _getclock
 
-		cmp 	r0, alarm_sec			; if (clock == alarm)
-		bne 	end_alarm_verify
+		cmp 		r0, alarm_sec			; if (clock == alarm)
+		bne 		end_alarm_verify
 
-		cmp 	r1, alarm_min
-		bne 	end_alarm_verify
+		cmp 		r1, alarm_min
+		bne 		end_alarm_verify
 
-		cmp 	r2, alarm_hor
-		bne 	end_alarm_verify
+		cmp 		r2, alarm_hor
+		bne 		end_alarm_verify
+
+		
+teste: 	
+
+		mov 		4(r6),r5
+		mov 		6(r6),r4
+		mov 		8(r6),r3
+		mov		10(r6),r2
+		mov		12(r6),r1			; Recupera os valores da pilha para
+		mov		14(r6),r0			; executar a rotina de callback
+			
+		mov 		callback_routine, r0 
+		jsr 		r7, (r0)
+
+		hlt
+
+		clr 		callback_routine
+		clr 		alarm_status
 
 	end_alarm_verify:
 
-		rts	r7
-
-;		
-;------------------------------------------------------------------------------
-;------------------------------------------------------------------------------
-clear_display:
-		mov 	r0, -(r6)			; salva r0
-		mov 	#35,r0				; r0 = 35
-	clear_display_a:
-		clr 	VISOR(r0)			; while (r0 != 0)
-		sob 	r0, clear_display_a		; *r0 = 0 // valor apontado por r0 = 0
-		mov 	(r6)+, r0
-		rts 	r7
+		rts		r7
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 blink_getchar:
 
-		tst 	getchar_actived
-		beq	end_blink
+		tst 		getchar_actived
+		beq		end_blink
 
-		mov 	display_cursor, r0
+		mov 		#VISOR, r0
+		add 		display_cursor, r0
 
-		tst 	getchar_buffer_status
-		beq 	put_underline
+		tst 		getchar_buffer_status
+		beq 		put_underline
 
-		mov 	getchar_buffer, VISOR(r0)
-		dec 	getchar_buffer_status
-		jmp 	end_blink
+		mov 		getchar_buffer, (r0)
+		clr 		getchar_buffer_status
+		jmp 		end_blink
 
 	put_underline:
-		mov 	VISOR(r0), getchar_buffer
-		inc 	getchar_buffer_status
-		mov 	#'_', VISOR(r0)
+		mov 		(r0), getchar_buffer
+		mov 		#1, getchar_buffer_status
+		mov 		#'_', (r0)
 		
 
 	end_blink:
-		rts 	r7
+		rts 		r7
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 
 _display_clock:
 
-		clr 	INTE
+		
 		mov 	r3, -(r6)
 		mov 	r4, -(r6)
 		mov 	r5, -(r6)
@@ -487,7 +535,7 @@ _display_clock:
 		cmp 	r4, clock_hor
 		ble	display_clock_loop1
 
-		add 	#H30, r5 
+		add 	#H30, r5 	
 		mov 	r5, (r3)
 		inc 	r3
 
@@ -553,16 +601,143 @@ _display_clock:
 		mov 	(r6)+, r5
 		mov 	(r6)+, r4
 		mov 	(r6)+, r3
-		mov 	#interrupt, INTE
+		
 
 		rts 	r7
+
+_display_alarm:
+
+		
+		mov 	r3, -(r6)
+		mov 	r4, -(r6)
+		mov 	r5, -(r6)
+		
+
+		mov 	#VISOR, r3
+		add 	#18, r3
+
+		clr 	r4
+		mov 	#-1, r5
+	display_alarm_loop1:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, alarm_hor
+		ble	display_alarm_loop1
+
+		add 	#H30, r5 	
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	alarm_hor, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		mov 	#H3A, (r3)			; dois pontos
+		inc 	r3
+		
+
+
+		clr 	r4
+		mov 	#-1, r5
+	display_alarm_loop2:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, alarm_min
+		ble	display_alarm_loop2
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	alarm_min, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+
+		mov 	#H3A, (r3)			; dois pontos
+		inc 	r3
+
+
+		clr 	r4
+		mov 	#-1, r5
+	display_alarm_loop3:
+		inc 	r5
+		add 	#10, r4
+		cmp 	r4, alarm_sec
+		ble	display_alarm_loop3
+
+		add 	#H30, r5 
+		
+		mov 	r5, (r3)
+		inc 	r3
+
+		sub 	#10, r4
+		mov 	alarm_sec, r5
+		sub 	r4, r5
+
+		add 	#H30, r5 
+		mov 	r5, (r3)
+		inc 	r3
+
+		mov 	(r6)+, r5
+		mov 	(r6)+, r4
+		mov 	(r6)+, r3
+		
+
+		rts 	r7
+
+
+;		
+;------------------------------------------------------------------------------
+;------------------------------------------------------------------------------
+clear_display:
+		mov 		r0, -(r6)			; salva r0
+		mov 		#35,r0				; r0 = 35
+	clear_display_a:
+		clr 		VISOR(r0)			; while (r0 != 0)
+		dec 		r0
+		bpl		clear_display_a			; *r0 = 0 // valor apontado por r0 = 0
+		
+		mov 		(r6)+, r0
+		rts 		r7
 
 ;		
 ;------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------
 
-org _APP	
-		jsr 	r7, _getchar
-		mov 	r0, r5
-		jsr 	r7, _putchar
-		jmp 	_APP
+org 	_APP
+
+	
+		mov 		#05, r2
+		clr 		r3
+		clr 		r4
+		mov 		#_setalarm, r5
+		jsr 		r7, _setalarm
+	loop:
+		mov 		#0, r4
+		mov 		#0, r3
+		
+		clr 		INTE
+		mov 		clock_sec, r2
+		add 		#5, r2
+		mov 		#interrupt, INTE
+		
+		mov 		#_setalarm, r5
+
+		clr 		INTE		
+		jsr 		r7, _display_clock
+		jsr		r7, _display_alarm
+		mov 		#interrupt, INTE
+		
+		jmp loop
+		hlt
+
+	string: dab 'Hello, World!'
