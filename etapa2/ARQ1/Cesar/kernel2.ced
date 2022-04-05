@@ -474,13 +474,12 @@ teste:
 		mov		12(r6),r1			; Recupera os valores da pilha para
 		mov		14(r6),r0			; executar a rotina de callback
 			
+		clr 		alarm_status
 		mov 		callback_routine, r0 
+		clr 		callback_routine
+
 		jsr 		r7, (r0)
 
-		hlt
-
-		clr 		callback_routine
-		clr 		alarm_status
 
 	end_alarm_verify:
 
@@ -722,17 +721,15 @@ org 	_APP
 		mov 		#_setalarm, r5
 		jsr 		r7, _setalarm
 	loop:
-		mov 		#0, r4
-		mov 		#0, r3
 		
 		clr 		INTE
 		mov 		clock_sec, r2
-		add 		#5, r2
-		mov 		#interrupt, INTE
-		
+		add 		#6, r2
+		mov 		#0, r4
+		mov 		#0, r3
 		mov 		#_setalarm, r5
-
-		clr 		INTE		
+		
+		
 		jsr 		r7, _display_clock
 		jsr		r7, _display_alarm
 		mov 		#interrupt, INTE
