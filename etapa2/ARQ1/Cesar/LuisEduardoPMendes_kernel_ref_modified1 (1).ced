@@ -1,4 +1,4 @@
-;
+; Luis Eduardo Pereira Mendes - 00333936
 ;
 ;******************************************************************************
 ;
@@ -202,10 +202,11 @@ _putchar:
 		clr 		r0
 
 		inc 		display_cursor			; display_cursor ++;
+		
+		
 
 		cmp 		display_cursor, #36		; if (display_cursor == 36) {
 		blt 		end_putch			; return;
-		
 		jsr 		r7, clear_display		;	display_cursor = 0;
 		clr		display_cursor			; }
 
@@ -257,21 +258,21 @@ _putmsg:
 
 		clr 		r0				; se nao houver erro r0 = 0
 
-		dec 		r5				; ignora o primeiro byte da mensagem
-		mov 		r5, r1				; salva em r1 o endereco
+		dec 		r5
+		mov 		r5, r1
 
 
 	loop_putmsg:
 		mov 		(r1), r5
-		and 		#h00ff, r5			; ignora o primeiro byte para fazer a comparação
+		and 		#h00ff, r5
 
 		tst 		r5
 		beq 		end_putmsg			; se char = h00, end
 
 		jsr 		r7, _putchar
 
-		tst 		r0
-		bne 		end_putmsg
+		;tst 		r0
+		;bne 		end_putmsg
 
 		inc		r1
 		jmp		loop_putmsg
@@ -301,14 +302,14 @@ _setclock:
 
 								; struct Hora {int hor, min, sec; } clock;
 		cmp 		r3, #60				; if (clock.sec > 60) {
-		blt		sec_not_error			; 	error = 1;
+		bls		sec_not_error			; 	error = 1;
 		mov 		#1, r0				
 		jmp 		end				;	return;
 
 	sec_not_error:
 
 		cmp 		r4, #60				; if (clock.min > 60) {
-		blt		min_not_error			; 	error = 2;
+		bls		min_not_error			; 	error = 2;
 		mov  		#2, r0
 		jmp 		end				;	return;
 
@@ -316,7 +317,7 @@ _setclock:
 		
 	
 		cmp 		r5, #24				; if (clock.hor > 24) {
-		blt		hor_not_error			; 	error = 3;
+		bls		hor_not_error			; 	error = 3;
 		mov 		#3, r0
 		jmp 		end				;	return;
 
@@ -341,21 +342,21 @@ _setalarm:
 		clr 		r0
 
 		cmp 		r2, #60
-		blt		sec_not_error_a
+		bls		sec_not_error_a
 		mov 		#1, r0
 		jmp 		end_alarm
 
 	sec_not_error_a:
 
 		cmp 		r3, #60
-		blt		min_not_error_a
+		bls		min_not_error_a
 		mov  		#2, r0
 		jmp 		end_alarm
 
 	min_not_error_a:
 	
 		cmp 		r4, #24
-		blt		hor_not_error_a
+		bls		hor_not_error_a
 		mov 		#3, r0
 		jmp 		end_alarm
 
@@ -500,187 +501,6 @@ blink_getchar:
 
 	end_blink:
 		rts 		r7
-;		
-;------------------------------------------------------------------------------
-;------------------------------------------------------------------------------
-
-_display_clock:
-
-		
-		mov 	r3, -(r6)
-		mov 	r4, -(r6)
-		mov 	r5, -(r6)
-		
-
-		mov 	#VISOR, r3
-		add 	#28, r3
-
-		clr 	r4
-		mov 	#-1, r5
-	display_clock_loop1:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, clock_hor
-		ble	display_clock_loop1
-
-		add 	#H30, r5 	
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	clock_hor, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		mov 	#H3A, (r3)			; dois pontos
-		inc 	r3
-		
-
-
-		clr 	r4
-		mov 	#-1, r5
-	display_clock_loop2:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, clock_min
-		ble	display_clock_loop2
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	clock_min, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-
-		mov 	#H3A, (r3)			; dois pontos
-		inc 	r3
-
-
-		clr 	r4
-		mov 	#-1, r5
-	display_clock_loop3:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, clock_sec
-		ble	display_clock_loop3
-
-		add 	#H30, r5 
-		
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	clock_sec, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		mov 	(r6)+, r5
-		mov 	(r6)+, r4
-		mov 	(r6)+, r3
-		
-
-		rts 	r7
-
-_display_alarm:
-
-		
-		mov 	r3, -(r6)
-		mov 	r4, -(r6)
-		mov 	r5, -(r6)
-		
-
-		mov 	#VISOR, r3
-		add 	#18, r3
-
-		clr 	r4
-		mov 	#-1, r5
-	display_alarm_loop1:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, alarm_hor
-		ble	display_alarm_loop1
-
-		add 	#H30, r5 	
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	alarm_hor, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		mov 	#H3A, (r3)			; dois pontos
-		inc 	r3
-		
-
-
-		clr 	r4
-		mov 	#-1, r5
-	display_alarm_loop2:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, alarm_min
-		ble	display_alarm_loop2
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	alarm_min, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-
-		mov 	#H3A, (r3)			; dois pontos
-		inc 	r3
-
-
-		clr 	r4
-		mov 	#-1, r5
-	display_alarm_loop3:
-		inc 	r5
-		add 	#10, r4
-		cmp 	r4, alarm_sec
-		ble	display_alarm_loop3
-
-		add 	#H30, r5 
-		
-		mov 	r5, (r3)
-		inc 	r3
-
-		sub 	#10, r4
-		mov 	alarm_sec, r5
-		sub 	r4, r5
-
-		add 	#H30, r5 
-		mov 	r5, (r3)
-		inc 	r3
-
-		mov 	(r6)+, r5
-		mov 	(r6)+, r4
-		mov 	(r6)+, r3
-		
-
-		rts 	r7
 
 
 ;		
@@ -697,33 +517,5 @@ clear_display:
 		mov 		(r6)+, r0
 		rts 		r7
 
-;		
-;------------------------------------------------------------------------------
-;------------------------------------------------------------------------------
 
-org 	_APP
 
-	
-		mov 		#05, r2
-		clr 		r3
-		clr 		r4
-		mov 		#_setalarm, r5
-		jsr 		r7, _setalarm
-	loop:
-		
-		clr 		INTE
-		mov 		clock_sec, r2
-		add 		#6, r2
-		mov 		#0, r4
-		mov 		#0, r3
-		mov 		#_setalarm, r5
-		
-		
-		jsr 		r7, _display_clock
-		jsr		r7, _display_alarm
-		mov 		#interrupt, INTE
-		
-		jmp loop
-		hlt
-
-	string: dab 'Hello, World!'

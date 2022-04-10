@@ -24,6 +24,21 @@ bool tree_cmp(node *a, node *b){
                 return false;
 }
 
+int aproximation(node *a, int key, int aprox){
+        if (a != NULL){
+                if (a->data != key){
+                        if (abs(a->data - key) < abs (aprox - key))
+                                aprox = a->data;
+                        if (a->data < key)
+                                aprox = aproximation(a->right, key, aprox);
+                        else
+                                aprox = aproximation(a->left, key, aprox);                                
+                }
+        }
+        return aprox;
+}
+
+
 int main(){
         node *a, *b, *c;
 
@@ -48,7 +63,7 @@ int main(){
         b = bst_insert(b, 1, NULL);
 
         
-        printf("%d\n", tree_cmp(a, b));
+        printf("%d\n", aproximation(a, 13, 0));
         
         return 0;
 }
