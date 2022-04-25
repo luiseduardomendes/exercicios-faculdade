@@ -53,6 +53,18 @@ class Map{
                     return true;
             return false;
         }
+
+        void draw_map(){
+            for (int i = 0; i < lines; i ++){
+                for (int j = 0; i < columns; i ++){
+                    if (isRock(i, j))
+                        std::cout << '# ';
+                    else
+                        std::cout << '_ ';
+                }
+                std::cout << std::endl;
+            }
+        }
 };
 
 class solver{
@@ -153,6 +165,7 @@ int main(){
     solver s = solver(map);
 
     printf("Hello\n");
+    map.draw_map();
 
     if (s.solve_map(Coord(3,4),Coord(2,1    )))
         printf("Possible!\n");
