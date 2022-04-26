@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define SIZE_NAME 20
+#define SIZE_NAME 32
 typedef struct t_info_node{
     int id;
     char name[SIZE_NAME];
