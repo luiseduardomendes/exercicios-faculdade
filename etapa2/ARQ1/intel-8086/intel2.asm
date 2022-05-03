@@ -1,32 +1,23 @@
         .model  small
-        .stack  
+        .stack
 		.data
-            BufferTec	db	100 dup (?)
-            FileName		db		15 dup (?)		; Nome do arquivo a ser lido
-            FileBuffer		db		10 dup (?)		; Buffer de leitura do arquivo
-            FileHandle		dw		0				; Handler do arquivo
-            FileHandleOut   dw      0
-            FileNameBuffer	db		15 dup (?)
-            FileNameOutput  db      15 dup (?)
-            FileIndex       dw      0
-            FileIndexOut    dw      0
-            FileSize        dw      0
-            FileNameSize    dw      0
-            WriteBuffer     dw      13 dup (0)
-            InputRead       db      256 dup (0)
-            bufferSum       db      0
-            SumIndex        dw      0
-            SumMod4         dw      0
-            Output          db      4 dup (0)
-            LineBreak       db      0dh, 0ah, 0
-            space           db      ' ', 0
-            MSGArqSaida     db      "Arquivo de saida: ", 0
-            MSGArqEntrada   db      "Arquivo de entrada: ", 0
-            MsgErroOpenOut  db      0dh, 0ah, "Erro ao abrir arquivo de saida", 0
-            MsgErroWrtOut   db      0dh, 0ah, "Erro ao escrever no arquivo de saida", 0
+    BufferTec	db	100 dup (?)
+    FileName		db		15 dup (?)		; Nome do arquivo a ser lido
+    FileBuffer		db		10 dup (?)		; Buffer de leitura do arquivo
+    FileHandle		dw		0				; Handler do arquivo
+    FileNameBuffer	db		15 dup (?)
+    FileNameOutput  db      15 dup (?)
+    FileIndex       dw      0
+    FileSize        dw      0
+    FileNameSize    dw      0
+    InputRead       db      256 dup (0)
+    SumIndex        dw      0
+    SumMod4         dw      0
+    Output          db      4 dup (0)
+    Message         db      0dh, 0ah, 0dh, 0ah, 0
+    
 
         .code
-
 ReadString	proc	near
 
 		;Pos = 0
@@ -141,6 +132,8 @@ printf_s	proc	near
 	
 printf_s	endp
 
+
+
 GetFileName	proc	near
 
         ;	// Lê uma linha do teclado
@@ -248,55 +241,24 @@ FileOpen    proc    near
 
 FileOpen    endp
 
+
 SumAscii    proc    near
 
     SumAscii1:
-
+        
         mov     bx,SumIndex                     ;   al = InputRead[SumIndex]
         lea     di,InputRead
         mov     al,[di+bx]
-        mov     ah, 0
-
-        mov     bufferSum, al
         
-        call    IntToHex
-        mov     bx, 0
-        lea     di, WriteBuffer
-        mov     [di+bx], ah
-        inc     bx
-        mov     [di+bx], al
-        
-        mov     bx, FileHandleOut
-        mov     cx, 2
-        lea     dx, WriteBuffer
-        mov     ah, 40h
-        int     21H
-        jc      error_write
-
         mov     bx,SumMod4
         lea     di,Output                       ;   Output[SumIndex % 4] = al
-        mov     al, bufferSum
         add     [di+bx],al
 
         inc     SumIndex                        ;   SumIndex ++
         inc     SumMod4 
-        add     FileIndexOut, 2
 
         cmp     SumMod4, 4                      ;   if SumMod4 == 4: 
         jne     SumAscii2                       ;       SumMod4 = 0
-        
-        mov     ah, 0
-        mov     bx, 0
-        lea     di, WriteBuffer
-        mov     [di+bx], 0DH
-        inc     bx
-        mov     [di+bx], 0AH
-        mov     bx, FileHandleOut
-        mov     cx, 2
-        lea     dx, WriteBuffer
-        mov     ah, 40h
-        int     21H
-        jc      error_write
         
         mov     SumMod4, 0
 
@@ -379,79 +341,9 @@ putRes      proc    near
         ret
 putRes      endp
 
-IntToHex   proc    near
-        push    cx
-        mov     cl, 4
-
-        shl     ax, cl
-        shr     al, cl
-
-        cmp     ah, 9
-        jle     numberAh
-        add     ah, 55
-        jmp     nextAl
-    numberAh:
-        add     ah, 48
-    nextAl:
-        cmp     al, 9
-        jle     numberAl
-        add     al, 55
-        jmp     endIntToHex
-    numberAl:
-        add     al, 48
-    endIntToHex:
-        pop     cx
-        ret
-IntToHex    endp
-
-hexPrint    proc    near
-        
-        push    bx
-
-        call    IntToHex
-        mov     bx, ax
-
-        mov     ah, 2
-        mov     dl, bh
-        int     21h
-
-        mov     ah, 2
-        mov     dl, bl
-        int     21h
-
-        pop     bx
-
-        ret
-
-hexPrint    endp    
-
-openOutput  proc    near
-
-        mov     ah, 3ch
-        mov     cx, 0
-        lea     dx, FileNameOutput
-        int     21h
-        jnc     not_error_open
-        lea     bx, MsgErroOpenOut
-        call    printf_s
-        .exit   1
-
-    not_error_open:
-        mov     FileHandleOut, ax
-        ret
-openOutput  endp
-
-error_write:
-        lea     bx, MsgErroWrtOut
-        call    printf_s
-        .exit   1
-        
-
     .startup
-
-        lea     bx, MSGArqEntrada
-        call    printf_s
         call    FileOpen
+        call    SumAscii
 
         lea     si, FileName
         lea     di, FileNameOutput
@@ -459,44 +351,18 @@ error_write:
         rep     movsb
         call    putRes
 
-        call    openOutput
-
-        call    SumAscii
-
-        mov     bx, FileHandleOut
-        mov     ah, 3eh
-
-        lea     bx, LineBreak
-        call    printf_s
-
-        lea     bx, MSGArqSaida
+        lea     bx, Message
         call    printf_s
 
         lea     bx, FileNameOutput
         call    printf_s
 
-        lea     bx, LineBreak
-        call    printf_s
-
-        mov     bx, 0
     print:
         lea     di, Output
-        mov     ah, 0
-        mov     al, [di+bx]
-        call    hexPrint
-
-        push    bx
-        lea     bx, space
-        call    printf_s
-        pop     bx
-
-        inc     bx
-        cmp     bx, 4
-        jne     print
-
-    endApp:
-        lea     bx, LineBreak
-        call    printf_s
+        mov     dl, [di]
+        mov     dh, [di+1]
+        mov     bl, [di+2]
+        mov     bh, [di+3]
 
     .exit
     end
