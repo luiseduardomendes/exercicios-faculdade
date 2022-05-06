@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "red_black_tree.h"
 
 rbt_node* rbt_init(){
     return NULL;
 }
 
-rbt_node* rbt_search(rbt_node *root, int key){
+rbt_node* rbt_search(rbt_node *root, char word[]){
     while(root != NULL){
-        if (key == root->data)
+        if (!strcmp(word, root->word))
             return root;
         else {
-            if (key < root->data)
+            if (strcmp2(word, root->word))
                 root = root->left;
             else
                 root = root->right;
@@ -20,24 +21,24 @@ rbt_node* rbt_search(rbt_node *root, int key){
     return NULL;
 }
 
-rbt_node* rbt_create_node(int item){
+rbt_node* rbt_create_node(char word[], char synonym[]){
     rbt_node *x = NULL;
     x = malloc(sizeof(rbt_node));
-    x->data = item;
+    strcpy(x->word, word);
+    strcpy(x->synonym, synonym);
     x->left = NULL;
     x->right = NULL;
     x->parent = NULL;
     return x;
 }
 
-rbt_node* rbt_insert(rbt_node *root, int item){
+rbt_node* rbt_insert(rbt_node *root, char word[], char synonym[]){
     rbt_node *y = root, *x = root;
     rbt_node *z = NULL;
-    z = rbt_create_node(item);
-    printf("Hello");
+    z = rbt_create_node(word, synonym);
     while (x != NULL){
         y = x;
-        if (z->data < x->data)
+        if (strcmp2(z->word, x->word))
             x = x->left;
         else
             x = x->right;
@@ -47,7 +48,7 @@ rbt_node* rbt_insert(rbt_node *root, int item){
 
     if (y == NULL)
         root = z;
-    else if (z->data < y->data)
+    else if (strcmp2(z->word, y->word))
         y->left = z;
     else
         y->right = z;
@@ -83,7 +84,6 @@ rbt_node *rbt_insert_fixup(rbt_node *root, rbt_node *z) {
         }
         else {
             y = z->parent->parent->left;
-            printf("pointer: %p\n", y);
             if (y != NULL && y->color == RBT_RED) {
                 z->parent->color = RBT_BLACK;
                 y->color = RBT_BLACK;
@@ -146,9 +146,28 @@ rbt_node *rbt_right_rotate(rbt_node *root, rbt_node *x) {
 void rbt_print_inorder_left(rbt_node *root){
     if (root != NULL) {
         rbt_print_inorder_left(root->left);
-        printf("%d ", root->data);
+        printf("%s - %s\n", root->word, root->synonym);
         rbt_print_inorder_left(root->right);
     }
 }
 
+int strcmp2(char *a, char *b){
+    while (*a == *b && *a != '\0' && *b != '\0'){
+        a++;
+        b++;
+    }
+    if (*a == '\0' && *b == '\0')
+        return 0;
+    else if (*a == '\0')
+        return 1;
+    else if (*b == '\0')
+        return -1;
+    else {
+        if (*a > *b)
+            return 1;
+        else
+            return -1;
+    }
+
+}
 
