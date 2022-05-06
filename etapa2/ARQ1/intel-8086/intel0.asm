@@ -9,8 +9,10 @@
             FileNameBuffer	db		15 dup (?)
             FileNameOutput  db      15 dup (?)
             FileIndex       dw      0
+            FileIndexKb     dw      0
             FileIndexOut    dw      0
             FileSize        dw      0
+            FileSizeKb      dw      0
             FileNameSize    dw      0
             WriteBuffer     dw      13 dup (0)
             bufferSum       db      0
@@ -24,12 +26,21 @@
             MSGArqEntrada   db      "Arquivo de entrada: ", 0
             MsgErroOpenOut  db      0dh, 0ah, "Erro ao abrir arquivo de saida", 0
             MsgErroWrtOut   db      0dh, 0ah, "Erro ao escrever no arquivo de saida", 0
+            MsgErro128kb    db      0dh, 0ah, "Arquivo maior do que 128 kBytes", 0
+            MsgErroName     db      0dh, 0ah, "Nome de arquivo invalido", 0
             MsgSoma         db      "Soma: ", 0
             MsgBytes        db      "Bytes: ", 0
+            msgkb           db      "kB", 0
+            msgb            db      "B", 0
             decBytes        db      13 dup (0)
+            decKBytes       db      13 dup (0)
+            ext_size        dw      0
+            Hello           db      0dh, 0ah, "Hello", 0dh, 0ah
             sw_m            dw      0
             sw_n            dw      0
             sw_f            db      0
+            bufferW1        db      13 dup (0)
+            b               dw      0
 
         .code
 
@@ -189,10 +200,22 @@ FileOpen    proc    near
         lea     di, FileNameOutput
         mov     cx, 15
         rep     movsb
-        call    putRes
+
+
+        lea     bx, FileNameOutput
+        call    calc_str_size
+        mov     fileNameSize, bx
+        
+        lea     bx, FileNameOutput        
+        call    change_file_ext 
+            
+        mov     bx, fileNameSize
+        sub     bx, ext_size
+        dec     bx
+        cmp     bx, 8
+        jg      invalid_name_file
 
         call    openOutput
-        
 
         mov		al,0
         lea		dx,FileName
@@ -203,6 +226,8 @@ FileOpen    proc    near
         .exit	1
         
     FileOpen1:
+
+        
 
         ;	FileHandle = ax
         mov		FileHandle,ax		; Salva handle do arquivo
@@ -239,6 +264,8 @@ FileOpen    proc    near
         ;		inputRead[i] = FileBuffer; i++;	// Coloca um caractere no vetor
         
         mov     al, FileBuffer
+        cmp     al, 7Eh
+        jg		FileOpen2
 
     SumAscii1:
 
@@ -295,12 +322,25 @@ FileOpen    proc    near
 
     SumAscii3:        
         inc     FileIndex
+        cmp     FileIndex, 1024
+        jne     SumAscii4
+        inc     FileIndexKb
+        cmp     FileIndexKb, 128
+        je      error_greater_than_128
+
+
+
+        mov     FileIndex, 0
         ;	}
+
+    SumAscii4:
         jmp		FileOpen2
 
     CloseAndFinal:
         mov     ax, FileIndex
         mov     FileSize, ax
+        mov     ax, FileIndexKb
+        mov     FileSizeKb, ax
         mov		bx,FileHandle		; Fecha o arquivo
         mov		ah,3eh
         int		21h
@@ -310,43 +350,51 @@ FileOpen    proc    near
 
 FileOpen    endp
 
-putRes      proc    near
+calc_str_size       proc    near
+        ; bx -> string (input)
+        ; bx -> size (output)
 
-        lea     di, FileNameOutput
+        mov     di, bx
         mov     bx, 0
-        mov     FileNameSize, 0 
-    loop_putRes:
-        mov     ax, [bx+di]
-        
-        inc     FileNameSize
+    loop_calc_size:
+        cmp     [bx+di], 0
+        je      size_found
         inc     bx
-        cmp     ax, 0
-        je      size_set
-        
-        jmp     loop_putRes
+        jmp     loop_calc_size
 
-    size_set:
-        lea     di, FileNameOutput
-        mov     bx, FileNameSize
-        sub     bx, 4
-        cmp     [bx+di], '.'
-        jne     not_txt
-        inc     bx
-        cmp     [bx+di], 't'
-        jne     not_txt
-        inc     bx
-        cmp     [bx+di], 'x'
-        jne     not_txt
-        inc     bx
-        cmp     [bx+di], 't'
-        jne     not_txt
-        
-        jmp     txt
+    size_found:
+        ret
+calc_str_size       endp
 
+change_file_ext     proc    near
+        ; ax -> output string
+        ; bx -> source string effective address, ended with 0
+        ; cx -> string size
+        
+        push    bx
+        push    cx
+        call    size_of_file_ext
+        
+        pop     cx
+        pop     bx
+
+        mov     di, bx
+
+        cmp     ext_size, 0FFFFH
+        je      file_whout_ext
+
+        cmp     ext_size, 3
+        jg      invalid_name_file
+
+        cmp     ext_size, 0
+        je      invalid_name_file
+        
+        
     txt:
 
         mov     bx, FileNameSize
-        sub     bx, 1
+        sub     bx, ext_size
+        dec     bx
         mov     [bx+di], '.'
         inc     bx
         mov     [bx+di], 'r'
@@ -359,10 +407,9 @@ putRes      proc    near
         inc     bx
         jmp     end_putres
 
-    not_txt:
+    file_whout_ext:
 
         mov     bx, FileNameSize
-        sub     bx, 5
         mov     [bx+di], '.'
         inc     bx
         mov     [bx+di], 'r'
@@ -376,7 +423,55 @@ putRes      proc    near
 
     end_putres:
         ret
-putRes      endp
+
+    
+
+change_file_ext     endp
+
+size_of_file_ext    proc    near
+        ; INPUT
+        ; bx -> source string address
+        ; cx -> string size including '\0'
+
+        ; OUTPUT
+        ; cx -> size of extension
+
+        push    ax
+
+        lea     di, FileNameOutput
+        mov     bx, FileNameSize
+        
+        dec     bx
+        mov     ax, 0
+    size_ext_1:
+        mov     cl, [bx+di]
+
+        cmp     cl, '.'
+        je      dot_found
+        dec     bx
+        inc     ax
+
+        cmp     bx, 0
+        jne     size_ext_1
+
+        mov     ax, 0FFFFH
+
+    dot_found:
+        mov     ext_size, ax
+
+        lea     bx, LineBreak 
+        call    printf_s
+
+        pop     ax
+        ret 
+size_of_file_ext    endp
+
+invalid_name_file:
+    
+        lea     bx, MsgErroName
+        call    printf_s
+        .exit   1
+;end
 
 IntToHex   proc    near
         push    cx
@@ -477,13 +572,28 @@ printBytes      proc    near
         lea     bx, MsgBytes
         call    printf_s
 
+        mov     ax, FileSizeKb
+        lea     bx, decKBytes
+        call    sprintf_w
+
+        lea     bx, decKBytes
+        call    printf_s
+        lea     bx, msgkb
+        call    printf_s
+
+        lea     bx, space
+        call    printf_s
+
         mov     ax, FileSize
         lea     bx, decBytes
         call    sprintf_w
 
         lea     bx, decBytes
         call    printf_s
+        lea     bx, msgb
+        call    printf_s
 
+        
         ret
 printBytes      endp
 
@@ -563,7 +673,13 @@ error_write:
         lea     bx, MsgErroWrtOut
         call    printf_s
         .exit   1
-; end        
+;error_write   
+
+error_greater_than_128:
+        lea     bx, MsgErro128kb
+        call    printf_s
+        .exit   1
+;error_greater_than_128
 
 .startup
 
@@ -651,8 +767,14 @@ error_write:
         call    printBytes
         lea     bx, LineBreak
         call    printf_s
+        
+        mov     bx, FileHandle
+        mov     ah, 3eh
+        int     21H
+
         mov     bx, FileHandleOut
         mov     ah, 3eh
+        int     21H
         
 .exit
 end

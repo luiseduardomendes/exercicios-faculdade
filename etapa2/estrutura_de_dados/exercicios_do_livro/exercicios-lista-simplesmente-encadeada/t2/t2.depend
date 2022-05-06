@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1651795416 source:e:\github\exercicios-faculdade\etapa2\estrutura_de_dados\finalwork2\main2.c
+	<stdio.h>
+	<stdlib.h>
+	"red_black_tree.h"
+
+1651792259 e:\github\exercicios-faculdade\etapa2\estrutura_de_dados\finalwork2\red_black_tree.h
+	<stdio.h>
+	<stdlib.h>
+
+1651797039 source:e:\github\exercicios-faculdade\etapa2\estrutura_de_dados\finalwork2\red_black_tree.c
+	<stdio.h>
+	<stdlib.h>
+	"red_black_tree.h"
+
