@@ -23,22 +23,29 @@ int main(int argc, char **argv){
     rbt_node *root, *node = NULL;
     FILE* file, *input, *output;
     char line[SIZELINE], sep[] = {" ,.&*%\?!;/-'@\"$#=><()][}{:\n\t"};
-    char *str, *syn, dict_name[] = {"dict_10k.txt"};
+    char *str, *syn, dict_name[] = {"dict_10K.txt"};
     clock_t start, end;
     root = rbt_init();
 
-    if (argc != 3)
-        return -1;
+    if (argc != 3) {
+        printf ("Número inválido de argumentos");
+        return 1;
+    }
 
-    if (!(file = fopen(dict_name, "r")))
-        return -1;
-
+    if (!(file = fopen(dict_name, "r"))) {
+        printf ("Erro ao abrir o arquivo %s",dict_name);
+        return 1;
+    }
+    fgets(line,SIZELINE,file);
     while (fgets(line, SIZELINE, file)) {
         str = strtok (line, sep); //considera qquer caractere n�o alfab�tico como separador
         syn = strtok (NULL, sep);
+        ToLower(str);
+        ToLower(syn);
         root = rbt_insert(root, str, syn);
     }
-    // rbt_print_inorder_left(root);
+    //rbt_print_inorder_left(root);
+
     
     if (!(input = fopen (argv[1], "r"))) {
         printf ("Erro ao abrir o arquivo %s",argv[1]);
@@ -46,10 +53,16 @@ int main(int argc, char **argv){
     }
     
 
-    output = fopen (argv[2], "w");
+    if (!(output = fopen (argv[2], "w"))) {
+        printf ("Erro ao abrir o arquivo %s",argv[2]);
+        return 1;
+    }
+
+
+    
 
     start = clock(); //inicia a contagem do tempo
-
+    cmp = 0;
 
     //percorre todo o arquivo lendo linha por linha
     while (fgets(line,SIZELINE,input)) {
@@ -57,7 +70,6 @@ int main(int argc, char **argv){
         while (str != NULL) {
             ToLower(str);
             if (node = rbt_search(root, str)){
-                printf("%s - %s", node->word, node->synonym);
                 fprintf(output,"%s ", node->synonym); 
             }
             else
@@ -71,9 +83,23 @@ int main(int argc, char **argv){
     end = clock(); // finaliza contagem do tempo
     float miliseconds = (float)(end - start) / CLOCKS_PER_SEC * 1000; //calcula o tempo decorrido
     printf("Tempo: %.5f ms\n",miliseconds);
+    printf("Comparações: %d\n", cmp);
     
     fclose (input); //fecha os arquivos
     fclose (output);
+
+    
     return 0;
+
+    while(1){
+        printf("Digite uma palavra: ");
+        fgets(str, 64, stdin);
+        ToLower(str);
+        printf("Palavra: %s", str);
+        if (rbt_search(root, str) != NULL)
+            printf("True\n");
+        else
+            printf("False\n");
+    }
 }
     

@@ -15,6 +15,7 @@ typedef struct rbt_node {
     
 }rbt_node;
 
+int cmp;
 rbt_node* rbt_init();
 rbt_node* rbt_search(rbt_node *root, char word[]);
 rbt_node* rbt_insert(rbt_node *root, char word[], char synonym[]);

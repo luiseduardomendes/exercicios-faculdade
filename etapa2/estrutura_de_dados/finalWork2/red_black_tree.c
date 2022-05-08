@@ -4,19 +4,28 @@
 #include "red_black_tree.h"
 
 rbt_node* rbt_init(){
+    cmp = 0;
     return NULL;
 }
 
 rbt_node* rbt_search(rbt_node *root, char word[]){
+    int r;
     while(root != NULL){
-        if (!strcmp(word, root->word))
-            return root;
-        else {
-            if (strcmp2(word, root->word))
-                root = root->left;
-            else
-                root = root->right;
+        cmp ++;        
+        r = strcmp2(word, root->word);
+        switch (r){
+        case -1:
+            root = root->left;
+            break;
+        case 1:
+            root = root->right;
+            break;
+        case 0:
+            return(root);
+        default:
+            break;
         }
+        
     }
     return NULL;
 }
@@ -35,24 +44,41 @@ rbt_node* rbt_create_node(char word[], char synonym[]){
 rbt_node* rbt_insert(rbt_node *root, char word[], char synonym[]){
     rbt_node *y = root, *x = root;
     rbt_node *z = NULL;
+    int r;
     z = rbt_create_node(word, synonym);
     while (x != NULL){
         y = x;
-        if (strcmp2(z->word, x->word))
-            x = x->left;
-        else
+        r = strcmp2(z->word, x->word);
+        switch (r){
+        case 1:
             x = x->right;
+            break;
+        case -1:
+            x = x->left;
+            break;
+        case 0:
+            return root;
+            break;
+        }
     }
 
     z->parent = y;
 
     if (y == NULL)
         root = z;
-    else if (strcmp2(z->word, y->word))
-        y->left = z;
-    else
-        y->right = z;
-
+    else{
+        r = strcmp2(z->word, y->word);
+        switch (r){
+        case -1:
+            y->left = z;
+            break;
+        case 1:
+            y->right = z;
+            break;
+        default:
+            break;
+        }
+    }
     z->color = RBT_RED;
 
     root = rbt_insert_fixup(root, z);
@@ -158,10 +184,6 @@ int strcmp2(char *a, char *b){
     }
     if (*a == '\0' && *b == '\0')
         return 0;
-    else if (*a == '\0')
-        return 1;
-    else if (*b == '\0')
-        return -1;
     else {
         if (*a > *b)
             return 1;
