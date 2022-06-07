@@ -1,7 +1,8 @@
         .model  small
         .stack  
 		.data
-            BufferTec	    db	100 dup (?)
+;data
+            BufferTec	    db	    100 dup (?)
             FileName		db		15 dup (?)		; Nome do arquivo a ser lido
             FileBuffer		db		10 dup (?)		; Buffer de leitura do arquivo
             FileHandle		dw		0				; Handler do arquivo
@@ -41,7 +42,7 @@
             sw_f            db      0
             bufferW1        db      13 dup (0)
             b               dw      0
-
+;data
         .code
 
 ReadString	proc	near
@@ -471,7 +472,7 @@ invalid_name_file:
         lea     bx, MsgErroName
         call    printf_s
         .exit   1
-;end
+;invalid_name_file
 
 IntToHex   proc    near
         push    cx
