@@ -11,21 +11,17 @@ rbt_node* rbt_init(){
 rbt_node* rbt_search(rbt_node *root, char word[]){
     int r;
     while(root != NULL){
-        cmp ++;        
+        cmp ++;    
         r = strcmp2(word, root->word);
-        switch (r){
-        case -1:
-            root = root->left;
-            break;
-        case 1:
-            root = root->right;
-            break;
-        case 0:
-            return(root);
-        default:
-            break;
-        }
-        
+        if (r == 0)
+            return root;
+        else{
+            cmp ++;
+            if (r == -1)
+                root = root->left;
+            else
+                root = root->right;
+        }        
     }
     return NULL;
 }

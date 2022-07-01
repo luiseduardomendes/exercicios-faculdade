@@ -1,0 +1,81 @@
+m255
+K3
+13
+cModel Technology
+Z0 dE:\GitHub\exercicios-faculdade\etapa3\circuitos_digitais\simulation\qsim
+vdigital_circuits_final_work
+Z1 !s100 e=_>hZ3i7MzPMf`[P=zKU3
+Z2 IdQ@]OagJ^4Q@Xg3MEoLTi1
+Z3 VAMPL?gS@H[38A=OH^EY[41
+Z4 dE:\GitHub\exercicios-faculdade\etapa3\circuitos_digitais\simulation\qsim
+Z5 w1656463839
+Z6 8digital_circuits_final_work.vo
+Z7 Fdigital_circuits_final_work.vo
+L0 31
+Z8 OV;L;10.1d;51
+r1
+31
+Z9 !s90 -work|work|digital_circuits_final_work.vo|
+Z10 o-work work -O0
+!i10b 1
+!s85 0
+Z11 !s108 1656463840.539000
+Z12 !s107 digital_circuits_final_work.vo|
+!s101 -O0
+vdigital_circuits_final_work_vlg_check_tst
+!i10b 1
+Z13 !s100 Po07M<0KV6`G^bJ0HU]YN0
+Z14 IVPh387m7KTYUSe3=C]ecO2
+Z15 V24fAd3:26?F;>9d;ZebFa2
+R4
+Z16 w1656463838
+Z17 8Waveform.vwf.vt
+Z18 FWaveform.vwf.vt
+L0 61
+R8
+r1
+!s85 0
+31
+Z19 !s108 1656463840.638000
+Z20 !s107 Waveform.vwf.vt|
+Z21 !s90 -work|work|Waveform.vwf.vt|
+!s101 -O0
+R10
+vdigital_circuits_final_work_vlg_sample_tst
+!i10b 1
+Z22 !s100 H7G]z0dJEaN^EBWPLO6j;2
+Z23 I88]4XHIMVF`5^H8I^^ZDj2
+Z24 V]NMcWGRbz6SPJGUJ^:Z911
+R4
+R16
+R17
+R18
+L0 29
+R8
+r1
+!s85 0
+31
+R19
+R20
+R21
+!s101 -O0
+R10
+vdigital_circuits_final_work_vlg_vec_tst
+!i10b 1
+Z25 !s100 kHbMjm]PBU[:AzZc18a:G3
+Z26 I^2<K<AHl<iFCUTOJgX@1]3
+Z27 V@@l[eQ7]lY`b<g<3B7Fb<3
+R4
+R16
+R17
+R18
+Z28 L0 308
+R8
+r1
+!s85 0
+31
+R19
+R20
+R21
+!s101 -O0
+R10

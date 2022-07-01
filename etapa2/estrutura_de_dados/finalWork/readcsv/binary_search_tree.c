@@ -41,6 +41,35 @@ bst_node* bst_insert(bst_node *root, char* key){
     }
     return root;
 }
+
+void bst_print_inorder_left(bst_node *root){
+    if (root != NULL) {
+        bst_print_inorder_left(root->left);
+        printf("%d\t%s\n", root->occurrences, root->key);
+        bst_print_inorder_left(root->right);
+    }
+} 
+
+int strcmp2(char *a, char *b){
+    while (*a == *b && *a != '\0' && *b != '\0'){
+        a++;
+        b++;
+    }
+    if (*a == '\0' && *b == '\0')
+        return 0;
+    else if (*a == '\0')
+        return 1;
+    else if (*b == '\0')
+        return -1;
+    else {
+        if (*a > *b)
+            return 1;
+        else
+            return -1;
+    }
+
+}
+
 /*
 bst_node* bst_remove(bst_node *root, int item){
     bst_node *index = root, *max;
@@ -85,30 +114,3 @@ bst_node* bst_remove(bst_node *root, int item){
     return root;
 }
 */
-void print_inorder_left(bst_node *root){
-    if (root != NULL) {
-        print_inorder_left(root->left);
-        printf("%d\t%s\n", root->occurrences, root->key);
-        print_inorder_left(root->right);
-    }
-} 
-
-int strcmp2(char *a, char *b){
-    while (*a == *b && *a != '\0' && *b != '\0'){
-        a++;
-        b++;
-    }
-    if (*a == '\0' && *b == '\0')
-        return 0;
-    else if (*a == '\0')
-        return 1;
-    else if (*b == '\0')
-        return -1;
-    else {
-        if (*a > *b)
-            return 1;
-        else
-            return -1;
-    }
-
-}

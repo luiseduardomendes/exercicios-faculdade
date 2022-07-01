@@ -1,0 +1,310 @@
+|digital_circuits_final_work
+c_out <= 8_bits_adder:inst.c_out
+add_sub => 8_bits_adder:inst.c_in
+add_sub => xor_vet:inst1.c
+a[0] => 8_bits_adder:inst.a[0]
+a[1] => 8_bits_adder:inst.a[1]
+a[2] => 8_bits_adder:inst.a[2]
+a[3] => 8_bits_adder:inst.a[3]
+a[4] => 8_bits_adder:inst.a[4]
+a[5] => 8_bits_adder:inst.a[5]
+a[6] => 8_bits_adder:inst.a[6]
+a[7] => 8_bits_adder:inst.a[7]
+b[0] => xor_vet:inst1.a[0]
+b[1] => xor_vet:inst1.a[1]
+b[2] => xor_vet:inst1.a[2]
+b[3] => xor_vet:inst1.a[3]
+b[4] => xor_vet:inst1.a[4]
+b[5] => xor_vet:inst1.a[5]
+b[6] => xor_vet:inst1.a[6]
+b[7] => xor_vet:inst1.a[7]
+s[0] <= 8_bits_adder:inst.s[0]
+s[1] <= 8_bits_adder:inst.s[1]
+s[2] <= 8_bits_adder:inst.s[2]
+s[3] <= 8_bits_adder:inst.s[3]
+s[4] <= 8_bits_adder:inst.s[4]
+s[5] <= 8_bits_adder:inst.s[5]
+s[6] <= 8_bits_adder:inst.s[6]
+s[7] <= 8_bits_adder:inst.s[7]
+
+
+|digital_circuits_final_work|8_bits_adder:inst
+c_out <= full_adder:inst7.c_out
+a[0] => full_adder:inst.a
+a[1] => full_adder:inst1.a
+a[2] => full_adder:inst2.a
+a[3] => full_adder:inst3.a
+a[4] => full_adder:inst4.a
+a[5] => full_adder:inst5.a
+a[6] => full_adder:inst6.a
+a[7] => full_adder:inst7.a
+b[0] => full_adder:inst.b
+b[1] => full_adder:inst1.b
+b[2] => full_adder:inst2.b
+b[3] => full_adder:inst3.b
+b[4] => full_adder:inst4.b
+b[5] => full_adder:inst5.b
+b[6] => full_adder:inst6.b
+b[7] => full_adder:inst7.b
+c_in => full_adder:inst.c_in
+s[0] <= full_adder:inst.s
+s[1] <= full_adder:inst1.s
+s[2] <= full_adder:inst2.s
+s[3] <= full_adder:inst3.s
+s[4] <= full_adder:inst4.s
+s[5] <= full_adder:inst5.s
+s[6] <= full_adder:inst6.s
+s[7] <= full_adder:inst7.s
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst7
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst7|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst7|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst6
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst6|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst6|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst5
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst5|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst5|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst4
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst4|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst4|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst3
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst3|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst3|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst2
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst2|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst2|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst1
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst1|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst1|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst
+s <= XOR3:inst.OUT
+c_in => XOR3:inst.IN3
+c_in => maj3:inst1.c
+a => XOR3:inst.IN1
+a => maj3:inst1.a
+b => XOR3:inst.IN2
+b => maj3:inst1.b
+c_out <= maj3:inst1.out
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst|XOR3:inst
+OUT <= 1.DB_MAX_OUTPUT_PORT_TYPE
+IN1 => 1.IN0
+IN2 => 3.IN0
+IN3 => 3.IN1
+
+
+|digital_circuits_final_work|8_bits_adder:inst|full_adder:inst|maj3:inst1
+out <= inst.DB_MAX_OUTPUT_PORT_TYPE
+a => inst3.IN0
+a => inst2.IN0
+c => inst3.IN1
+c => inst4.IN1
+b => inst4.IN0
+b => inst2.IN1
+
+
+|digital_circuits_final_work|xor_vet:inst1
+s[0] <= inst.DB_MAX_OUTPUT_PORT_TYPE
+s[1] <= inst2.DB_MAX_OUTPUT_PORT_TYPE
+s[2] <= inst3.DB_MAX_OUTPUT_PORT_TYPE
+s[3] <= inst4.DB_MAX_OUTPUT_PORT_TYPE
+s[4] <= inst5.DB_MAX_OUTPUT_PORT_TYPE
+s[5] <= inst6.DB_MAX_OUTPUT_PORT_TYPE
+s[6] <= inst7.DB_MAX_OUTPUT_PORT_TYPE
+s[7] <= inst8.DB_MAX_OUTPUT_PORT_TYPE
+a[0] => inst.IN0
+a[1] => inst2.IN0
+a[2] => inst3.IN0
+a[3] => inst4.IN0
+a[4] => inst5.IN0
+a[5] => inst6.IN0
+a[6] => inst7.IN0
+a[7] => inst8.IN0
+c => inst6.IN1
+c => inst7.IN1
+c => inst8.IN1
+c => inst5.IN1
+c => inst4.IN1
+c => inst3.IN1
+c => inst2.IN1
+c => inst.IN1
+
+

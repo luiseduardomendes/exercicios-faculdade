@@ -36,7 +36,7 @@ int main(int argc, char **argv){
         printf ("Erro ao abrir o arquivo %s",dict_name);
         return 1;
     }
-    fgets(line,SIZELINE,file);
+    
     while (fgets(line, SIZELINE, file)) {
         str = strtok (line, sep); //considera qquer caractere n�o alfab�tico como separador
         syn = strtok (NULL, sep);
@@ -76,6 +76,7 @@ int main(int argc, char **argv){
                 fprintf(output,"%s ", str); 
             str = strtok (NULL, sep);
         }
+        fprintf(output,"\n", str); 
     }
 
     printf("\nArquivo %s gerado com sucesso.\n",argv[2]);
