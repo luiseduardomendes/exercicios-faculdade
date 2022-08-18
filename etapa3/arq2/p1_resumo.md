@@ -39,3 +39,46 @@ $\lambda =$ largura de dados $= 64$ bits $= 8$ bytes
  $T = 2 \cdot 250 \cdot 10^6 \cdot 8$
 
 $T = 4000$ Mbytes/s
+
+---
+4. Quais (ou qual) das características abaixo se aplicam a um esquema de memória cache grupo-associativa interna ao processador? Assinale todas as alternativas corretas:
+
+- [x] Um determinado bloco de memória principal somente pode ser carregado em um único conjunto (ou grupo) da cache
+
+correto, na memória mapeada como grupo associativo ou como direta, podem ocupar apenas um grupo, que corresponde ao índice de cada tabela.
+
+ - [ ] Vários blocos pertencem a um mesmo conjunto (grupo), e a determinação a qual conjunto pertence é feita através dos bits menos significativos do endereço
+
+Falso. o que é definidos através dos bits de endereçamento é o índice de deslocamento (grupo) e a tag de reconhecimento.
+
+ - [ ] Um determinado bloco da memória principal somente pode ser carregado em um único bloco da cache. 
+
+Falso. Ele pode ser carregado em diferentes blocos, porém em um único grupo.
+
+ - [ ] Um determinado bloco da memória principal pode ser carregado em qualquer conjunto (ou grupo) da cache
+
+Falso. O grupo, ou índice de deslocamento, é dado de acordo com o endereço do que é buscado.
+
+ ---
+
+5. Qual ou quais das características abaixo se aplicam a um esquema de memória virtual paginada? Assinale todas as alternativas corretas:
+
+ - [x] Necessita de suporte de sistema operacional de "page fault" (falta de espaço para uma página na memória principal)
+
+Correto. O sistema operacional cuida de processos desse tipo. O hardware é capaz apenas da calcular os endereços físicos e verificar se eles se encontram na memória principal.
+
+ - [ ] Necessita de suporte do microprocessador para determinação onde uma página de memória virtual vai ser carregada na memória física.
+
+Falso. Isso é feito pela MMU, não pelo microprocessador.
+
+ - [x] Necessita de uma a quatro tabelas de descrição de páginas, localizadas na própria memória principal.
+
+Verdadeiro. As tabelas de páginas são armazenadas na memória principal.
+
+ - [x] É gerenciada pelo microprocessador, no que diz respeito à tradução de um endereço virtual para um endereço física.
+
+
+
+ - [ ] Opera sobre blocos de tamanho variável, denominados de páginas
+
+Falso. Os blocos na memória paginada são de tamanho fixo. blocos de tamanho variável são denominados segmentos.
