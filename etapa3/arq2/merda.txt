@@ -1,0 +1,47 @@
+BS_jmpBoot:     0x90, 0x3c, 0xEB
+BS_OEMName:     MSDOS5.0
+BPB_BytsPerSec: 512             # bytes per sector
+BPB_SecPerClus: 8               # sectors per cluster
+BPB_RsvdSecCnt: 4               # reserved sectors
+BPB_NumFATs:    2               # number of FAT
+BPB_RootEntCnt: 512             # count of 32-byte directory entries in the root directory
+BPB_TotSec16:   0               # view BPB_TotSec32, doesnt fit in 0x10000
+BPB_Media:      0xf8            # Non-removable media
+BPB_FATSz16     0xfa=250        # Count of sectors occuped by ONE FAT16
+BPB_SecPerTrk:  0x3f            # sectors per track
+BPB_NumHeads:   0xff            # 
+BPB_HiddSec:    0x20            # Hidden sectors preceding the partition
+BPB_TotSec32:   0x7cfdf=511967  # count of sectors in volume
+
+RootDirSectors = ((BPB_RootEntCnt * 32) + (BPB_BytsPerSec – 1)) 
+RootDirSectors = ((512 * 32) + 511)
+RootDirSectors = 16895
+
+FATSz = 250
+
+FirstDataSector = BPB_RsvdSecCnt + (BPB_NumFATs * FATSz) + RootDirSectors;
+FirstDataSector = 4 + (2 * 250) + 16895
+FirstDataSector = 17399
+
+FirstSectorofCluster = ((N – 2) * BPB_SecPerClus) + FirstDataSector;
+FirstSectorofCluster = ((N - 2) * 8) + 17399
+
+RootDirSectors = ((BPB_RootEntCnt * 32) + (BPB_BytsPerSec – 1)) / BPB_BytsPerSec;
+RootDirSectors = ((512 * 32) + (511)) / 512
+RootDirSectors = 32
+
+TotSec = 511967
+
+DataSec = TotSec – (BPB_RsvdSecCnt + (BPB_NumFATs * FATSz) + RootDirSectors);
+DataSec = 511967 - (4 + (2 * 250) + 32)
+DataSec = 511431
+
+CountofClusters = DataSec / BPB_SecPerClus;
+CountofClusters = 511431 / 8
+CountofClusters = 63928
+
+CountofClusters < 65525: Volume is FAT16
+
+FirstRootDirSecNum = BPB_RsvdSecCnt + (BPB_NumFATs * BPB_FATSz16) 
+FirstRootDirSecNum = 4 + (2 * 250)
+FirstRootDirSecNum = 504 = 0x1f8

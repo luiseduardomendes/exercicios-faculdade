@@ -25,7 +25,7 @@ int main(){
     	double size_h = w.ws_row;
     	double size_w = w.ws_col / 2;
 
-		lim_h = size_h * lim_w / (2*size_w);
+		lim_h = size_h * lim_w / (size_w);
 
 		
 
@@ -72,32 +72,32 @@ void display_result(double center_x, double center_y, int size_w, int size_h, do
 		y = center_y - (lim_h / 2) + inc_y * i;
 		for (j = 0; j < size_w; j ++){
 			x = center_x - (lim_w / 2) + inc_x * j;
-			if (abs(f(x) - y) < inc_y / 2){
+			if (abs(f(x) - y) <= inc_y / 2){
 				printf("# ");
 			}
 			else if (abs(f_1(y) - x) < inc_x / 2){
 				printf("# ");
 			}
-			else if(abs(y) < inc_y / 2){
-				if(abs(x - round(x)) < inc_x / 2){
+			else if(abs(y) <= inc_y / 2){
+				if(abs(x - round(x)) <= inc_x / 2){
 					printf("+-");
 				}	
 				else {
 					printf("--");
 				}
 			}
-			else if(abs(x) < inc_x / 2){
-				if(abs(y - round(y)) < inc_y / 2){
+			else if(abs(x) <= inc_x / 2){
+				if(abs(y - round(y)) <= inc_y / 2){
 					printf("+ ");
 				}	
 				else {
 					printf("| ");
 				}
 			}
-			else if(abs(y - round(y)) < inc_y / 2){
+			else if(abs(y - round(y)) <= inc_y / 2){
 				printf(". ");
 			}
-			else if(abs(x - round(x)) < inc_x / 2){
+			else if(abs(x - round(x)) <= inc_x / 2){
 				printf(". ");
 			}	
 			else{

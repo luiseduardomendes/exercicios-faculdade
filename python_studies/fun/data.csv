@@ -1,0 +1,158 @@
+Aphelios,role,ad carry,class,marksman
+Ashe,role,ad carry,class,marksman
+Caitlyn,role,ad carry,class,marksman
+Draven,role,ad carry,class,marksman
+Ezreal,role,ad carry,class,marksman
+Jhin,role,ad carry,class,marksman
+Jinx,role,ad carry,class,marksman
+Kai'sa,role,ad carry,class,marksman
+Kalista,role,ad carry,class,marksman
+Kog'Maw,role,ad carry,class,marksman
+Lucian,role,ad carry,class,marksman
+Miss Fortune,role,ad carry,class,marksman
+Samira,role,ad carry,class,marksman
+Senna,role,ad carry,support,class,marksman
+Sivir,role,ad carry,class,marksman
+Tristana,role,ad carry,class,marksman
+Twitch,role,ad carry,jungler,class,marksman
+Varus,role,ad carry,class,marksman
+Vayne,role,ad carry,top laner,class,marksman
+Xayah,role,ad carry,class,marksman
+Ahri,role,mid laner,class,mage
+Akali,role,mid laner,top laner,class,rogue
+Anivia,role,mid laner,class,mage
+Annie,role,mid laner,class,mage
+Aurelion Sol,role,mid laner,class,mage
+Azir,role,mid laner,class,mage
+Cassiopeia,role,mid laner,class,mage
+Corki,role,mid laner,class,marksman,mage
+Diana,role,mid laner,jungler,class,rogue
+Ekko,role,mid laner,jungler,class,rogue,mage
+Fizz,role,mid laner,class,rogue,mage
+Kassadin,role,mid laner,class,rogue,mage
+Katarina,role,mid laner,class,rogue
+LeBlanc,role,mid laner,class,rogue
+Lissandra,role,mid laner,top laner,class,mage
+Malzahar,role,mid laner,class,mage
+Neeko,role,mid laner,support,class,mage
+Orianna,role,mid laner,class,mage
+Pantheon,role,mid laner,top laner,jungler,support,class,fighter
+Qiyana,role,mid laner,jungler,class,rogue
+Ryze,role,mid laner,top laner,class,mage
+Syndra,role,mid laner,class,mage
+Talon,role,mid laner,top laner,class,rogue
+Twisted Fate,role,mid laner,class,mage
+Veigar,role,mid laner,class,mage
+Viego,role,jungler,mid laner,top laner,class,fighter
+Viktor,role,mid laner,top laner,class,mage
+Vladimir,role,mid laner,top laner,class,mage
+Zed,role,mid laner,top laner,jungler,class,rogue
+Ziggs,role,ad carry,mid laner,class,mage
+Zoe,role,mid laner,class,mage
+Alistar,role,support,class,support,tank
+Bardo,role,support,class,support
+Blitzcrank,role,support,class,support,tank
+Brand,role,support,class,support,mage
+Braum,role,support,class,support,tank
+Galio,role,support,class,support,tank
+Janna,role,support,class,support,enchanter
+Karma,role,support,class,support,enchanter
+Leona,role,support,class,support,tank
+Lulu,role,support,class,support,enchanter
+Lux,role,support,mid laner,class,support,enchanter
+Maokai,role,support,top laner,class,support,tank
+Morgana,role,support,jungler,mid laner,class,support,mage
+Nami,role,support,class,support,enchanter
+Nautilus,role,support,class,support,tank
+Pyke,role,support,mid laner,class,support,rogue
+Rakan,role,support,class,support,enchanter
+Rell,role,support,class,support,tank
+Seraphine,role,support,class,support,mage
+Sett,role,support,top laner,jungler,mid laner,class,tank
+Shaco,role,jungler,class,rogue
+Sona,role,support,class,support,enchanter
+Soraka,role,support,class,support,enchanter
+Swain,role,support,class,mage
+Taric,role,support,class,support,tank
+Thresh,role,support,class,support,tank
+Vel'Koz,role,support,mid laner,class,mage
+Xerath,role,support,mid laner,class,support,tank
+Yuumi,role,support,class,support,enchanter
+Zilean,role,support,class,support,mage
+Zyra,role,support,class,support,mage
+Aatrox,role,top laner,class,fighter
+Camille,role,top laner,class,fighter
+Cho'Gath,role,top laner,class,tank
+Darius,role,top laner,class,fighter,tank
+Dr. Mundo,role,top laner,jungler,class,tank
+Fiora,role,top laner,class,fighter
+Gangplank,role,top laner,class,fighter
+Garen,role,top laner,class,fighter,tank
+Gnar,role,top laner,class,fighter,tank
+Gwen,role,top laner,class,fighter
+Heimerdinger,role,top laner,mid laner,ad carry,class,mage
+Illaoi,role,top laner,class,fighter,tank
+Irelia,role,top laner,mid laner,class,fighter
+Jax,role,top laner,jungler,class,fighter
+Jayce,role,top laner,mid laner,class,fighter
+Kayle,role,top laner,mid laner,class,fighter
+Kennen,role,top laner,class,mage
+Kled,role,top laner,class,fighter,tank
+Lee Sin,role,jungler,class,fighter
+Malphite,role,top laner,support,class,tank
+Mordekaiser,role,top laner,class,fighter
+Nasus,role,top laner,class,fighter,tank
+Ornn,role,top laner,class,tank
+Quinn,role,top laner,class,marksman
+Renekton,role,top laner,class,fighter
+Riven,role,top laner,class,fighter
+Shen,role,top laner,class,tank
+Singed,role,top laner,class,tank
+Sion,role,top laner,jungler,class,tank
+Sylas,role,top laner,mid laner,class,mage,fighter
+Tahm Kench,role,top laner,support,class,tank,support
+Teemo,role,top laner,class,mage,marksman
+Tryndamere,role,top laner,class,fighter
+Urgot,role,top laner,class,fighter,marksman
+Wukong,role,top laner,class,fighter
+Yasuo,role,top laner,mid laner,class,fighter
+Yone,role,top laner,mid laner,class,fighter
+Yorick,role,top laner,class,fighter,tank
+Amumu,role,jungler,class,tank
+Elise,role,jungler,class,rogue,mage
+Evelynn,role,jungler,class,rogue
+Fiddlesticks,role,jungler,class,mage
+Gragas,role,jungler,top laner,class,tank,mage
+Graves,role,jungler,class,fighter,marksman
+Hecarim,role,jungler,class,fighter
+Ivern,role,jungler,class,support
+Jarvan IV,role,jungler,class,fighter,tank
+Karthus,role,jungler,mid laner,class,mage
+Kayn,role,jungler,class,fighter
+Kha'Zix,role,jungler,class,fighter,rogue
+Kindred,role,jungler,class,marksman
+Lillia,role,jungler,top laner,class,mage,fighter
+Master Yi,role,jungler,class,fighter
+Nidalee,role,jungler,class,rogue
+Nocturne,role,jungler,class,fighter
+Nunu e Willump,role,jungler,class,tank
+Olaf,role,jungler,top laner,class,fighter
+Poppy,role,jungler,top laner,class,fighter
+Rammus,role,jungler,class,tank
+Rek'Sai,role,jungler,class,fighter,tank
+Rengar,role,jungler,class,fighter,rogue
+Rumble,role,jungler,top laner,class,fighter,mage
+Sejuani,role,jungler,class,tank
+Shyvana,role,jungler,class,fighter,tank
+Skarner,role,jungler,class,tank
+Taliyah,role,jungler,mid laner,class,mage
+Trundle,role,jungler,class,fighter,tank
+Udyr,role,jungler,class,fighter,tank
+Vi,role,jungler,class,fighter
+Volibear,role,jungler,top laner,class,fighter
+Warwick,role,jungler,class,fighter
+Xin Zhao,role,jungler,class,fighter
+Zac,role,jungler,class,tank
+Vex,role,mid laner,support,class,mage,rogue
+Zeri,role,ad carry,class,carry,marksman
+Renata,role,support,class,support,enchanter
