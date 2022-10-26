@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/app-controller.dir/app_controller.cpp.o -c /home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/app_controller.cpp",
+  "file": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/app_controller.cpp"
+},
+{
+  "directory": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/entity.dir/entity.cpp.o -c /home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/entity.cpp",
+  "file": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/entity.cpp"
+},
+{
+  "directory": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/allegro-interface.dir/allegro_interface.cpp.o -c /home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/allegro_interface.cpp",
+  "file": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/allegro_interface.cpp"
+},
+{
+  "directory": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/graphics.dir/graphics.cpp.o -c /home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/graphics.cpp",
+  "file": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/graphics.cpp"
+},
+{
+  "directory": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7    -g   -o CMakeFiles/cmake-good.dir/main.cpp.o -c /home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/main.cpp",
+  "file": "/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/main.cpp"
+}
+]

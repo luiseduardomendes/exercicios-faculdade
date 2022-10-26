@@ -1,0 +1,7 @@
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/rebuild_cache.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/app-controller.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/entity.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/allegro-interface.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/graphics.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/cmake-good.dir
+/home/devluis/Documentos/GitHub/exercicios-faculdade/nevermind/build/CMakeFiles/edit_cache.dir

@@ -1,0 +1,2 @@
+/usr/bin/ar qc liballegro-interface.a  CMakeFiles/allegro-interface.dir/allegro_interface.cpp.o
+/usr/bin/ranlib liballegro-interface.a

@@ -2,6 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "Launch hello",
+      "request": "launch",
+      "mainClass": "java.hello",
+      "projectName": "exercicios-faculdade_86138ca4"
+    },
+    {
       "name": "gcc-7 - Criar e depurar o arquivo ativo",
       "type": "cppdbg",
       "request": "launch",

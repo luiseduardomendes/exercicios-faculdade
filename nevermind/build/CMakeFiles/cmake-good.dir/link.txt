@@ -1,0 +1,1 @@
+/usr/bin/x86_64-linux-gnu-g++-7  -g   CMakeFiles/cmake-good.dir/main.cpp.o  -o cmake-good libentity.a libgraphics.a libapp-controller.a liballegro-interface.a 
