@@ -8,7 +8,5 @@ public class Mine {
         Random generator = new Random();
         this.x = generator.nextInt(bound_x);
         this.y = generator.nextInt(bound_y);
-
-        
     }
 }
