@@ -1,12 +1,12 @@
 #include "entity.h"
 
 void Entity::move(){
-    pos.x += spd.x;
-    pos.y += spd.y;
-    pos.z += spd.z;
+    pos.x += mov.x;
+    pos.y += mov.y;
+    pos.z += mov.z;
 
-    if (spd != 0)
-        looking = spd.unit();
+    if (mov != 0)
+        looking = mov.unit();
 }
 
 Vec Entity::get_pos(){
@@ -14,7 +14,7 @@ Vec Entity::get_pos(){
 }
 
 Vec Entity::get_spd(){
-    return spd;
+    return mov;
 }
 
 Vec Entity::get_looking(){

@@ -4,6 +4,10 @@ void Bitmap::load(std::string filename){
     this->bmp = al_load_bitmap(filename.c_str());
 }
 
+void Bitmap::create(double w, double h){
+    this->bmp = al_create_bitmap(w, h);
+}
+
 ALLEGRO_BITMAP *Bitmap::get(){
     return this->bmp;
 }
