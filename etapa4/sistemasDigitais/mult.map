@@ -1,0 +1,12 @@
+Símbolo         Valor Decimal   Valor Hexadecimal
+-------         -------------   -----------------
+A                         128                  80
+B                         129                  81
+S1                        130                  82
+S0                        131                  83
+A_                        132                  84
+B_                        133                  85
+ZERO                      134                  86
+ONE                       135                  87
+LOOP                       14                   E
+SH_A                       35                  23
