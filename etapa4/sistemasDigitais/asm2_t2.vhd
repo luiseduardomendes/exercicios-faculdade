@@ -113,6 +113,9 @@ begin
                             end if;
                         end loop;
                     end loop;
+					if counter = "0000" then
+						state <= done_s;
+					end if;
                 when done_s =>
                     done <= '1';
                     s11 <= S5(1, 1);
@@ -120,6 +123,12 @@ begin
                     s21 <= S5(2, 1);
                     s22 <= S5(2, 2);
             end case;
+		else			
+			S1 <= S1;
+			S2 <= S2;
+			S3 <= S3;
+			S4 <= S4;
+			S5 <= S5;
         end if;
     end process;
 

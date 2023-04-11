@@ -112,27 +112,28 @@ begin
         -- hold reset state for 100 ns.
         wait for 100 ns;	
         rst <= '1';
+        rst <= '1';
            
         wait for clk_period;
         rst <= '0';
-        boundary <= std_logic_vector(50);
-
-        a11 <= std_logic_vector(1);
-        a12 <= std_logic_vector(4);
-        a21 <= std_logic_vector(6);
-        a22 <= std_logic_vector(3);
-        b11 <= std_logic_vector(2);
-        b12 <= std_logic_vector(3);
-        b21 <= std_logic_vector(7);
-        b22 <= std_logic_vector(2);
-        c11 <= std_logic_vector(1);
-        c12 <= std_logic_vector(5);
-        c21 <= std_logic_vector(3);
-        c22 <= std_logic_vector(5);
-        d11 <= std_logic_vector(6);
-        d12 <= std_logic_vector(3);
-        d21 <= std_logic_vector(7);
-        d22 <= std_logic_vector(4);
+		start <= '1';
+        boundary <= "0000000000000000";
+        a11 <= "00000001";
+        a12 <= "00000100";
+        a21 <= "00000110";
+        a22 <= "00000011";
+        b11 <= "00000010";
+        b12 <= "00000011";
+        b21 <= "00000111";
+        b22 <= "00000010";
+        c11 <= "00000001";
+        c12 <= "00000101";
+        c21 <= "00000011";
+        c22 <= "00000101";
+        d11 <= "00000110";
+        d12 <= "00000011";
+        d21 <= "00000111";
+        d22 <= "00000100";
         start <= '1';
         
         
