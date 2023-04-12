@@ -46,16 +46,31 @@ architecture arch of matrix_op is
     type state_t is (off_s, start_s, on_s, done_s);
 
     signal A, B, C, D : matrix_8;
-    signal S3, S4, s5 : matrix_16;
+    signal S3, S4, s5, s6 : matrix_16;
     signal S1, S2 : first_reg;
 
     signal counter : std_logic_vector(3 downto 0);
-
     signal state : state_t;
+	
+	
 begin
     process(clk, rst)
+		variable temp : std_logic_vector(15 downto 0);
     begin
         if rst = '1' then
+			done <= '0';
+			counter <= (others=>'0');
+			A <= (others=>(others=>(others => '0')));
+			B <= (others=>(others=>(others => '0')));
+			C <= (others=>(others=>(others => '0')));
+			D <= (others=>(others=>(others => '0')));
+
+			S1 <= (others=>(others=>(others=>(others => '0'))));
+			S2 <= (others=>(others=>(others=>(others => '0'))));
+			S3 <= (others=>(others=>(others => '0')));
+			S4 <= (others=>(others=>(others => '0')));
+			S5 <= (others=>(others=>(others => '0')));
+			S6 <= (others=>(others=>(others => '0')));
         elsif rising_edge(clk) then
             case state is
                 when off_s =>
@@ -64,7 +79,7 @@ begin
                         state <= start_s;
                     end if;
                 when start_s =>
-                    counter <= "0100";
+                    counter <= "0011";
 
                     A <= (1 => (1 => a11, 2 => a12), 2 => (1 => a21, 2 => a22));
                     B <= (1 => (1 => b11, 2 => b12), 2 => (1 => b21, 2 => b22));
@@ -76,6 +91,7 @@ begin
                     S3 <= (others=>(others=>(others => '0')));
                     S4 <= (others=>(others=>(others => '0')));
                     S5 <= (others=>(others=>(others => '0')));
+					S6 <= (others=>(others=>(others => '0')));
 
                     state <= on_s;
 
@@ -93,23 +109,23 @@ begin
 
                     for i in 1 to 2 loop
                         for j in 1 to 2 loop
-                            S3(i, j) <= std_logic_vector(unsigned(S1(1)(i, j)) * unsigned(S1(2)(i, j)));
-                            S4(i, j) <= std_logic_vector(unsigned(S2(1)(i, j)) * unsigned(S2(2)(i, j)));
+                            S3(i, j) <= std_logic_vector(unsigned(S1(1)(i, j)) + unsigned(S1(2)(i, j)));
+                            S4(i, j) <= std_logic_vector(unsigned(S2(1)(i, j)) + unsigned(S2(2)(i, j)));
                         end loop;
                     end loop;
 
                     for i in 1 to 2 loop
                         for j in 1 to 2 loop
-                            S5(i, j) <= std_logic_vector(unsigned(S3(i, j)) * unsigned(S4(i, j)));
+							S5(i, j) <= std_logic_vector(unsigned(S3(i, j)) + unsigned(S4(i, j)));
                         end loop;
                     end loop;
 
                     for i in 1 to 2 loop
                         for j in 1 to 2 loop
                             if unsigned(S5(i, j)) > unsigned(boundary) then
-                                S5(i, j) <= S5(i, j);
+                                S6(i, j) <= S5(i, j);
                             else
-                                S5(i, j) <= (others => '0');
+                                S6(i, j) <= (others => '0');
                             end if;
                         end loop;
                     end loop;
@@ -118,10 +134,10 @@ begin
 					end if;
                 when done_s =>
                     done <= '1';
-                    s11 <= S5(1, 1);
-                    s12 <= S5(1, 2);
-                    s21 <= S5(2, 1);
-                    s22 <= S5(2, 2);
+                    s11 <= S6(1, 1);
+                    s12 <= S6(1, 2);
+                    s21 <= S6(2, 1);
+                    s22 <= S6(2, 2);
             end case;
 		else			
 			S1 <= S1;
