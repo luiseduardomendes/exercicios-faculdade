@@ -90,7 +90,15 @@
     "random": "cpp",
     "regex": "cpp",
     "set": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "cassert": "c",
+    "cerrno": "c",
+    "cfloat": "c",
+    "ciso646": "c",
+    "climits": "c",
+    "queue": "c",
+    "stack": "c",
+    "cstdbool": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "C:\\MinGW\\bin\\gcc.exe",
   "C_Cpp_Runner.cppCompilerPath": "C:\\MinGW\\bin\\g++.exe",

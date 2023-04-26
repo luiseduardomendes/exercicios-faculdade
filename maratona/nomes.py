@@ -9,7 +9,8 @@ silabas = [
     'lu', 'is',
     'me', 'nin',
     'pe', 'dro',
-    'hen', 'ry'
+    'hen', 'ry',
+    'ever', 'ton'
 ]
 
 def get_silaba():
@@ -26,7 +27,8 @@ names = {
     'bolson':'',
     'nathan':'',
     'pedro':'',
-    'henry':''
+    'henry':'',
+    'everton':''
 }
 for name in names.keys():
     names[name] = get_silaba() + get_silaba()

@@ -1,0 +1,31 @@
+org h80
+    a: db 5
+    b: db 2
+    s: db 0
+    a_: db
+    b_: db
+    zero: db 0
+org 0
+    LDA zero
+    STA s
+    LDA a
+    STA a_
+    LDA b
+    STA b_
+
+loop:
+    LDA b_
+    SHR 
+    STA b_
+    JNC sh_a
+    LDA s
+    ADD a_
+    STA s
+sh_a:
+    LDA a_
+    SHL 
+    STA a_
+    LDA b_
+    JNZ loop
+    LDA s
+    HLT
