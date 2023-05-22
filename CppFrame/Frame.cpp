@@ -60,15 +60,20 @@ void graph::Frame::destroy_display(){
 }
 
 void graph::Frame::run(){
-    al_wait_for_event(this->queue, &ev);
-    event_active();
+    do{
+        al_wait_for_event(this->queue, &ev);
+        event_active();
+    } while(this->is_running());
 }
 
 void graph::Frame::set_update_time(float time){
+    this->dt = time;
     this->timer = al_create_timer(time);
     al_start_timer(this->timer);
     al_register_event_source(this->queue, al_get_timer_event_source(this->timer));
 }
+
+void graph::Frame::timer_update(){};
 
 void  graph::Frame::event_active(){
     
@@ -77,14 +82,14 @@ void  graph::Frame::event_active(){
     }
     else if (this->ev.type == ALLEGRO_EVENT_TIMER){
         if (this->ev.timer.source == this->timer){
-            
+            this->timer_update();
         }
     }
 }
 
 float graph::randf(float min, float max){
     
-    return float(rand()/RAND_MAX) * (max - min) + min;
+    return float(rand())/(RAND_MAX) * (max - min) + min;
 }
 
 int graph::randi(int min, int max){
